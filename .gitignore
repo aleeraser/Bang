@@ -1,7 +1,6 @@
 ## General
 .vscode
-server/server
-server/commands.txt
+server/serverenv
 server/server.pid
 server/server.pyc
 
