@@ -62,15 +62,15 @@ public class Bang extends ApplicationAdapter {
         textButtonStyle.up = skin.getDrawable("default-rect");
         textButtonStyle.down = skin.getDrawable("default-rect-down");
         //textButtonStyle.checked = skin.getDrawable("checked-button");
-        button = new TextButton("Get Lobbies", textButtonStyle);
-        button2 = new TextButton("Button2", textButtonStyle);
-        stage.addActor(button);
-        stage.addActor(button2);
-        button.setSize(200, 80);
-        button2.setSize(200, 80);
-        button2.setPosition(stage.getWidth() - 200, 0);
+        createBtn(button2, "btn2", stage.getWidth() - 210, 10, new ChangeListener() {
 
-        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Click2");
+            }
+        });
+
+        createBtn(button, "btn1", 10, 10, new ChangeListener() {
 
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -99,18 +99,11 @@ public class Bang extends ApplicationAdapter {
             }
         });
 
-        button2.addListener(new ChangeListener() {
-
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Click2");
-            }
-        });
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         super.render();
@@ -119,5 +112,16 @@ public class Bang extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+    }
+
+    public void createBtn(TextButton btn, String text, float x, float y, ChangeListener listener) {
+        btn = new TextButton(text, textButtonStyle);
+
+        stage.addActor(btn);
+        btn.setSize(200, 80);
+        btn.setPosition(x, y);
+
+        btn.addListener(listener);
+
     }
 }
