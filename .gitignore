@@ -1,6 +1,9 @@
 ## General
 .vscode
-
+server/server
+server/commands.txt
+server/server.pid
+server/server.pyc
 
 ## Java
 
