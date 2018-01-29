@@ -1,8 +1,11 @@
 ## General
 .vscode
+
+## Server-specific files
 server/serverenv
 server/server.pid
 server/server.pyc
+server/lobbies.json
 
 ## Java
 
