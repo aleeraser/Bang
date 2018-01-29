@@ -11,7 +11,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 try:
-    with open('lobbies.json', 'r') as data_file:
+    with open('./lobbies.json', 'r') as data_file:
         lobbies = json.load(data_file)
 except Exception as IOError:
     lobbies = []
@@ -19,17 +19,17 @@ except Exception as IOError:
 app = Flask(__name__)
 app.secret_key = '\xeb9\xb9}_\x83\xcb\xafp\xf1P\xcb@\x83\x0b\xb4Z"\xc9\x91\xbd\xf0\xaa\xac'
 
-def result_builder(msg, code):
+def res_builder(msg, code):
     return {
         "msg": msg,
         "code": code
     }
 
-@app.route("/list_lobbies", methods=["GET"])
+@app.route("/list", methods=["GET"])
 def list_lobbies():
     return json.dumps(lobbies, sort_keys=True, separators=(',', ':'))
 
-@app.route("/new_lobby&name=<string:name>", methods=["POST"])
+@app.route("/new&name=<string:name>", methods=["POST"])
 def new_lobby(name):
     try:
         lobby = {
@@ -39,13 +39,13 @@ def new_lobby(name):
 
         lobbies.append(lobby)
 
-        res = result_builder("Ok", 0)
+        res = res_builder("Ok", 0)
 
         with open('lobbies.json', 'w') as outfile:
             json.dump(lobbies, outfile, encoding='utf-8')
 
     except Exception as e:
-        res = result_builder("Error: " + str(e.message), -1)
+        res = res_builder("Error: " + str(e.message), -1)
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
