@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 public class Bang extends ApplicationAdapter {
-	Stage stage;
+  Stage stage;
   TextButton button;
   TextButtonStyle textButtonStyle;
   BitmapFont font;
@@ -35,7 +35,6 @@ public class Bang extends ApplicationAdapter {
     //textButtonStyle.checked = skin.getDrawable("checked-button");
     button = new TextButton("Button1", textButtonStyle);
     stage.addActor(button);
-    button.scaleBy(10);
     button.setSize(200, 80);
 
     button.addListener(new ChangeListener() {
