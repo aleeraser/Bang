@@ -9,7 +9,7 @@ function usage {
 	echo "  - server stop         : stop server"
     echo "  - server debug        : start server in debug mode"
     echo
-	echo "Note: the server starts on localhost:5000."
+	echo "Note: the server starts on localhost:5002."
 }
 
 function err {
@@ -33,13 +33,13 @@ elif [ "$1" == "setup" ]; then
 
     virtualenv serverenv && source ./serverenv/bin/activate && pip install gunicorn Flask pylint
 elif [ "$1" == "start" ]; then
-    source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5000 -p server.pid -D -w 4
+    source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5002 -p server.pid -D -w 4
 elif [ "$1" == "restart" ]; then
     source ./serverenv/bin/activate && kill -HUP `cat server.pid`
 elif [ "$1" == "stop" ]; then
     source ./serverenv/bin/activate && kill `cat server.pid`
 elif [ "$1" == "debug" ]; then
-    source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5000
+    source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5002
 elif [ $# != 0 ]; then
 	err "Wrong parameter"
 fi
