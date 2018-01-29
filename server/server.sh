@@ -19,6 +19,16 @@ function err {
 if [ $# -ge "2" ]; then
     err "Wrong number of parameters"
 elif [ "$1" == "setup" ]; then
+    echo ""
+    echo "WARNING: pre-requisites are a working version of Python (2.7 or"
+    echo "3.x *SHOULD* make no difference) and having virtualenv installed."
+    echo ""
+    echo "If you meet the requirements, press any key to continue."
+    echo "Otherwise, CTRL-C now."
+
+    # Press any key to continue
+    read -n 1 -s -r
+
     virtualenv serverenv && source ./serverenv/bin/activate && pip install gunicorn Flask pylint
 elif [ "$1" == "start" ]; then
     source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5000 -p server.pid -D -w 4
