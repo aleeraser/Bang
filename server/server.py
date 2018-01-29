@@ -11,7 +11,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 try:
-    with open('lobbies.json', 'r') as data_file:
+    with open('./lobbies.json', 'r') as data_file:
         lobbies = json.load(data_file)
 except Exception as IOError:
     lobbies = []
@@ -25,11 +25,11 @@ def result_builder(msg, code):
         "code": code
     }
 
-@app.route("/list_lobbies", methods=["GET"])
+@app.route("/list", methods=["GET"])
 def list_lobbies():
     return json.dumps(lobbies, sort_keys=True, separators=(',', ':'))
 
-@app.route("/new_lobby&name=<string:name>", methods=["POST"])
+@app.route("/new&name=<string:name>", methods=["POST"])
 def new_lobby(name):
     try:
         lobby = {
