@@ -1,0 +1,8 @@
+activate venv:		source [server_folder]/server/bin/activate
+
+start (public):		gunicorn server:app -b 0.0.0.0:5000
+start (public) (multi):	gunicorn server:app -b 0.0.0.0:5000 -w 4
+start (daemonize):	gunicorn server:app -b 0.0.0.0:5000 -p server.pid -D -w 4
+
+restart (daemonized):	kill -HUP `cat server.pid`
+kill (daemonize):	kill `cat server.pid`
