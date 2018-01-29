@@ -2,32 +2,58 @@ package com.bang.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 public class Bang extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+	Stage stage;
+  TextButton button;
+  TextButtonStyle textButtonStyle;
+  BitmapFont font;
+  Skin skin;
+  TextureAtlas buttonAtlas;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		stage = new Stage();
+    Gdx.input.setInputProcessor(stage);
+    font = new BitmapFont();
+    skin = new Skin();
+    buttonAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
+    skin.addRegions(buttonAtlas);
+    textButtonStyle = new TextButtonStyle();
+    textButtonStyle.font = font;
+    textButtonStyle.up = skin.getDrawable("default-rect");
+    textButtonStyle.down = skin.getDrawable("default-rect-down");
+    //textButtonStyle.checked = skin.getDrawable("checked-button");
+    button = new TextButton("Button1", textButtonStyle);
+    stage.addActor(button);
+    button.scaleBy(10);
+    button.setSize(200, 80);
+
+    button.addListener(new ChangeListener() {
+			
+	     @Override
+       public void changed(ChangeEvent event, Actor actor) {
+		       System.out.println("Click");				
+		   }
+		});
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
+    stage.draw();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
 	}
 }
