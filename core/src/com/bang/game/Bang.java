@@ -1,8 +1,15 @@
 package com.bang.game;
 
+// For HTTP requests and stream reading
+import org.apache.commons.io.*;
+import java.nio.charset.StandardCharsets;
 import java.io.*;
 import java.net.*;
+
+// JSON parsing
 import org.json.*;
+
+// libgdx libs
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -22,32 +29,41 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class Bang extends ApplicationAdapter {
     Stage stage;
-    TextButton button, button2;
-    TextButtonStyle textButtonStyle;
     BitmapFont font;
     Skin skin;
-    TextureAtlas buttonAtlas;
-    JSONArray lobbies;
-
-    // TODO: test dovrebbe essere la lista delle lobby attualmente sul server
-    String test = "";
+    TextureAtlas textureAtlas;
+    
+    TextButton btnJoinLobby, btnNewLobby;
+    TextButtonStyle textButtonStyle;
 
     Label text;
     LabelStyle textStyle;
 
-    public static String getHTML(String urlToRead) throws Exception {
-        StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        rd.close();
-        return result.toString();
+    public void createBtn(TextButton btn, String text, float x, float y, ChangeListener listener) {
+        btn = new TextButton(text, textButtonStyle);
+
+        stage.addActor(btn);
+        btn.setSize(200, 80);
+        btn.setPosition(x, y);
+
+        btn.addListener(listener);
     }
+
+    private String getHTTP(String _url) {
+        String result;
+        try {
+            URL url = new URL(_url);
+            InputStream is = url.openStream();
+            result = IOUtils.toString(is, StandardCharsets.UTF_8);
+            is.close();
+        } catch (Exception e) {
+            result = "Error while fetching lobbies";
+            System.out.println(result);
+        }
+        return result;
+    }
+
+    int i = 10;
 
     @Override
     public void create() {
@@ -55,52 +71,52 @@ public class Bang extends ApplicationAdapter {
         Gdx.input.setInputProcessor(stage);
         font = new BitmapFont();
         skin = new Skin();
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
-        skin.addRegions(buttonAtlas);
+        textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
+        skin.addRegions(textureAtlas);
+
+        // Button textures
         textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = font;
         textButtonStyle.up = skin.getDrawable("default-rect");
         textButtonStyle.down = skin.getDrawable("default-rect-down");
-        //textButtonStyle.checked = skin.getDrawable("checked-button");
-        createBtn(button2, "btn2", stage.getWidth() - 210, 10, new ChangeListener() {
 
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Click2");
-            }
-        });
-
-        createBtn(button, "btn1", 10, 10, new ChangeListener() {
-
+        // Label textures
+        textStyle = new LabelStyle();
+        textStyle.font = font;
+        textStyle.background = skin.getDrawable("textfield");
+        
+        
+        createBtn(btnJoinLobby, "Mostra stanze", 10, 10, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    // TODO: aspetta/controlla che il server abbia risposto completamente
-                    lobbies = new JSONArray(getHTML("http://emilia.cs.unibo.it:5002/list"));
-                    for (int i = 0; i < lobbies.length(); i++) {
-                        test += lobbies.getJSONObject(i).getString("name") + "\n";
-                        System.out.println(lobbies.getJSONObject(i).getString("name"));
+                    JSONArray lob = new JSONArray(getHTTP("http://emilia.cs.unibo.it:5002/list"));
+                    String lob_names = "";
+                    for (int i = 0; i < lob.length(); i++) {
+                        lob_names += lob.getJSONObject(i).getString("name") + "\n";
                     }
-
-                    // TODO: questo codice aggiorna la lista delle lobby
-                    textStyle = new LabelStyle();
-                    textStyle.font = font;
-                    textStyle.background = skin.getDrawable("default-rect");
-                    text = new Label(test, textStyle);
+                    
+                    text = new Label(lob_names, textStyle);
                     stage.addActor(text);
-                    text.setBounds(-100.0f, 30, 100, 100);
-                    text.setFontScale(1f, 1f);
-                    text.setPosition(stage.getWidth() / 2 - 100 / 2, stage.getHeight() / 2);
-                    test = "";
-
+                    text.setBounds(0, 0, 120, 100);
+                    // text.setFontScale(1f, 1f);
+                    text.setPosition(stage.getWidth() / 2 - 120 / 2, stage.getHeight() / 2);
+                    lob_names = "";
+                    
                 } catch (Exception e) {
                     System.out.println("Error getting lobby list");
                 }
             }
         });
-
+        
+        createBtn(btnNewLobby, "Nuova stanza", stage.getWidth() - 210, 10, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // TODO: implementare creazione nuova stanza
+            }
+        });
     }
-
+    
     @Override
     public void render() {
         Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
@@ -112,16 +128,5 @@ public class Bang extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-    }
-
-    public void createBtn(TextButton btn, String text, float x, float y, ChangeListener listener) {
-        btn = new TextButton(text, textButtonStyle);
-
-        stage.addActor(btn);
-        btn.setSize(200, 80);
-        btn.setPosition(x, y);
-
-        btn.addListener(listener);
-
     }
 }
