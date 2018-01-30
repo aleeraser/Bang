@@ -19,22 +19,26 @@ except Exception as IOError:
 app = Flask(__name__)
 app.secret_key = '\xeb9\xb9}_\x83\xcb\xafp\xf1P\xcb@\x83\x0b\xb4Z"\xc9\x91\xbd\xf0\xaa\xac'
 
+
 def res_builder(msg, code):
     return {
         "msg": msg,
         "code": code
     }
 
+
 @app.route("/list", methods=["GET"])
 def list_lobbies():
-    return json.dumps(lobbies, sort_keys=True, separators=(',', ':'))
+    res = json.dumps(lobbies, sort_keys=True, separators=(',', ':'))
+    return res
+
 
 @app.route("/new&name=<string:name>", methods=["POST"])
 def new_lobby(name):
     try:
         lobby = {
-            "id" : len(lobbies),
-            "name" : name
+            "id": len(lobbies),
+            "name": name
         }
 
         lobbies.append(lobby)
@@ -48,6 +52,7 @@ def new_lobby(name):
         res = res_builder("Error: " + str(e.message), -1)
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
+
 
 @app.route("/", methods=["GET"])
 def main():
