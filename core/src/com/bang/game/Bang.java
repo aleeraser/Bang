@@ -2,6 +2,7 @@ package com.bang.game;
 
 // For HTTP requests and stream reading
 import org.apache.commons.io.*;
+
 import java.nio.charset.StandardCharsets;
 import java.io.*;
 import java.net.*;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.graphics.GL20;
+import com.bang.utils.CardsUtils;
 
 public class Bang extends ApplicationAdapter {
     Stage stage;
@@ -73,6 +76,15 @@ public class Bang extends ApplicationAdapter {
         skin = new Skin();
         textureAtlas = new TextureAtlas(Gdx.files.internal("uiskin.atlas"));
         skin.addRegions(textureAtlas);
+        
+        // Example of Bang card creation
+        Group g = CardsUtils.createCardImageGroup(
+        		CardsUtils.CARD_BANG, 
+        		CardsUtils.CARD_ACE, 
+        		CardsUtils.SUIT_CLUBS, 
+        		250);
+        g.setPosition(50, stage.getHeight() - 250);
+        stage.addActor(g);
 
         // Button textures
         textButtonStyle = new TextButtonStyle();
