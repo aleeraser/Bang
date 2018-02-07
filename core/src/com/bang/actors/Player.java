@@ -1,5 +1,3 @@
-package com.bang.actors;
-
 import java.net.MalformedURLException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class Player extends UnicastRemoteObject{
+public class Player extends UnicastRemoteObject {
     private int lifes;
     private String ip;
     //private ArrayList<Card> handCards = new ArrayList<Card>();
@@ -31,47 +29,49 @@ public class Player extends UnicastRemoteObject{
         this.distance = 0;
     }
 
-    public void setPlayerList(ArrayList<Player> pl){ //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
+    public void setPlayerList(ArrayList<Player> pl) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.players = pl;
     }
 
-    public String getIp(){
+    public String getIp() {
         return this.ip;
     }
 
-    public int getLifes(){
+    public int getLifes() {
         return this.lifes;
     }
 
-    public int getDistancs(){
+    public int getDistancs() {
         return this.distance;
     }
 
-    public void shot(Player p){
+    public void shot(Player p) {
         //todo implementare controllo distanza tra i e j 
 
-    	/*
-        try {
-             p.decreaseLifes();       
+        /* try {
+            p.decreaseLifes();
         } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-        */
+        } */
+
+        p.decreaseLifes();
     }
 
-    public void decreaseLifes(){
-        this.lifes --;
-        if (this.lifes <= 0){
+    public void decreaseLifes() {
+        this.lifes--;
+        if (this.lifes <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
         }
-        
+
     }
 
-    private String findIp(){
+    private String findIp() {
+        SocketException exception = null;
+
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
             while (e.hasMoreElements()) {
@@ -79,13 +79,14 @@ public class Player extends UnicastRemoteObject{
                 Enumeration ee = n.getInetAddresses();
                 while (ee.hasMoreElements()) {
                     InetAddress i = (InetAddress) ee.nextElement();
-                    return(i.getHostAddress());
+                    return (i.getHostAddress());
                 }
             }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
+            exception = e;
         }
-		return null;
+
+        return exception.toString();
     }
 }
-  
