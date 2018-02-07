@@ -62,7 +62,6 @@ public class Bang extends ApplicationAdapter {
     LabelStyle textStyle;
 
     List<String> list;
-
     ScrollPane scrollPane;
 
     Texture backgroundImage;
@@ -149,10 +148,14 @@ public class Bang extends ApplicationAdapter {
         createBtn(btnJoinLobby, "Mostra/nascondi\nstanze", 10, 10, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                String[] server_url = new String[3];    // only for debugging
+                server_url[0] = "http://emilia.cs.unibo.it:5002/list";
+                server_url[1] = "http://marullo.cs.unibo.it:5002/list";
+                server_url[2] = "http://localhost:5002/list";
+
                 if (backgroundImage != null) {
                     try {
-                        // JSONArray lob = new JSONArray(getHTTP("http://localhost:5002/list"));
-                        JSONArray lob = new JSONArray(getHTTP("http://emilia.cs.unibo.it:5002/list"));
+                        JSONArray lob = new JSONArray(getHTTP(server_url[1]));
                         int lob_num = lob.length();
                         String[] lob_names = new String[lob_num];
                         for (int i = 0; i < lob.length(); i++) {
@@ -165,8 +168,6 @@ public class Bang extends ApplicationAdapter {
                         g.remove();
                         stage.addActor(scrollPane);
 
-                        // btnJoinLobby.setText("Nascondi stanze");
-
                     } catch (Exception e) {
                         print("Error getting lobby list\nERROR: ");
                         e.printStackTrace();
@@ -175,7 +176,6 @@ public class Bang extends ApplicationAdapter {
                     backgroundImage = new Texture(Gdx.files.internal("images/bang_logo_edit.png"));
                     stage.addActor(g);
                     scrollPane.remove();
-                    // btnJoinLobby.setText("Mostra stanze");
                 }
             }
         });
