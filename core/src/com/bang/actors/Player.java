@@ -1,3 +1,5 @@
+package com.bang.actors;
+
 import java.net.MalformedURLException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class Player extends UnicastRemoteObject{
     private int distance; //incremento della distanza a cui viene visto
     private ArrayList<Player> players = new ArrayList<Player>();
 
-    public Player(){
+    public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
         this.lifes = CharacterPower.lifes; */
         this.ip = findIp();
@@ -48,7 +50,7 @@ public class Player extends UnicastRemoteObject{
     public void shot(Player p){
         //todo implementare controllo distanza tra i e j 
 
-
+    	/*
         try {
              p.decreaseLifes();       
         } catch (NotBoundException e) {
@@ -58,6 +60,7 @@ public class Player extends UnicastRemoteObject{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        */
     }
 
     public void decreaseLifes(){
@@ -82,6 +85,7 @@ public class Player extends UnicastRemoteObject{
         } catch (SocketException ex) {
             ex.printStackTrace();
         }
+		return null;
     }
 }
   
