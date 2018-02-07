@@ -133,7 +133,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             IPlayer server = new Player();
             Naming.rebind("//" + server.getIp() + "/Player", server);
 
-            if (server.getIp() == "192.168.1.4") {
+            if (server.getIp().matches("192.168.1.4")) {
                 server.shot("192.168.1.6");
             }
 
