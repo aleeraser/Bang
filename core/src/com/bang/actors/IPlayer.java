@@ -18,7 +18,7 @@ public interface IPlayer extends Remote {
 
     ArrayList<IPlayer> getPlayers() throws RemoteException;
 
-    int getDistancs() throws RemoteException;
+    int getDistance() throws RemoteException;
 
     void shot(IPlayer target, int i) throws RemoteException;
 
