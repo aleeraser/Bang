@@ -39,6 +39,24 @@ public class NewLobbyScene extends GameScene {
         this.setup();
     }
 
+    private void showError(String err, Exception e) {
+        if (e != null) {
+            UIUtils.print("Error getting lobby list\nERROR: " + e);
+            e.printStackTrace();
+        } else {
+            UIUtils.print(err);
+        }
+        text = new Label(err, sceneManager.getLabelStyle());
+        text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
+        text.setFontScale(1f, 1f);
+        text.setAlignment(Align.center);
+
+        lobbyName.remove();
+        sceneTitle.remove();
+
+        stage.addActor(text);
+    }
+
     @Override
     public void setup() {
 
@@ -53,7 +71,6 @@ public class NewLobbyScene extends GameScene {
         stage.addActor(sceneTitle);
 
         lobbyName = new TextField("", sceneManager.getSkin());
-        // lobbyName.setMessageText("Inserisci il nome della stanza..");
         lobbyName.setStyle(sceneManager.getTextfieldStyle());
         lobbyName.setBounds(stage.getWidth() / 6, stage.getHeight() / 2 - 50, stage.getWidth() / 3 * 2, 80);
         lobbyName.setAlignment(Align.center);
@@ -72,20 +89,15 @@ public class NewLobbyScene extends GameScene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         try {
-                            NetworkUtils.postHTTP(server_url + "/new", "name", lobbyName.getText());
-                            sceneManager.setScene(new RoomListScene(sceneManager));
+                            JSONObject res = NetworkUtils.postHTTP(server_url + "/new", "name", lobbyName.getText());
+                            if (res.getInt("code") == 1) { // nome già presente
+
+                                showError(res.getString("msg"), null);
+                            } else {
+                                sceneManager.setScene(new RoomListScene(sceneManager));
+                            }
                         } catch (Exception e) {
-                            UIUtils.print("Error getting lobby list\nERROR: ");
-                            e.printStackTrace();
-                            text = new Label("Errore di connessione al server", sceneManager.getLabelStyle());
-                            text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
-                            text.setFontScale(1f, 1f);
-                            text.setAlignment(Align.center);
-
-                            lobbyName.remove();
-                            sceneTitle.remove();
-
-                            stage.addActor(text);
+                            showError("Errore di connessione al server", null);
                         }
                     }
                 });

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -37,25 +38,26 @@ public class NetworkUtils {
         return result;
     }
 
-    public static void postHTTP(String _url, String param, String val) throws Exception {
+    public static JSONObject postHTTP(String _url, String param, String val) throws Exception {
         HttpClient httpclient = HttpClients.createDefault();
         String url = _url + "&" + URLEncoder.encode(param, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
-        UIUtils.print(url);
         HttpPost httppost = new HttpPost(url);
 
         CloseableHttpResponse response = (CloseableHttpResponse)httpclient.execute(httppost);
-        // HttpEntity entity = response.getEntity();
+        HttpEntity entity = response.getEntity();
+        String result = "";
 
-        // if (entity != null) {
-        //     InputStream instream = entity.getContent();
-        //     try {
-        //         // do something useful
-        //     } finally {
-        //         instream.close();
-        //     }
-        // }
+        if (entity != null) {
+            InputStream is = entity.getContent();
+            try {
+                result = IOUtils.toString(is, StandardCharsets.UTF_8);
+            } finally {
+                is.close();
+            }
+        }
 
-        // return "Done.";
+        JSONObject res = new JSONObject(result);
+        return res;
     }
 
     public static String postHTTP_JSON(String _url, JSONObject data) throws Exception {

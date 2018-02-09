@@ -25,7 +25,7 @@ public class RoomListScene extends GameScene {
 
     List<String> list;
     ScrollPane scrollPane;
-    TextButton btnBack, btnNewLobby;
+    TextButton btnBack, btnJoin, btnNewLobby;
     Label text, title;
 
     public RoomListScene(SceneManager sceneManager) {
@@ -61,6 +61,13 @@ public class RoomListScene extends GameScene {
                 sceneManager.setScene(new MainMenuScene(sceneManager));
             }
         });
+        
+        UIUtils.createBtn(btnJoin, "Entra", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // TODO: implementa il join
+            }
+        });
 
         final String[] server_url = new String[3]; // only for debugging
         server_url[0] = "http://emilia.cs.unibo.it:5002";
@@ -74,7 +81,7 @@ public class RoomListScene extends GameScene {
             int lob_num = lob.length();
             lob_names = new String[lob_num];
             for (int i = 0; i < lob.length(); i++) {
-                lob_names[i] = lob.getJSONObject(i).getString("name") + "\n";
+                lob_names[i] = lob.getString(i);
             }
 
             list.setItems(lob_names);
