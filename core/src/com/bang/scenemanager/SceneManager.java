@@ -79,7 +79,11 @@ public class SceneManager {
         return skin;
     }
 
-    public TextButtonStyle getTextButtonStyle() {
-        return textButtonStyle;
+	public TextButtonStyle getTextButtonStyle() {
+		return textButtonStyle;
+    }
+    
+    public LabelStyle getTextStyle() {
+        return textStyle;
     }
 }
