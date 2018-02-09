@@ -73,7 +73,7 @@ public class PlayerBoardGroup extends Group {
 		this.addActor(charImage);
 		
 		cardHeight = (float) (height * 0.42);
-		cardListWidth = width - charWidth - 2*charPosX;
+		cardListWidth = width - charWidth - (float)3.5*charPosX;
 		cardListPosX = charWidth + 2*charPosX;
 	}
 	
@@ -81,7 +81,7 @@ public class PlayerBoardGroup extends Group {
 		this.boardCards = boardCards;
 		this.boardCardImages = new ArrayList<Group>();
 		
-		float spacing = (cardListWidth - cardWidth - charPosX) / (boardCards.size() + 1);
+		float spacing = (cardListWidth - cardWidth - charPosX) / (boardCards.size());
 		
 		int index = 0;
 		for (index = 0; index < boardCards.size(); index++) {
@@ -96,7 +96,7 @@ public class PlayerBoardGroup extends Group {
 		this.handCards = handCards;
 		this.handCardImages = new ArrayList<Group>();
 		
-		float spacing = (cardListWidth - cardWidth - charPosX) / (boardCards.size() + 1);
+		float spacing = (cardListWidth - cardWidth - charPosX) / (handCards.size());
 		
 		int index = 0;
 		for (index = 0; index < handCards.size(); index++) {
