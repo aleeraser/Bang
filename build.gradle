@@ -62,7 +62,7 @@ project(":core") {
         compile group: 'org.json', name: 'json', version: '20171018'
         compile group: 'commons-io', name: 'commons-io', version: '2.6'
         compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-        
+        compile 'org.apache.httpcomponents:httpclient:4.5.5'
     }
 }
 

@@ -1,6 +1,7 @@
 package com.bang.scenemanager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 
 public class SceneManager {
 
@@ -20,7 +22,8 @@ public class SceneManager {
     protected TextureAtlas textureAtlas;
     protected Batch batch;
     protected TextButtonStyle textButtonStyle;
-    protected LabelStyle textStyle;
+    protected LabelStyle labelStyle;
+    protected TextFieldStyle textFieldStyle;
 
     public SceneManager() {
         gameScene = null;
@@ -50,9 +53,15 @@ public class SceneManager {
         textButtonStyle.down = skin.getDrawable(skinBtn + "-pressed");
 
         // Label textures
-        textStyle = new LabelStyle();
-        textStyle.font = font;
-        textStyle.background = skin.getDrawable("textfield");
+        labelStyle = new LabelStyle();
+        labelStyle.font = font;
+        labelStyle.background = skin.getDrawable("label-bg");
+
+        // Textfield textures
+        textFieldStyle = new TextFieldStyle();
+        textFieldStyle.font = font;
+        textFieldStyle.fontColor = new Color(0, 0, 0, 1);
+        textFieldStyle.background = skin.getDrawable("textfield");
     }
 
     public void setScene(Scene scene) {
@@ -79,11 +88,15 @@ public class SceneManager {
         return skin;
     }
 
-	public TextButtonStyle getTextButtonStyle() {
-		return textButtonStyle;
+    public TextButtonStyle getTextButtonStyle() {
+        return textButtonStyle;
     }
-    
-    public LabelStyle getTextStyle() {
-        return textStyle;
+
+    public LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public TextFieldStyle getTextfieldStyle() {
+        return textFieldStyle;
     }
 }
