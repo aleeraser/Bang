@@ -140,7 +140,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: font
 		fontColor: white
-		background: text-field
+		background: textfield
 		cursor: cursor
 		selection: gray
 	}

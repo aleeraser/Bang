@@ -182,7 +182,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: font
 		fontColor: black
-		background: text-field
+		background: textfield
 		cursor: cursor
 		selection: cyan
 		messageFontColor: gray

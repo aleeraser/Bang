@@ -184,7 +184,7 @@ slider-knob
   orig: 27, 65
   offset: 0, 0
   index: -1
-text-field
+textfield
   rotate: false
   xy: 375, 319
   size: 268, 55

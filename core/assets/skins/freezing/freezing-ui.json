@@ -73,7 +73,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
 		up: button
-		down: button-down
+		down: button-pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
@@ -88,7 +88,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 		font: button
 		fontColor: button
 		up: button
-		down: button-down
+		down: button-pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
@@ -170,7 +170,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		font: button
 		fontColor: button
 		up: button
-		down: button-down
+		down: button-pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

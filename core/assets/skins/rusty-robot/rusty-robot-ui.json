@@ -9,54 +9,54 @@
     },
     "com.badlogic.gdx.graphics.Color": {
         "black": {
-            "r": "0",
-            "g": "0",
-            "b": "0",
-            "a": "1"
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
         "tan": {
             "name": "white",
             "color": {
-                "r": "1",
-                "g": "0.909659",
-                "b": "0.7633333",
-                "a": "1"
+                "r": 1,
+                "g": 0.909659,
+                "b": 0.7633333,
+                "a": 1
             }
         },
         "black": {
             "name": "white",
             "color": {
-                "r": "0",
-                "g": "0",
-                "b": "0",
-                "a": "1"
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
             }
         },
         "clear": {
             "name": "white",
             "color": {
-                "r": "1",
-                "g": "1",
-                "b": "1",
-                "a": "0"
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
             }
         },
         "dialog-bg": {
             "name": "white",
             "color": {
-                "r": "0.98333335",
-                "g": "0.8546715",
-                "b": "0.55722225",
-                "a": "0.52666664"
+                "r": 0.98333335,
+                "g": 0.8546715,
+                "b": 0.55722225,
+                "a": 0.52666664
             }
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
         "default": {
             "up": "button",
-            "down": "button-down"
+            "down": "button-pressed"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
@@ -76,7 +76,7 @@
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
         "default": {
             "up": "button",
-            "down": "button-down"
+            "down": "button-pressed"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
@@ -84,7 +84,7 @@
             "font": "font",
             "fontColor": "black",
             "up": "button",
-            "down": "button-down"
+            "down": "button-pressed"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
@@ -163,7 +163,7 @@
             "font": "font",
             "fontColor": "black",
             "up": "button",
-            "down": "button-down"
+            "down": "button-pressed"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {

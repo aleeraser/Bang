@@ -82,7 +82,7 @@
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
         "default": {
-            "down": "button-down",
+            "down": "button-pressed",
             "up": "button"
         },
         "blue": {
@@ -90,8 +90,8 @@
             "up": "button-blue"
         },
         "toggle": {
-            "checked": "button-down",
-            "down": "button-down",
+            "checked": "button-pressed",
+            "down": "button-pressed",
             "up": "button"
         }
     },
@@ -102,7 +102,7 @@
             "font": "default-font",
             "fontColor": "white",
             "disabledFontColor": "grey",
-            "down": "button-down",
+            "down": "button-pressed",
             "up": "button"
         },
         "blue": {
@@ -117,8 +117,8 @@
         "toggle": {
             "font": "default-font",
             "fontColor": "white",
-            "checked": "button-down",
-            "down": "button-down",
+            "checked": "button-pressed",
+            "down": "button-pressed",
             "up": "button",
             "over": "button-over",
             "disabled": "button",
@@ -127,7 +127,7 @@
     },
     "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
         "default": {
-            "down": "button-down",
+            "down": "button-pressed",
             "up": "button"
         },
         "blue": {
@@ -135,14 +135,14 @@
             "up": "button-blue"
         },
         "toggle": {
-            "checked": "button-down",
-            "down": "button-down",
+            "checked": "button-pressed",
+            "down": "button-pressed",
             "up": "button"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
         "default": {
-            "down": "button-down",
+            "down": "button-pressed",
             "up": "button",
             "over": "button-over",
             "disabled": "button",
@@ -160,8 +160,8 @@
             "disabledFontColor": "grey"
         },
         "toggle": {
-            "checked": "button-down",
-            "down": "button-down",
+            "checked": "button-pressed",
+            "down": "button-pressed",
             "up": "button",
             "font": "default-font",
             "fontColor": "white",

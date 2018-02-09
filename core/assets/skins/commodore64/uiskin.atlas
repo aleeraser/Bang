@@ -20,7 +20,7 @@ button
   orig: 36, 24
   offset: 0, 0
   index: -1
-button-down
+button-pressed
   rotate: false
   xy: 106, 140
   size: 36, 24

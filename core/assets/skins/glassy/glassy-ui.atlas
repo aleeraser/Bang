@@ -13,7 +13,7 @@ button
   orig: 297, 106
   offset: 0, 0
   index: -1
-button-down
+button-pressed
   rotate: false
   xy: 344, 860
   size: 297, 106

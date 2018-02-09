@@ -85,7 +85,7 @@ close-button-alt-highlight
   orig: 18, 18
   offset: 0, 0
   index: -1
-close-button-down
+close-button-pressed
   rotate: false
   xy: 676, 71
   size: 18, 18
@@ -768,7 +768,7 @@ spinner-plus-down
   orig: 21, 35
   offset: 0, 0
   index: -1
-spinner-text-field
+spinner-textfield
   rotate: false
   xy: 726, 118
   size: 33, 35
@@ -777,7 +777,7 @@ spinner-text-field
   orig: 33, 35
   offset: 0, 0
   index: -1
-spinner-text-field-down
+spinner-textfield-down
   rotate: false
   xy: 983, 220
   size: 33, 35

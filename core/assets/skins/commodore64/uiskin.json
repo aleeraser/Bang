@@ -30,7 +30,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		downFontColor: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
 		disabledFontColor: { a: 1, b: 0.8, g: 0.8, r: 0.8 },
 		up: button,
-		down: button-down
+		down: button-pressed
 	},
 	toggle: {
 		font: commodore-64,
@@ -38,12 +38,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		downFontColor: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
 		checkedFontColor: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
 		up: button,
-		down: button-down,
-		checked: button-down
+		down: button-pressed,
+		checked: button-pressed
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	default: { up: button, down: button-down }
+	default: { up: button, down: button-pressed }
 },
 com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
 	default-vertical: { handle: vertical-split-pane },
@@ -53,10 +53,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	default: { background: touchpad, knob: touchpad-knob }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	default: { up: button, down: button-down },
+	default: { up: button, down: button-pressed },
 	music: { up: music-off, down: music, checked: music },
 	sound: { up: sound-off, down: sound, checked: sound },
-	toggle: { up: button, down: button-down, checked: button-down }
+	toggle: { up: button, down: button-pressed, checked: button-pressed }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {

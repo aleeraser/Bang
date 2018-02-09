@@ -270,7 +270,7 @@ splitpane
   orig: 10, 10
   offset: 0, 0
   index: -1
-text-field
+textfield
   rotate: false
   xy: 1, 94
   size: 204, 62

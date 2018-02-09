@@ -62,7 +62,7 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
-	font-text-field: {
+	font-textfield: {
 		r: 0.27058825
 		g: 0.3372549
 		b: 0.4392157
@@ -122,7 +122,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		name: white
 		color: black
 	}
-	text-field-selection: {
+	textfield-selection: {
 		name: white
 		color: checkbox-over
 	}
@@ -487,17 +487,17 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: small
-		fontColor: font-text-field
-		background: text-field
+		fontColor: font-textfield
+		background: textfield
 		cursor: black
-		selection: text-field-selection
+		selection: textfield-selection
 	}
 	spinner: {
 		font: small
-		fontColor: font-text-field
-		background: text-field-spinner
+		fontColor: font-textfield
+		background: textfield-spinner
 		cursor: black
-		selection: text-field-selection
+		selection: textfield-selection
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

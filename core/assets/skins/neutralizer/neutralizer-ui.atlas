@@ -20,14 +20,14 @@ button
   orig: 33, 25
   offset: 0, 0
   index: -1
-button-down
+button-pressed
   rotate: false
   xy: 1, 17
   size: 27, 10
   orig: 27, 10
   offset: 0, 0
   index: -1
-button-down-pressed
+button-pressed-pressed
   rotate: false
   xy: 219, 160
   size: 27, 10
@@ -333,7 +333,7 @@ menu-button
   orig: 7, 24
   offset: 0, 0
   index: -1
-menu-button-down
+menu-button-pressed
   rotate: false
   xy: 316, 247
   size: 7, 24

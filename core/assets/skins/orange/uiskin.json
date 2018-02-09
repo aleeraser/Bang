@@ -167,7 +167,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	maroon: { up: button-maroon, down: button-maroon-down },
 	maroon-toggle: { up: button-maroon, down: button-maroon-down, checked: button-maroon-down },
 	close-alt: { up: close-button-alt, down: close-button-alt-down, over: close-button-alt-highlight },
-	close: { up: close-button, down: close-button-down, over: close-button-highlight },
+	close: { up: close-button, down: close-button-pressed, over: close-button-highlight },
 	spinner-minus: { up: spinner-minus, down: spinner-minus-down }
 },
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
@@ -238,8 +238,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	spinner: {
 		font: font,
 		fontColor: { a: 1, b: 0.2627451, g: 0.05490196, r: 0.6 },
-		background: spinner-text-field,
-		focusedBackground: spinner-text-field-down,
+		background: spinner-textfield,
+		focusedBackground: spinner-textfield-down,
 		cursor: maroon,
 		selection: dim-orange,
 		messageFont: font,

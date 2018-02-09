@@ -266,9 +266,9 @@ com.kotcrab.vis.ui.widget.VisTextButton$VisTextButtonStyle: {
 		downFontColor: light-gray
 	}
 	menu: {
-		down: menu-button-down
+		down: menu-button-pressed
 		up: menu-button
-		over: menu-button-down
+		over: menu-button-pressed
 		font: font
 		fontColor: white
 		downFontColor: light-gray
@@ -418,7 +418,7 @@ com.kotcrab.vis.ui.widget.MultiSplitPane$MultiSplitPaneStyle: {
 com.kotcrab.vis.ui.widget.MenuItem$MenuItemStyle: {
 	default: {
 		subMenu: icon-right
-		down: menu-button-down
+		down: menu-button-pressed
 		up: menu-button
 		over: menu-button-over
 		font: font
