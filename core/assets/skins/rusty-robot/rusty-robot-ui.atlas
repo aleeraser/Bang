@@ -264,7 +264,7 @@ splitpane-vertical
   orig: 51, 14
   offset: 0, 0
   index: -1
-text-field
+textfield
   rotate: false
   xy: 678, 531
   size: 76, 42
