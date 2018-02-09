@@ -1,14 +1,15 @@
 package com.bang.gameui;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
@@ -46,6 +47,9 @@ public class PlayerBoardGroup extends Group {
 	protected ArrayList<Card> handCards;
 	protected ArrayList<Group> handCardImages;
 	
+	// Action
+	protected Card lastClickedCard;
+	
 	public PlayerBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
 		this.height = height;
@@ -56,7 +60,7 @@ public class PlayerBoardGroup extends Group {
 	
 	protected void setupLayout() {
 		
-		// Card image handling
+		// Board image handling
 		boardImage = new Image(sceneManager.getSkin().getDrawable("textfield"));
 		boardImage.setSize((float)width, (float)height);
 		boardImage.setPosition(0, 0);
@@ -70,6 +74,14 @@ public class PlayerBoardGroup extends Group {
 		charPosY = height/2 - charHeight/2;
 		charImage.setSize(charWidth, charHeight);
 		charImage.setPosition(charPosX, charPosY);
+		
+		charImage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	System.out.println("Inside handler");
+            }
+        });
+		
 		this.addActor(charImage);
 		
 		cardHeight = (float) (height * 0.42);
@@ -86,6 +98,13 @@ public class PlayerBoardGroup extends Group {
 		int index = 0;
 		for (index = 0; index < boardCards.size(); index++) {
 			Group img = boardCards.get(index).generateImage(cardHeight);
+			final Card c = boardCards.get(index);
+			img.addListener(new ClickListener() {
+				@Override
+	            public void clicked(InputEvent event, float x, float y) {
+	            	lastClickedCard = c;
+	            }
+			});
 			boardCardImages.add(img);
 			img.setPosition(cardListPosX + index * spacing, cardHeight + 2 * (LIST_POS_HEIGHT_PERCENTAGE * height));
 			this.addActor(img);
@@ -101,10 +120,21 @@ public class PlayerBoardGroup extends Group {
 		int index = 0;
 		for (index = 0; index < handCards.size(); index++) {
 			Group img = handCards.get(index).generateImage(cardHeight);
+			final Card c = handCards.get(index);
+			img.addListener(new ClickListener() {
+				@Override
+	            public void clicked(InputEvent event, float x, float y) {
+	            	lastClickedCard = c;
+	            }
+			});
 			handCardImages.add(img);
 			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
 			this.addActor(img);
 		}
+	}
+	
+	public Card getLastClickedCard() {
+		return lastClickedCard;
 	}
 	
 	public float getWidth() {

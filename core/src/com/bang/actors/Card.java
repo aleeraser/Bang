@@ -19,6 +19,14 @@ public class Card {
 		return name;
 	}
 	
+	public String getValue() {
+		return value;
+	}
+	
+	public int getSuit() {
+		return suit;
+	}
+	
 	public Group generateImage(double height) {
 		return CardsUtils.createCardImageGroup(name, value, suit, height);
 	}
