@@ -53,7 +53,7 @@ public class Bang extends ApplicationAdapter {
     @Override
     public void create() {
         sceneManager = new SceneManager();
-        sceneManager.setScene(new MainMenuScene());
+        sceneManager.setScene(new MainMenuScene(sceneManager));
     }
 
     @Override
