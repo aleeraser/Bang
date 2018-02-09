@@ -19,7 +19,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     //private CharacterPower character;
-    private int view; //ditanza a cui può sparare
+    private int shotDistance; 
+    private int view; //bonus sulla distanza a cui di vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
     private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
@@ -29,7 +30,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         /*this.CharacterPower = genCharacter();
         this.lifes = CharacterPower.lifes; */
         this.ip = findIp();
-        this.view = 1;
+        this.shotDistance = 1;
+        this.view = 0;
         this.distance = 0;
         this.pos = -1;
 
@@ -69,7 +71,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         try {
             int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici
-            if (Math.min( this.players.size() - dist , dist) + target.getDistance() < this.view){ //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            if (Math.min( this.players.size() - dist , dist) + target.getDistance() < (this.view+ this.shotDistance)){ //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 target.decreaseLifes();
                 System.out.println(target.getLifes());
             }
@@ -135,6 +137,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         else{
             tableCards.add(c);
+            if (name.matches("Mirino")) this.view++;
+            else if (name.matches("Mustang")) this.distance++;
+            else if (name.matches("Carabine")) this.shotDistance = 4;
+            else if (name.matches("Remington")) this.shotDistance = 3;
+            else if (name.matches("Schofield")) this.shotDistance = 2;
+            else if (name.matches("Winchester")) this.shotDistance = 5;
+            //todo valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
     } 
