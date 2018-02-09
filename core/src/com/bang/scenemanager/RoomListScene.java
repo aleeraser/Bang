@@ -63,7 +63,7 @@ public class RoomListScene extends GameScene {
 
        
         try {
-            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url[2]));
+            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url[0]));
             int lob_num = lob.length();
             String[] lob_names = new String[lob_num];
             for (int i = 0; i < lob.length(); i++) {
