@@ -46,17 +46,17 @@ public class NewLobbyScene extends GameScene {
 
         backgroundImage = null;
 
-        sceneTitle = new Label("Inserisci il nome della stanza..", sceneManager.getLabelStyle());
+        sceneTitle = new Label("Inserisci il nome della stanza", sceneManager.getLabelStyle());
         sceneTitle.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2 + 50, 300, 100);
-        sceneTitle.setFontScale(1f, 1f);
+        sceneTitle.setFontScale(1.1f, 1.1f);
         sceneTitle.setAlignment(Align.center);
         stage.addActor(sceneTitle);
 
         lobbyName = new TextField("", sceneManager.getSkin());
         // lobbyName.setMessageText("Inserisci il nome della stanza..");
         lobbyName.setStyle(sceneManager.getTextfieldStyle());
-        lobbyName.setBounds(0, 0, stage.getWidth() / 3 * 2, 80);
-        lobbyName.setPosition(stage.getWidth() / 6, stage.getHeight() / 2 - 50);
+        lobbyName.setBounds(stage.getWidth() / 6, stage.getHeight() / 2 - 50, stage.getWidth() / 3 * 2, 80);
+        lobbyName.setAlignment(Align.center);
         stage.addActor(lobbyName);
 
         UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
@@ -72,7 +72,8 @@ public class NewLobbyScene extends GameScene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         try {
-                            NetworkUtils.postHTTP(server_url + "/new&name=" + lobbyName.getText());
+                            NetworkUtils.postHTTP(server_url + "/new", "name", lobbyName.getText());
+                            sceneManager.setScene(new RoomListScene(sceneManager));
                         } catch (Exception e) {
                             UIUtils.print("Error getting lobby list\nERROR: ");
                             e.printStackTrace();

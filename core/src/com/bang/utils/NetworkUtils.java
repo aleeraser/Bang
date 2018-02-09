@@ -2,33 +2,20 @@ package com.bang.utils;
 
 import java.io.InputStream;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.apache.http.entity.StringEntity;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-
-// import com.badlogic.gdx.Net.HttpResponse;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class NetworkUtils {
@@ -38,36 +25,11 @@ public class NetworkUtils {
     public static String getHTTP(String _url) {
         String result;
 
-        // try {
-        //     URL url = new URL(_url);
-        //     InputStream is = url.openStream();
-        //     result = IOUtils.toString(is, StandardCharsets.UTF_8);
-        //     is.close();
-        // } catch (Exception e) {
-        //     throw new RuntimeException("Failed to fetch data from HTTP request (GET).", e);
-        // }
-        // return result;
-
         try {
-            URL obj = new URL(_url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-            // optional default is GET
-            con.setRequestMethod("GET");
-
-            //add request header
-            con.setRequestProperty("User-Agent", USER_AGENT);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            result = response.toString();
+            URL url = new URL(_url);
+            InputStream is = url.openStream();
+            result = IOUtils.toString(is, StandardCharsets.UTF_8);
+            is.close();
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch data from HTTP request (GET).", e);
         }
@@ -75,9 +37,11 @@ public class NetworkUtils {
         return result;
     }
 
-    public static void postHTTP(String _url) throws Exception {
+    public static void postHTTP(String _url, String param, String val) throws Exception {
         HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost(_url);
+        String url = _url + "&" + URLEncoder.encode(param, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+        UIUtils.print(url);
+        HttpPost httppost = new HttpPost(url);
 
         CloseableHttpResponse response = (CloseableHttpResponse)httpclient.execute(httppost);
         // HttpEntity entity = response.getEntity();

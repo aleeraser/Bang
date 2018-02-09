@@ -20,7 +20,7 @@ public class UIUtils {
 
         int lines = StringUtils.countMatches(t, "\n") > 1 ? StringUtils.countMatches(t, "\n") : 2;
 
-        b.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        b.setSize(200, 80 + 15 * lines);
         b.setPosition(x, y);
 
         b.addListener(cl);
