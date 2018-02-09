@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Align;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
-public class RoomListScene extends GameScene {
+public class RoomListScene extends Scene {
 
     List<String> list;
     ScrollPane scrollPane;
