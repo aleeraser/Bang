@@ -22,10 +22,7 @@ import com.bang.utils.UIUtils;
 
 public class MainMenuScene extends GameScene {
 
-	float windowWidth;
-    float windowHeight;
-
-    TextButton btnJoinLobby, btnNewLobby;
+    TextButton btnJoinLobby;
 
     Label text;
     
@@ -37,9 +34,6 @@ public class MainMenuScene extends GameScene {
 	
 	@Override
 	public void setup() {
-
-        windowWidth = Gdx.graphics.getWidth();
-        windowHeight = Gdx.graphics.getHeight();
 
         stage = new Stage();
         batch = stage.getBatch();
@@ -54,17 +48,5 @@ public class MainMenuScene extends GameScene {
             	sceneManager.setScene(new RoomListScene(sceneManager));
             }
         });
-
-        UIUtils.createBtn(btnNewLobby, "Nuova stanza", windowWidth - 210, 10, stage, sceneManager.getTextButtonStyle(),
-        		new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // TODO: implementare creazione nuova stanza
-            }
-        });
 	}
-	
-    private void print(String s) {
-        System.out.println(s);
-    }
 }
