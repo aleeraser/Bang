@@ -50,7 +50,7 @@ else
             echo "A process associated with '$SERVER_NAME' is already running."
             exit 0
         fi
-        source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5002 -p "server.$SERVER_NAME.pid" -D -w 4 && echo "Server started"
+        source ./serverenv/bin/activate && gunicorn server:app -b 0.0.0.0:5002 -p "server.$SERVER_NAME.pid" -D && echo "Server started"
     elif [ "$1" == "restart" ]; then
         source ./serverenv/bin/activate && kill -HUP `cat server.$SERVER_NAME.pid` && echo "Server restarted"
     elif [ "$1" == "stop" ]; then
