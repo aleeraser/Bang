@@ -77,4 +77,8 @@ public class SceneManager {
 	public TextButtonStyle getTextButtonStyle() {
 		return textButtonStyle;
 	}
+	
+	public LabelStyle getTextStyle() {
+		return textStyle;
+	}
 }

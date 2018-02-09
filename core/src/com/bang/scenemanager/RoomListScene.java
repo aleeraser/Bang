@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,14 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.Align;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
 public class RoomListScene extends GameScene {
-
+	
 	List<String> list;
     ScrollPane scrollPane;    
     TextButton btnBack; 
+    Label text;
 	
 	public RoomListScene(SceneManager sceneManager) {
 		this.sceneManager = sceneManager;
@@ -60,7 +63,7 @@ public class RoomListScene extends GameScene {
 
        
         try {
-            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url[0]));
+            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url[2]));
             int lob_num = lob.length();
             String[] lob_names = new String[lob_num];
             for (int i = 0; i < lob.length(); i++) {
@@ -75,6 +78,11 @@ public class RoomListScene extends GameScene {
         } catch (Exception e) {
             print("Error getting lobby list\nERROR: ");
             e.printStackTrace();
+            text = new Label("Errore di connessione al server", sceneManager.getTextStyle());
+            text.setBounds(stage.getWidth()/2 - 150, stage.getHeight()/2, 300, 100);
+            text.setFontScale(1f,1f);
+            text.setAlignment(Align.center);
+            stage.addActor(text);
         }
     }
 	
