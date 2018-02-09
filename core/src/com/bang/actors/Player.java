@@ -1,3 +1,5 @@
+package com.bang.actors;
+
 import java.net.MalformedURLException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -14,8 +16,8 @@ import java.rmi.registry.LocateRegistry;
 public class Player extends UnicastRemoteObject implements IPlayer {
     private int lifes;
     private String ip;
-    //private ArrayList<Card> handCards = new ArrayList<Card>();
-    //private ArrayList<Card> tableCards = new ArrayList<Card>();
+    private ArrayList<Card> handCards = new ArrayList<Card>();
+    private ArrayList<Card> tableCards = new ArrayList<Card>();
     //private CharacterPower character;
     private int view; //ditanza a cui può sparare
     private int distance; //incremento della distanza a cui viene visto
@@ -27,7 +29,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         /*this.CharacterPower = genCharacter();
         this.lifes = CharacterPower.lifes; */
         this.ip = findIp();
-        this.view = 0;
+        this.view = 1;
         this.distance = 0;
         this.pos = -1;
 
@@ -58,7 +60,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.lifes;
     }
 
-    public int getDistancs() {
+    public int getDistance() {
         return this.distance;
     }
 
@@ -66,8 +68,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         //todo implementare controllo distanza tra i e j 
 
         try {
-            target.decreaseLifes();
-            System.out.println(target.getLifes());
+            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici
+            if (Math.min( this.players.size() - dist , dist) + target.getDistance() < this.view){ //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                target.decreaseLifes();
+                System.out.println(target.getLifes());
+            }
+            else System.out.println( "Target out of range");
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è");
 
@@ -116,6 +122,25 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (this.lifes < 5) {
             this.lifes++;
         }
+    }
+
+    public void playCard(int index, IPlayer target, int targetIndex ){
+        Card c = handCards.get(index);
+        handCards.remove(index);
+        String name = c.getNameShort();
+        if (c.hasTarget()){
+            if (name.matches("Bang")) this.shot(target, targetIndex);
+            
+            //attiva l'effetto sul target
+        }
+        else{
+            tableCards.add(c);
+            //attiva l'effetto su te stesso
+        }
+    } 
+
+    public void playCard(int index){
+        this.playCard(index, (IPlayer) this, this.pos);
     }
 
     private static String findIp() {
