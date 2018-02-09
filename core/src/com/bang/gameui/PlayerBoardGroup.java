@@ -18,6 +18,7 @@ public class PlayerBoardGroup extends Group {
 	protected float CHAR_WIDTH_PERCENTAGE = (float) 0.2;
 	protected float CHAR_HEIGHT_PERCENTAGE = (float) 0.4;
 	protected float CHAR_POS_WIDTH_PERCENTAGE = (float) 0.05;
+	protected float LIST_POS_HEIGHT_PERCENTAGE = (float) 0.04;
 	
 	protected SceneManager sceneManager;
 	
@@ -86,7 +87,22 @@ public class PlayerBoardGroup extends Group {
 		for (index = 0; index < boardCards.size(); index++) {
 			Group img = boardCards.get(index).generateImage(cardHeight);
 			boardCardImages.add(img);
-			img.setPosition(cardListPosX + index * spacing, 25);
+			img.setPosition(cardListPosX + index * spacing, cardHeight + 2 * (LIST_POS_HEIGHT_PERCENTAGE * height));
+			this.addActor(img);
+		}
+	}
+	
+	public void updateHandCards(ArrayList<Card> handCards) {
+		this.handCards = handCards;
+		this.handCardImages = new ArrayList<Group>();
+		
+		float spacing = (cardListWidth - cardWidth - charPosX) / (boardCards.size() + 1);
+		
+		int index = 0;
+		for (index = 0; index < handCards.size(); index++) {
+			Group img = handCards.get(index).generateImage(cardHeight);
+			handCardImages.add(img);
+			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
 			this.addActor(img);
 		}
 	}

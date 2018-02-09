@@ -36,5 +36,6 @@ public class TestBangGameScene extends GameScene {
         cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
      
         playerBoard.updateBoardCards(cards);
+        playerBoard.updateHandCards(cards);
 	}
 }
