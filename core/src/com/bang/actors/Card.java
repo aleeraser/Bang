@@ -9,6 +9,13 @@ public class Card {
 	protected String value;
 	protected int suit;
 	protected Boolean hasTarget;
+	
+	public Card(String name, String value, int suit) {
+		this.name = name;
+		this.value = value;
+		this.suit = suit;
+		this.hasTarget = null;
+	}
 
 	public Card(String name, String value, int suit, Boolean type) {
 		this.name = name;
