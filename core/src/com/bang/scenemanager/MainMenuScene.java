@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
-public class MainMenuScene extends GameScene {
+public class MainMenuScene extends Scene {
 
     TextButton btnJoinLobby;
 

@@ -6,6 +6,7 @@ import sys
 # import base64
 import json
 from flask import Flask
+from urllib import unquote_plus
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -35,10 +36,11 @@ def list_lobbies():
 
 @app.route("/new&name=<string:name>", methods=["POST"])
 def new_lobby(name):
+    print unquote_plus(name)
     try:
         lobby = {
             "id": len(lobbies),
-            "name": name
+            "name": unquote_plus(name)
         }
 
         lobbies.append(lobby)
@@ -57,3 +59,6 @@ def new_lobby(name):
 @app.route("/", methods=["GET"])
 def main():
     return "<h2>We</h2>"
+
+if __name__ == "__main__":
+    app.run()

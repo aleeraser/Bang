@@ -6,6 +6,7 @@ server/serverenv
 server/server.pid
 server/server.pyc
 server/lobbies.json
+server/server.*.pid
 
 ## Java
 

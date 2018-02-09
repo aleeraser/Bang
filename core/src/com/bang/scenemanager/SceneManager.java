@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 
 public class SceneManager {
 
-    protected GameScene gameScene;
+    protected Scene gameScene;
     protected BitmapFont font;
     protected Skin skin;
     protected TextureAtlas textureAtlas;
@@ -64,7 +64,7 @@ public class SceneManager {
         textFieldStyle.background = skin.getDrawable("textfield");
     }
 
-    public void setScene(GameScene scene) {
+    public void setScene(Scene scene) {
         if (this.gameScene != null)
             this.gameScene.getStage().dispose();
         this.gameScene = scene;
@@ -76,7 +76,7 @@ public class SceneManager {
         return gameScene.getStage();
     }
 
-    public GameScene getCurrentScene() {
+    public Scene getCurrentScene() {
         return gameScene;
     }
 

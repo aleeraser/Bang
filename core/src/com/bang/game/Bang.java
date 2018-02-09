@@ -40,7 +40,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bang.scenemanager.MainMenuScene;
 import com.bang.scenemanager.SceneManager;
-import com.bang.scenemanager.TestBangGameScene;
+import com.bang.scenemanager.GameScene;
 // Utils
 import com.bang.utils.CardsUtils;
 
