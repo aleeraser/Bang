@@ -76,11 +76,11 @@ public class CardsUtils {
 		
 		
 		// Card number handling
-		LabelStyle textStyle;
+		LabelStyle labelStyle;
         BitmapFont font = new BitmapFont();
-        textStyle = new LabelStyle();
-        textStyle.font = font;
-        number = new Label(cardNumber, textStyle);
+        labelStyle = new LabelStyle();
+        labelStyle.font = font;
+        number = new Label(cardNumber, labelStyle);
         number.setSize((float) width/5, (float) height/8);
         number.setPosition((float) width/10, (float) height/35);
         number.setFontScale((float)(FONT_SCALE_CARD_HEIGHT_RATIO * height));

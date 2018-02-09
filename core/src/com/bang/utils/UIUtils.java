@@ -28,4 +28,8 @@ public class UIUtils {
         return b;
     }
 
+    public static void print(String s) {
+        System.out.println(s);
+    }
+
 }
