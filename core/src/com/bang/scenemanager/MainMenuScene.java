@@ -26,8 +26,6 @@ public class MainMenuScene extends GameScene {
     float windowHeight;
 
     TextButton btnJoinLobby, btnNewLobby;
-
-    Label text;
     
 	
 	public MainMenuScene(SceneManager sceneManager) {

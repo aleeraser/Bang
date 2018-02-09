@@ -40,6 +40,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bang.scenemanager.MainMenuScene;
 import com.bang.scenemanager.SceneManager;
+import com.bang.scenemanager.TestBangGameScene;
 // Utils
 import com.bang.utils.CardsUtils;
 
@@ -53,7 +54,7 @@ public class Bang extends ApplicationAdapter {
     @Override
     public void create() {
         sceneManager = new SceneManager();
-        sceneManager.setScene(new MainMenuScene(sceneManager));
+        sceneManager.setScene(new TestBangGameScene(sceneManager));
     }
 
     @Override

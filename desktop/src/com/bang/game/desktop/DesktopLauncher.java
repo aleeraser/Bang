@@ -7,6 +7,7 @@ import com.bang.game.Bang;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.resizable = true;
 		new LwjglApplication(new Bang(), config);
 	}
 }

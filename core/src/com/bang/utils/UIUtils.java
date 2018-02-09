@@ -1,10 +1,12 @@
 package com.bang.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import org.apache.commons.lang3.StringUtils;
 
 public class UIUtils {
 
@@ -12,12 +14,13 @@ public class UIUtils {
             TextButtonStyle textButtonStyle, ChangeListener cl) {
 
         b = new TextButton(t, textButtonStyle);
+        b.setTransform(true);
 
         stage.addActor(b);
 
         int lines = StringUtils.countMatches(t, "\n") > 1 ? StringUtils.countMatches(t, "\n") : 2;
 
-        b.setSize(200, 80 + 15 * lines);
+        b.setSize(Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/6);
         b.setPosition(x, y);
 
         b.addListener(cl);
