@@ -1,5 +1,3 @@
-package com.bang.actors;
-
 import java.net.MalformedURLException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.rmi.registry.LocateRegistry;
 
 public class Player extends UnicastRemoteObject implements IPlayer {
     private int lifes;
@@ -30,18 +29,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.ip = findIp();
         this.view = 0;
         this.distance = 0;
-	this.pos=-1;
-        
+        this.pos = -1;
+
     }
-/*
+
+    /*
     public void setPlayerList(ArrayList<Player> pl) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.players = pl;
     }
-
+    
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.ips = ips;
     }
-*/
+    */
     public String getIp() {
         return this.ip;
     }
@@ -62,7 +62,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.distance;
     }
 
-    public void shot(IPlayer target) {
+    public void shot(IPlayer target, int i) {
         //todo implementare controllo distanza tra i e j 
 
         try {
@@ -70,14 +70,22 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println(target.getLifes());
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è");
+
+            this.players.remove(i);
+            if (i < this.pos) {
+                this.pos--;
+            }
             //TODO mandare messaggi per eliminarlo dalla lista;
             //e.printStackTrace();
-        } 
+        }
 
     }
 
+    public void resetPos() {
 
-    public void beer(IPlayer target) {
+    }
+
+    public void beer(IPlayer target, int i) {
 
         try {
             System.out.println("nella shot");
@@ -85,9 +93,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println(target.getLifes());
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è");
+
+            this.players.remove(i);
+            if (i < this.pos) {
+                this.pos--;
+            }
+
             //TODO mandare messaggi per eliminarlo dalla lista;
             //e.printStackTrace();
-        } 
+        }
 
     }
 
@@ -98,9 +112,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-
     public void increaseLifes() {
-        if (this.lifes < 5){
+        if (this.lifes < 5) {
             this.lifes++;
         }
     }
@@ -116,7 +129,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 while (ee.hasMoreElements()) {
                     InetAddress i = (InetAddress) ee.nextElement();
                     String ip = i.getHostAddress();
-                     if(ip.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+") && !(ip.substring(0,3).matches("127"))){
+                    if (ip.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+") && !(ip.substring(0, 3).matches("127"))) {
                         System.out.println(ip);
                         return (ip);
                     }
@@ -148,48 +161,48 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
-	int unreachable = 0;
-        for (int i = 0 ; i < ips.size(); i++ ){
+        int unreachable = 0;
+        for (int i = 0; i < ips.size(); i++) {
             try {
-                if (this.ip.matches(ips.get(i))){
+                if (this.ip.matches(ips.get(i))) {
                     this.pos = i - unreachable;
-                    this.players.add( (IPlayer) this );
-                }
-                else if (this.ping(ips.get(i))) {
+                    this.players.add((IPlayer) this);
+                } else if (this.ping(ips.get(i))) {
                     System.out.println("inizio naming");
                     IPlayer player = (IPlayer) Naming.lookup("rmi://" + ips.get(i) + "/Player");
                     System.out.println("finita naming");
                     this.players.add(player);
-                }
-		else unreachable ++;
+                } else
+                    unreachable++;
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
-		unreachable ++;
-     		e.printStackTrace();
+                unreachable++;
+                e.printStackTrace();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-            } 
+            }
         }
     }
 
-// todo : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
+    // todo : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
     public static void main(String[] args) {
         System.setProperty("java.rmi.server.hostname", findIp());
 
         try {
+            LocateRegistry.createRegistry(1099);
             IPlayer server = new Player();
             Naming.rebind("//" + server.getIp() + "/Player", server);
 
             ArrayList<String> iplist = new ArrayList<String>();
             iplist.add("130.136.4.232");
-	    iplist.add("1.2.3.4");		
-	    iplist.add("130.136.4.71");
+            iplist.add("1.2.3.4");
+            iplist.add("130.136.154.77");
             server.initPlayerList(iplist);
-	    System.out.println("---->" + server.getPos());
-            for (int i = 0; i < server.getPlayers().size(); i++){
-                if (i != server.getPos()){
-                    server.shot( (IPlayer) server.getPlayers().get(i));
+            System.out.println("---->" + server.getPos());
+            for (int i = 0; i < server.getPlayers().size(); i++) {
+                if (i != server.getPos()) {
+                    server.shot((IPlayer) server.getPlayers().get(i), i);
                     server.getPlayers().get(i).getLifes();
                 }
             }

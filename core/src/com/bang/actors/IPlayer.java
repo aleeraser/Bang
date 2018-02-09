@@ -1,5 +1,3 @@
-package com.bang.actors;
-
 import java.util.ArrayList;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -15,16 +13,16 @@ public interface IPlayer extends Remote {
     int getLifes() throws RemoteException;
 
     int getPos() throws RemoteException;
-    
+
     ArrayList<IPlayer> getPlayers() throws RemoteException;
 
     int getDistancs() throws RemoteException;
 
-    void shot(IPlayer target) throws RemoteException;
+    void shot(IPlayer target, int i) throws RemoteException;
 
     void decreaseLifes() throws RemoteException;
 
-    void beer(IPlayer target) throws RemoteException;
+    void beer(IPlayer target, int i) throws RemoteException;
 
     void increaseLifes() throws RemoteException;
 
