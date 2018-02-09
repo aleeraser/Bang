@@ -1,3 +1,5 @@
+package com.bang.actors;
+
 import java.net.MalformedURLException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
