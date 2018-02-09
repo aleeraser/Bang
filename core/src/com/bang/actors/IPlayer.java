@@ -24,7 +24,7 @@ public interface IPlayer extends Remote {
 
     void decreaseLifes() throws RemoteException;
 
-    void beer(String ip) throws RemoteException;
+    void beer(IPlayer target) throws RemoteException;
 
     void increaseLifes() throws RemoteException;
 

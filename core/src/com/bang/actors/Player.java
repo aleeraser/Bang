@@ -30,6 +30,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.ip = findIp();
         this.view = 0;
         this.distance = 0;
+	this.pos=-1;
         
     }
 /*
@@ -65,7 +66,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         //todo implementare controllo distanza tra i e j 
 
         try {
-            System.out.println("finita la lista");
             target.decreaseLifes();
             System.out.println(target.getLifes());
         } catch (RemoteException e) {
@@ -77,20 +77,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
 
-    public void beer(String ip) {
-        //todo implementare controllo distanza tra i e j 
+    public void beer(IPlayer target) {
 
         try {
-            IPlayer target = (IPlayer) Naming.lookup("rmi://" + ip + "/Player");
+            System.out.println("nella shot");
             target.increaseLifes();
             System.out.println(target.getLifes());
-        } catch (NotBoundException e) {
-            e.printStackTrace();
         } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+            System.out.println("AAAAAAAAAAAAAA non c'è");
+            //TODO mandare messaggi per eliminarlo dalla lista;
+            //e.printStackTrace();
+        } 
 
     }
 
@@ -137,7 +134,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         try {
             InetAddress inet = InetAddress.getByName(ip);
             System.out.println("Sending Ping Request to " + ip);
-            if (inet.isReachable(10000)) {
+            if (inet.isReachable(5000)) {
                 System.out.println(ip + " is reachable.");
                 return true;
             } else {
@@ -151,28 +148,32 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
+	int unreachable = 0;
         for (int i = 0 ; i < ips.size(); i++ ){
             try {
                 if (this.ip.matches(ips.get(i))){
-                    this.pos = i;
+                    this.pos = i - unreachable;
                     this.players.add( (IPlayer) this );
                 }
-                else {
+                else if (this.ping(ips.get(i))) {
                     System.out.println("inizio naming");
                     IPlayer player = (IPlayer) Naming.lookup("rmi://" + ips.get(i) + "/Player");
                     System.out.println("finita naming");
                     this.players.add(player);
                 }
+		else unreachable ++;
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
-                System.out.println("one host in unreachable");
+		unreachable ++;
+     		e.printStackTrace();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } 
         }
     }
 
+// todo : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
     public static void main(String[] args) {
         System.setProperty("java.rmi.server.hostname", findIp());
 
@@ -182,8 +183,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
             ArrayList<String> iplist = new ArrayList<String>();
             iplist.add("130.136.4.232");
+	    iplist.add("1.2.3.4");		
+	    iplist.add("130.136.4.71");
             server.initPlayerList(iplist);
-            System.out.println("finita la lista");
+	    System.out.println("---->" + server.getPos());
             for (int i = 0; i < server.getPlayers().size(); i++){
                 if (i != server.getPos()){
                     server.shot( (IPlayer) server.getPlayers().get(i));
