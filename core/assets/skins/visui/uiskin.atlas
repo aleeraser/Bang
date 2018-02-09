@@ -60,7 +60,7 @@ button-blue
   orig: 12, 20
   offset: 0, 0
   index: -1
-button-down
+button-pressed
   rotate: false
   xy: 256, 50
   size: 12, 20
