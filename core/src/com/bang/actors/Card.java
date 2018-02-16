@@ -28,7 +28,7 @@ public class Card {
 		return name;
 	}
 
-	public String getNameShort() {
+	public String getShortName() {
 		return name.substring(0, 1).toUpperCase() + name.substring(1, name.length() - 4);
 	}
 	
