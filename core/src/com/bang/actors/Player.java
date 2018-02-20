@@ -1,22 +1,24 @@
 package com.bang.actors;
 
-import java.net.MalformedURLException;
-import java.rmi.server.UnicastRemoteObject;
+import java.util.Enumeration;
 import java.util.ArrayList;
+import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Enumeration;
-import java.rmi.registry.LocateRegistry;
+import java.net.MalformedURLException;
+
 
 public class Player extends UnicastRemoteObject implements IPlayer {
     private int lifes;
     private String ip;
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
+    private ArrayList<Card> deck = new ArrayList<Card>();
     //private CharacterPower character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui di vedono i nemici
@@ -25,7 +27,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
     private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
     private Boolean volcanic;
-    private Boolean barile;
+    private Boolean barrel;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -36,18 +38,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.distance = 0;
         this.pos = -1;
         this.volcanic = false;
-        this.barile = false;
+        this.barrel = false;
     }
 
-    /*
-    public void setPlayerList(ArrayList<Player> pl) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
-        this.players = pl;
-    }
     
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.ips = ips;
     }
-    */
+    
     public String getIp() {
         return this.ip;
     }
@@ -72,8 +70,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.distance;
     }
 
-    public void shot(IPlayer target, int i) {
-        //todo implementare controllo distanza tra i e j 
+    public void setDeck(ArrayList<Card> deck){ //used by other processes to synchronize the decks
+        this.deck = deck;
+    }
+
+    public void shot(IPlayer target, int i) { //i is the target index
 
         try {
             int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici
@@ -83,20 +84,36 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else
                 System.out.println("Target out of range");
         } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è");
+            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
-            this.players.remove(i);
-            if (i < this.pos) {
-                this.pos--;
-            }
-            //TODO mandare messaggi per eliminarlo dalla lista;
+            this.allertPlayerMissing(i);
             //e.printStackTrace();
         }
 
     }
 
-    public void resetPos() {
+    public void removePlayer( int index) {
+        this.players.remove(index);
+        this.ips.remove(index);
+        if (index < this.pos) {
+            this.pos--;
+        }
+    }
 
+    private void allertPlayerMissing( int index) {
+        this.removePlayer(index); //first remove from own list.
+
+        for (int i = 0; i < players.size(); i++) {
+            if (i != this.pos) {
+                try {
+                    players.get(i).removePlayer(index);
+                } catch (RemoteException e) {
+                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    this.allertPlayerMissing(i);
+                    //e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void beer(IPlayer target, int i) {
@@ -106,14 +123,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             target.increaseLifes();
             System.out.println(target.getLifes());
         } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è");
+            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
-            this.players.remove(i);
-            if (i < this.pos) {
-                this.pos--;
-            }
+            this.allertPlayerMissing(i);
 
-            //TODO mandare messaggi per eliminarlo dalla lista;
             //e.printStackTrace();
         }
 
@@ -264,6 +277,24 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("remote call to " + ips.get(i) + " failed. ");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void syncDeck(){
+        for (int i = 0; i<players.size(); i++){
+            if(i != this.pos){
+                try{
+                    players.get(i).setDeck(this.deck);
+                }
+                catch (RemoteException e) {
+                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    this.players.remove(i);
+                    if (i < this.pos) {
+                        this.pos--;
+                    }
+                    //e.printStackTrace();
+                }
             }
         }
     }

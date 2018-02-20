@@ -21,6 +21,8 @@ public interface IPlayer extends Remote {
     ArrayList<Card> getCards() throws RemoteException; 
 
     int getDistance() throws RemoteException;
+    
+    void setDeck(ArrayList<Card> deck) throws RemoteException;
 
     void shot(IPlayer target, int i) throws RemoteException;
 
@@ -33,6 +35,8 @@ public interface IPlayer extends Remote {
     void removeTableCard(int index) throws RemoteException;
 
     void removeHandCard(int index) throws RemoteException;
+
+    void removePlayer( int i) throws RemoteException;
 
     void beer(IPlayer target, int i) throws RemoteException;
 
