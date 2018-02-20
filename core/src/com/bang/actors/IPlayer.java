@@ -36,7 +36,7 @@ public interface IPlayer extends Remote {
 
     void removeHandCard(int index) throws RemoteException;
 
-    void removePlayer( int i) throws RemoteException;
+    void removePlayer( int index, String ip) throws RemoteException;
 
     void beer(IPlayer target, int i) throws RemoteException;
 

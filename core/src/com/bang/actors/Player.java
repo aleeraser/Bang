@@ -91,22 +91,25 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
 
     }
-
-    public void removePlayer( int index) {
-        this.players.remove(index);
-        this.ips.remove(index);
-        if (index < this.pos) {
-            this.pos--;
+    //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
+    public void removePlayer( int index, String ip) {
+        if(this.ips.get(index).matches(ip)){
+            this.players.remove(index);
+            this.ips.remove(index);
+            if (index < this.pos) {
+                this.pos--;
+            }
         }
+        else System.out.println("the ip does not match!");
     }
 
     private void allertPlayerMissing( int index) {
-        this.removePlayer(index); //first remove from own list.
+        this.removePlayer(index, ips.get(index)); //first remove from own list.
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos) {
                 try {
-                    players.get(i).removePlayer(index);
+                    players.get(i).removePlayer(index, ips.get(index));
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                     this.allertPlayerMissing(i);
