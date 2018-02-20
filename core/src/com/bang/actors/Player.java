@@ -136,6 +136,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.lifes--;
         if (this.lifes <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
+            this.allertPlayerMissing(this.pos); //when a player dies it ack the others.
         }
     }
 
