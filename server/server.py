@@ -27,6 +27,10 @@ def res_builder(msg, code):
         "code": code
     }
 
+def storeLobbies():
+    with open('lobbies.json', 'w') as outfile:
+        json.dump(lobbies, outfile, encoding='utf-8')
+
 
 @app.route("/list", methods=["GET"])
 def list_lobbies():
@@ -45,8 +49,7 @@ def new_lobby(name):
 
             res = res_builder("Ok", 0)
 
-            with open('lobbies.json', 'w') as outfile:
-                json.dump(lobbies, outfile, encoding='utf-8')
+            storeLobbies()
         else:
             res = res_builder("Name already present", 1)
 
@@ -55,10 +58,35 @@ def new_lobby(name):
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
-@app.route("/addplayer&ip=<string:ip>&name=<string:name>", methods=["POST"])
-def addplayer(ip, name):
-    lobbies[name].append(ip)
-    res = res_builder("Ok", 0)
+
+@app.route("/getplayers&lobby=<string:lobby>", methods=["POST"])
+def get_players(lobby):
+    players = []
+    for ip in lobbies[lobby]:
+        players.append(ip)
+    res = json.dumps(players, sort_keys=True, separators=(',', ':'))
+    return res
+
+
+@app.route("/addplayer&ip=<string:ip>&lobby=<string:lobby>", methods=["POST"])
+def add_player(ip, lobby):
+    try:
+        if ip not in lobbies[lobby]:
+            lobbies[lobby].append(ip)
+
+            res = res_builder("Ok", 0)
+
+            storeLobbies()
+
+            print "Adding " + ip + " to " + lobby
+        else:
+            res = res_builder("Already joined", 1)
+
+            print "Ip " + ip + " already present in " + lobby
+
+    except Exception as e:
+        res = res_builder("Error: " + str(e.message), -1)
+
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
 
