@@ -89,13 +89,23 @@ public class NewLobbyScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         try {
-                            JSONObject res = NetworkUtils.postHTTP(server_url + "/new", "name", lobbyName.getText());
+                            String[] params = new String[2];
+                            params[0] = "ip";
+                            params[1] = "lobby";
+
+                            String[] vals = new String[2];
+                            vals[0] = sceneManager.getPlayer().getIp();
+                            vals[1] = lobbyName.getText();
+
+                            JSONObject res = NetworkUtils.postHTTP(server_url + "/new", params, vals);
+                            UIUtils.print(res.toString());
                             if (res.getInt("code") == 1) { // nome già presente
 
                                 showError(res.getString("msg"), null);
                             } else {
                                 sceneManager.setScene(new RoomListScene(sceneManager));
                             }
+
                         } catch (Exception e) {
                             showError("Errore di connessione al server", null);
                         }
