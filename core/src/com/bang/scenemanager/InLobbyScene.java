@@ -59,43 +59,11 @@ public class InLobbyScene extends Scene {
             }
         });
         
-        final String[] server_url = new String[3]; // only for debugging
-        server_url[0] = "http://emilia.cs.unibo.it:5002";
-        server_url[1] = "http://marullo.cs.unibo.it:5002";
-        server_url[2] = "http://localhost:5002";
-        final int server_index = 1;
         
         UIUtils.createBtn(btnJoin, "Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	playerNames = new String[0];
             	
-            	try {
-                    JSONArray ret = new JSONArray(NetworkUtils.getHTTP(server_url[server_index] + "/getplayers&lobby=" + lobbyName));
-                    int player_num = ret.length();
-                    playerNames = new String[player_num];
-                    for (int i = 0; i < ret.length(); i++) {
-                        playerNames[i] = ret.getString(i);
-                    }
-
-                    list.setItems(playerNames);
-
-                    stage.addActor(scrollPane);
-
-                } catch (Exception e) {
-                    UIUtils.print("Error getting lobby list\nERROR: ");
-                    e.printStackTrace();
-                    text = new Label("Errore di connessione al server", sceneManager.getLabelStyle());
-                    text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
-                    text.setFontScale(1f, 1f);
-                    text.setAlignment(Align.center);
-
-                    title.remove();
-                    scrollPane.remove();
-                    stage.addActor(text);
-                }
-            	
-                list.setItems(playerNames);
             }
         });
         
@@ -103,17 +71,46 @@ public class InLobbyScene extends Scene {
         if (isCreator) {
         	UIUtils.createBtn(btnJoin, "Inizia Partita", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
 	            @Override
-	            public void changed(ChangeEvent event, Actor actor) {         
+	            public void changed(ChangeEvent event, Actor actor) {     
+	            	updatePlayerList();
 	            }
         	});
         }
         
-        playerNames = new String[3];
-        playerNames[0] = "UNO";
-        playerNames[1] = "DUE";
-        playerNames[2] = "TRES";
-        list.setItems(playerNames);
+        updatePlayerList();
         stage.addActor(scrollPane);
+	}
+	
+	
+	protected void updatePlayerList() {
+		playerNames = new String[0];
+    	
+    	try {
+            JSONArray ret = new JSONArray(NetworkUtils.getHTTP(sceneManager.getBaseURL() + "/getplayers&lobby=" + lobbyName));
+            int player_num = ret.length();
+            playerNames = new String[player_num];
+            for (int i = 0; i < ret.length(); i++) {
+                playerNames[i] = ret.getString(i);
+            }
+
+            list.setItems(playerNames);
+
+            stage.addActor(scrollPane);
+
+        } catch (Exception e) {
+            UIUtils.print("Error getting lobby list\nERROR: ");
+            e.printStackTrace();
+            text = new Label("Errore di connessione al server", sceneManager.getLabelStyle());
+            text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
+            text.setFontScale(1f, 1f);
+            text.setAlignment(Align.center);
+
+            title.remove();
+            scrollPane.remove();
+            stage.addActor(text);
+            
+            list.setItems(playerNames);
+        }
 	}
 
 }
