@@ -38,6 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.bang.scenemanager.InLobbyScene;
 import com.bang.scenemanager.MainMenuScene;
 import com.bang.scenemanager.SceneManager;
 import com.bang.scenemanager.GameScene;
@@ -55,6 +56,8 @@ public class Bang extends ApplicationAdapter {
     public void create() {
         sceneManager = new SceneManager();
         sceneManager.setScene(new MainMenuScene(sceneManager));
+        //sceneManager.setScene(new GameScene(sceneManager));
+        //sceneManager.setScene(new InLobbyScene(sceneManager, "TestLobby", true));
     }
 
     @Override

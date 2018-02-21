@@ -2,7 +2,12 @@ package com.bang.scenemanager;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -62,4 +67,5 @@ public class GameScene extends Scene {
         selectedCard.setPosition(20, (stage.getHeight()/2 - selectedCard.getHeight()/2));
         stage.addActor(selectedCard);
 	}
+	
 }

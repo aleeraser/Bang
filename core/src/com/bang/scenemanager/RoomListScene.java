@@ -66,6 +66,7 @@ public class RoomListScene extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // TODO: implementa il join
+            	sceneManager.setScene(new InLobbyScene(sceneManager, list.getSelected(), false));
             }
         });
 
@@ -73,7 +74,7 @@ public class RoomListScene extends Scene {
         server_url[0] = "http://emilia.cs.unibo.it:5002";
         server_url[1] = "http://marullo.cs.unibo.it:5002";
         server_url[2] = "http://localhost:5002";
-        final int server_index = 0;
+        final int server_index = 1;
 
         String[] lob_names = new String[0];
         try {

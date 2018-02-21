@@ -3,7 +3,11 @@ package com.bang.gameui;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -97,7 +101,7 @@ public class PlayerBoardGroup extends Group {
 		
 		int index = 0;
 		for (index = 0; index < boardCards.size(); index++) {
-			Group img = boardCards.get(index).generateImage(cardHeight);
+			final Group img = boardCards.get(index).generateImage(cardHeight);
 			final Card c = boardCards.get(index);
 			img.addListener(new ClickListener() {
 				@Override
@@ -119,7 +123,7 @@ public class PlayerBoardGroup extends Group {
 		
 		int index = 0;
 		for (index = 0; index < handCards.size(); index++) {
-			Group img = handCards.get(index).generateImage(cardHeight);
+			final Group img = handCards.get(index).generateImage(cardHeight);
 			final Card c = handCards.get(index);
 			img.addListener(new ClickListener() {
 				@Override
@@ -143,6 +147,41 @@ public class PlayerBoardGroup extends Group {
 	
 	public float getHeight() {
 		return height;
+	}
+	
+	
+	/* Card Highlight class */
+	class CardHighlight extends Actor {
+		
+		ShapeRenderer shapeRenderer;
+		Group card;
+		
+	    public CardHighlight(Group card) {
+	    	shapeRenderer = new ShapeRenderer();
+	    	this.card = card;
+	    }
+	    
+	    @Override
+	    public void draw(Batch batch, float parentAlpha) {
+	        batch.end();
+	        Group g = this.getParent();
+	        shapeRenderer.begin(ShapeType.Filled);
+	        //shapeRenderer.begin(ShapeType.Line);
+	        shapeRenderer.setColor(Color.BLUE);
+	        
+	        System.out.println(g.getHeight() + "   " + this.getHeight());
+	        
+	        shapeRenderer.rect(
+	        		g.getX() - ((this.getWidth() - g.getWidth())/2), 
+	        		g.getY() - ((this.getHeight() - g.getHeight())/2), 
+	        		this.getWidth(), 
+	        		this.getHeight()
+	        		);
+	        //shapeRenderer.rectLine(new Vector2(10, 10), new Vector2(10, 10),  50);
+	        shapeRenderer.end();
+	        batch.begin();
+	    }
+		
 	}
 	
 }
