@@ -10,7 +10,7 @@ public interface IPlayer extends Remote {
 
     //void setIpList(ArrayList<String> ips,int[] callerClock) throws RemoteException; //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
 
-    String getIp(int[] callerClock) throws RemoteException;
+    String getIp() throws RemoteException;
 
     int getLifes(int[] callerClock) throws RemoteException;
 

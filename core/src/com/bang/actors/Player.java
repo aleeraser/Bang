@@ -60,8 +60,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return resClock;
     }
     
-    public String getIp(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+    public String getIp() {
         return this.ip;
     }
 
