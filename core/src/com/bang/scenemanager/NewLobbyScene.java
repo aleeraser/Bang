@@ -98,7 +98,6 @@ public class NewLobbyScene extends Scene {
                             vals[1] = lobbyName.getText();
 
                             JSONObject res = NetworkUtils.postHTTP(server_url + "/new", params, vals);
-                            UIUtils.print(res.toString());
                             if (res.getInt("code") == 1) { // nome già presente
 
                                 showError(res.getString("msg"), null);

@@ -100,7 +100,6 @@ public class RoomListScene extends Scene {
                     vals[1] = list.getSelected();
 
                     JSONObject res = NetworkUtils.postHTTP(server_url + "/addplayer", params, vals);
-                    UIUtils.print(res.toString());
                     if (res.getInt("code") == 1) { // nome già presente
                         showError(res.getString("msg"), null);
                     } else {
