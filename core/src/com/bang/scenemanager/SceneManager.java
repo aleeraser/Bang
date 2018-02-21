@@ -1,5 +1,10 @@
 package com.bang.scenemanager;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
+import com.bang.actors.IPlayer;
+import com.bang.actors.Player;
 
 public class SceneManager {
 
@@ -24,9 +32,29 @@ public class SceneManager {
     protected TextButtonStyle textButtonStyle;
     protected LabelStyle labelStyle;
     protected TextFieldStyle textFieldStyle;
+    protected IPlayer player;
+    protected String baseURL;
 
     public SceneManager() {
         gameScene = null;
+
+        try {
+            LocateRegistry.createRegistry(1099);
+            player = new Player();
+            Naming.rebind("//" + player.getIp() + "/Player", player);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        final String[] server_url = new String[3]; // only for debugging
+        server_url[0] = "http://emilia.cs.unibo.it:5002";
+        server_url[1] = "http://marullo.cs.unibo.it:5002";
+        server_url[2] = "http://localhost:5002";
+        final int server_index = 1;
+        baseURL = server_url[server_index];
+
 
         // skinName = "default" o "visui" (o altre, se verranno aggiunte)
         String skinPath, skinBtn, skinName = "rusty-robot";
@@ -98,5 +126,13 @@ public class SceneManager {
 
     public TextFieldStyle getTextfieldStyle() {
         return textFieldStyle;
+    }
+
+    public IPlayer getPlayer() {
+        return player;
+    }
+
+    public String getBaseURL() {
+        return baseURL;
     }
 }

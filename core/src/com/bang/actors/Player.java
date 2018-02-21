@@ -32,7 +32,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
         this.lifes = CharacterPower.lifes; */
+
         this.ip = findIp();
+        System.setProperty("java.rmi.server.hostname", this.ip);
         this.shotDistance = 1;
         this.view = 0;
         this.distance = 0;
@@ -373,8 +375,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
-    public static void main(String[] args) {
-        System.setProperty("java.rmi.server.hostname", findIp());
+    /* public static void main(String[] args) {
+        // System.setProperty("java.rmi.server.hostname", findIp());
 
         try {
             LocateRegistry.createRegistry(1099);
@@ -403,5 +405,5 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             e.printStackTrace();
         }
 
-    }
+    } */
 }
