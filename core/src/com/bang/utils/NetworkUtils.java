@@ -40,6 +40,27 @@ public class NetworkUtils {
         return result;
     }
 
+    public static String getHTTP(String _url, String[] params, String[] vals) {
+        String result;
+
+        try {
+            String url_s = _url;
+
+            for (int i = 0; i < params.length; i++) {
+                url_s += "&" + URLEncoder.encode(params[i], "UTF-8") + "=" + URLEncoder.encode(vals[i], "UTF-8");
+            }
+
+            URL url = new URL(url_s);
+            InputStream is = url.openStream();
+            result = IOUtils.toString(is, StandardCharsets.UTF_8);
+            is.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch data from HTTP request (GET).", e);
+        }
+
+        return result;
+    }
+
     public static JSONObject postHTTP(String _url, String param, String val) throws Exception {
         String url = _url + "&" + URLEncoder.encode(param, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
         JSONObject res = executePOST(url);
@@ -69,8 +90,6 @@ public class NetworkUtils {
             request.setEntity(params);
 
             Integer code = httpClient.execute(request).getStatusLine().getStatusCode();
-
-            UIUtils.print(code.toString());
 
             if (code != 200) throw new RuntimeException("POST request failed.");
 
