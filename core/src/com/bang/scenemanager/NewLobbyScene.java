@@ -32,10 +32,10 @@ public class NewLobbyScene extends Scene {
     Label sceneTitle;
     TextField lobbyName;
 
-    public NewLobbyScene(SceneManager sceneManager, String[] lobs, String url) {
+    public NewLobbyScene(SceneManager sceneManager, String[] lobs) {
         this.sceneManager = sceneManager;
         lob_names = lobs;
-        server_url = url;
+        server_url = sceneManager.getBaseURL();
         this.setup();
     }
 
