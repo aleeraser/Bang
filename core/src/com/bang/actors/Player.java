@@ -1,6 +1,9 @@
 package com.bang.actors;
 
 import java.util.Enumeration;
+
+import com.bang.utils.UIUtils;
+
 import java.util.ArrayList;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
@@ -67,6 +70,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public int getPos(int[] callerClock) {
         this.clock = clocksCompare(callerClock, this.clock);
         return this.pos;
+    }
+
+    public ArrayList<IPlayer> getPlayers() {
+        return this.getPlayers(new int[this.players.size()]);
     }
 
     public ArrayList<IPlayer> getPlayers(int[] callerClock) {
@@ -394,7 +401,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void initPlayerList(ArrayList<String> ips) {
+    public void initPlayerList(ArrayList<String> ips) {
         for (int i = 0; i < ips.size(); i++) {
             try {
                 if (this.ip.matches(ips.get(i))) {
@@ -414,7 +421,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+
+            UIUtils.print(ips.get(i));
         }
+        UIUtils.print("Pos: " + this.pos);
     }
 
     private void syncDeck(){

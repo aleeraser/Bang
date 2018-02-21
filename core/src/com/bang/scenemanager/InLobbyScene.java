@@ -3,7 +3,9 @@ package com.bang.scenemanager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.bang.actors.IPlayer;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
@@ -49,6 +52,7 @@ public class InLobbyScene extends Scene {
         scrollPane.setTransform(true);
         scrollPane.layout();
 
+        // Back
         UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -78,6 +82,7 @@ public class InLobbyScene extends Scene {
             }
         });
 
+        // Update
         UIUtils.createBtn(btnJoin, "Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,12 +90,25 @@ public class InLobbyScene extends Scene {
             }
         });
 
+        // Start
         if (isCreator) {
             UIUtils.createBtn(btnJoin, "Inizia Partita", Gdx.graphics.getWidth() - 230, 10, stage,
                     sceneManager.getTextButtonStyle(), new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
-                            updatePlayerList();
+                            ArrayList<String> playerIPs = updatePlayerList();
+                            IPlayer me = sceneManager.getPlayer();
+                            try {
+                                me.setIpList(playerIPs);
+                                ArrayList<IPlayer> playerList = me.getPlayers();
+                                for (IPlayer player: playerList) {
+                                    if (player != me) {
+                                        player.setIpList(playerIPs);
+                                    }
+                                }
+                            } catch (RemoteException e) {
+                                UIUtils.showError("Failed to set ip list", e, stage, sceneManager, text, removeOnError);
+                            }
                         }
                     });
         }
@@ -98,7 +116,8 @@ public class InLobbyScene extends Scene {
         updatePlayerList();
     }
 
-    protected void updatePlayerList() {
+    protected ArrayList<String> updatePlayerList() {
+        ArrayList<String> players = new ArrayList<String>();
         playerNames = new String[0];
 
         try {
@@ -113,6 +132,7 @@ public class InLobbyScene extends Scene {
             playerNames = new String[player_num];
             for (int i = 0; i < ret.length(); i++) {
                 playerNames[i] = ret.getString(i);
+                players.add(ret.getString(i));
             }
 
             list.setItems(playerNames);
@@ -123,6 +143,8 @@ public class InLobbyScene extends Scene {
         } catch (Exception e) {
             UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text, removeOnError);
         }
+
+        return players;
     }
 
 }
