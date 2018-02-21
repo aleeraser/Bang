@@ -47,6 +47,10 @@ public class Card {
 	public Group generateImage(double height) {
 		return CardsUtils.createCardImageGroup(name, value, suit, height);
 	}
+	
+	public Group generateBackImage(double height) {
+		return CardsUtils.createBackCardImageGroup(height);
+	}
 
 	public Boolean hasTarget(){
 		return this.hasTarget;
