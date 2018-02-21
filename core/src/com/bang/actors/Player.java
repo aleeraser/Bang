@@ -21,7 +21,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> deck = new ArrayList<Card>();
     //private CharacterPower character;
     private int shotDistance;
-    private int view; //bonus sulla distanza a cui di vedono i nemici
+    private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
     private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
@@ -32,7 +32,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
         this.lifes = CharacterPower.lifes; */
+
         this.ip = findIp();
+        System.setProperty("java.rmi.server.hostname", this.ip);
         this.shotDistance = 1;
         this.view = 0;
         this.distance = 0;
@@ -62,6 +64,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.tableCards;
     }
 
+    public Card getHandCard(int i){ //return a pointer to the card!
+        return handCards.get(i);
+    }
+
     public int getLifes() {
         return this.lifes;
     }
@@ -76,10 +82,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void shot(IPlayer target, int i) { //i is the target index
 
-        try {
-            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici
+        try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
+            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
             if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
-                target.decreaseLifes();
+                target.decreaseLifes(); // TODO da migliorare, lui potrebbe avere un mancato
                 System.out.println(target.getLifes());
             } else
                 System.out.println("Target out of range");
@@ -154,15 +160,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             String name = this.tableCards.get(i).getShortName();
             if (name.matches("Volcanic") || name.matches("Carabine") || name.matches("Remington") 
                     || name.matches("Schofield") || name.matches("Winchester") ){
-                if(name.matches("Volcanic")) this.volcanic = false;
                 this.removeTableCard(i);
+                if (name.matches("Volcanic"))
+                    this.volcanic = false;
                 break;
             }
         }
         
     }
 
-    public void playCard(int index, IPlayer target, int targetIndex) {
+    public void playCard(int index, int targetIndex) {
+        IPlayer target = players.get(index);
         Card c = handCards.get(index);
         handCards.remove(index);
         String name = c.getShortName();
@@ -200,13 +208,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.shotDistance = 1;
                 this.volcanic = true;
             }
+            else if (name.matches("Indiani")){
+                for (int i = 0; i < players.size(); i++) {
+                    if (i != this.pos) {
+                        try {
+                            players.get(i).indiani();
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.allertPlayerMissing(i);
+                            //e.printStackTrace();
+                        }
+                    }
+                }
+            }
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
     }
     
     public void playCard(int index) {
-        this.playCard(index, (IPlayer) this, this.pos);
+        this.playCard(index, this.pos);
     }
 
     public void removeTableCard(int index){
@@ -216,7 +237,57 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removeHandCard(int index){
         this.handCards.remove(index);
     }
+
+    private void catBalou(int cIndex, int pIndex, Boolean fromTable){
+        IPlayer target = players.get(pIndex);
+        try{
+            if(fromTable){
+                target.removeTableCard(cIndex);
+            }
+            else{
+                target.removeHandCard(cIndex);
+            }
+        }catch (RemoteException e) {
+            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+            this.allertPlayerMissing(pIndex);
+        }
+    }
     
+    private void panico(int cIndex, int pIndex, Boolean fromTable) {
+        IPlayer target = players.get(pIndex);
+        try {
+            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
+            if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                Card c;
+                if (fromTable) {
+                    c = target.getCards().get(cIndex).copyCard();
+                    target.removeTableCard(cIndex);
+                } else {
+                    c = target.getHandCard(cIndex).copyCard();
+                    target.removeHandCard(cIndex);
+                }
+                this.handCards.add(c);
+            }
+        } catch (RemoteException e) {
+            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+            this.allertPlayerMissing(pIndex);
+        }
+    }
+
+    public void indiani(){
+        Boolean found = false;
+        for (int i=0; i < handCards.size(); i++){
+            if (handCards.get(i).getShortName().matches("Bang")){
+                this.handCards.remove(i);
+                found = true;
+                break;
+            }
+        }
+        if (!found){
+            this.decreaseLifes();
+        }
+    }
+
     private static String findIp() {
         SocketException exception = null;
 
@@ -304,8 +375,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
-    public static void main(String[] args) {
-        System.setProperty("java.rmi.server.hostname", findIp());
+    /* public static void main(String[] args) {
+        // System.setProperty("java.rmi.server.hostname", findIp());
 
         try {
             LocateRegistry.createRegistry(1099);
@@ -334,5 +405,5 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             e.printStackTrace();
         }
 
-    }
+    } */
 }

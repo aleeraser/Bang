@@ -1,6 +1,10 @@
 package com.bang.scenemanager;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
+import com.bang.actors.IPlayer;
+import com.bang.game.Bang;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
@@ -27,15 +33,33 @@ public class RoomListScene extends Scene {
     ScrollPane scrollPane;
     TextButton btnBack, btnJoin, btnNewLobby;
     Label text, title;
+    String server_url;
 
     public RoomListScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        server_url = sceneManager.getBaseURL();
         this.setup();
+    }
+
+    private void showError(String err, Exception e) {
+        scrollPane.remove();
+
+        if (e != null) {
+            UIUtils.print("Error getting lobby list\nERROR: " + e);
+            e.printStackTrace();
+        } else {
+            UIUtils.print(err);
+        }
+        text = new Label(err, sceneManager.getLabelStyle());
+        text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
+        text.setFontScale(1f, 1f);
+        text.setAlignment(Align.center);
+
+        stage.addActor(text);
     }
 
     @Override
     public void setup() {
-
         stage = new Stage();
 
         backgroundImage = null;
@@ -65,20 +89,36 @@ public class RoomListScene extends Scene {
         UIUtils.createBtn(btnJoin, "Entra", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO: implementa il join
-            	sceneManager.setScene(new InLobbyScene(sceneManager, list.getSelected(), false));
+
+                try {
+                    String[] params = new String[2];
+                    params[0] = "ip";
+                    params[1] = "lobby";
+                    
+                    String[] vals = new String[2];
+                    vals[0] = sceneManager.getPlayer().getIp();
+                    vals[1] = list.getSelected();
+
+                    JSONObject res = NetworkUtils.postHTTP(server_url + "/addplayer", params, vals);
+                    UIUtils.print(res.toString());
+                    if (res.getInt("code") == 1) { // nome già presente
+                        showError(res.getString("msg"), null);
+                    } else {
+                        // TODO: go to lobby scene
+                    	sceneManager.setScene(new InLobbyScene(sceneManager, list.getSelected(), false));
+                    }
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    showError("Errore di connessione al server", null);
+                }
             }
         });
 
-        final String[] server_url = new String[3]; // only for debugging
-        server_url[0] = "http://emilia.cs.unibo.it:5002";
-        server_url[1] = "http://marullo.cs.unibo.it:5002";
-        server_url[2] = "http://localhost:5002";
-        final int server_index = 1;
-
         String[] lob_names = new String[0];
         try {
-            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url[server_index] + "/list"));
+            JSONArray lob = new JSONArray(NetworkUtils.getHTTP(server_url + "/list"));
             int lob_num = lob.length();
             lob_names = new String[lob_num];
             for (int i = 0; i < lob.length(); i++) {
@@ -108,7 +148,7 @@ public class RoomListScene extends Scene {
                 sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        sceneManager.setScene(new NewLobbyScene(sceneManager, lobs, server_url[server_index]));
+                        sceneManager.setScene(new NewLobbyScene(sceneManager, lobs));
                     }
                 });
     }
