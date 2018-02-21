@@ -38,6 +38,13 @@ public class InLobbyScene extends Scene {
         this.lobbyName = lobbyName;
 
         this.setup();
+
+        try {
+            sceneManager.getPlayer().refreshPList();
+        } catch (RemoteException e) {
+            UIUtils.showError("Errore nel resettare la lista di giocatori.", e, stage, sceneManager, text,
+                    removeOnError);
+        }
     }
 
     @Override
