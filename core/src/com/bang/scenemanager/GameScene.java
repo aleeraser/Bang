@@ -22,6 +22,9 @@ public class GameScene extends Scene {
 	SelectedCardGroup selectedCard;
 	TextButton playCardButton;
 	
+	/* Gameplay info */
+	boolean isPlayableCardSelected;
+	
 	/* Other Boards size */
 	float obHeight;
 	float obWidth;
@@ -38,11 +41,13 @@ public class GameScene extends Scene {
         batch = stage.getBatch();
         backgroundImage = null;
         
+        isPlayableCardSelected = false;
+        
         selectedCard = new SelectedCardGroup((float)(stage.getWidth() * 0.23), sceneManager);
         selectedCard.setPosition(10, 10);
         stage.addActor(selectedCard);
         
-        UIUtils.createBtn(
+        playCardButton = UIUtils.createBtn(
         		playCardButton, 
         		"Gioca Carta", 
         		(float)(selectedCard.getX() + selectedCard.getWidth() + 150), 
@@ -52,9 +57,11 @@ public class GameScene extends Scene {
         		new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	
+            	System.out.println("Should play card");
             }
         });
+        
+        playCardButton.setVisible(false);
         
         playerBoard = new PlayerBoardGroup((float)(stage.getWidth() * 0.4), (float)(stage.getHeight() * 0.3), sceneManager);
         playerBoard.setPosition((float)(selectedCard.getX() + selectedCard.getWidth() + 20), (float)(stage.getHeight() * 0.15));	
@@ -68,6 +75,9 @@ public class GameScene extends Scene {
             	if (clickedCard != null) {
             		System.out.println(clickedCard.getName());
             		selectedCard.showCard(clickedCard);
+            		
+            		isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
+            		playCardButton.setVisible(isPlayableCardSelected);
             	}
             }
         });
@@ -107,6 +117,9 @@ public class GameScene extends Scene {
 	            	if (clickedCard != null) {
 	            		System.out.println(clickedCard.getName());
 	            		selectedCard.showCard(clickedCard);
+	            		
+	            		isPlayableCardSelected = false;
+	            		playCardButton.setVisible(isPlayableCardSelected);
 	            	}
 	            }
 	        });

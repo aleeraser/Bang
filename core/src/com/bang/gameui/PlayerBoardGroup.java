@@ -54,6 +54,7 @@ public class PlayerBoardGroup extends Group {
 	// Action
 	protected Card lastClickedCard;
 	protected CardHighlight border;	
+	protected boolean isPlayableCardSelected;
 	
 	public PlayerBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
@@ -115,6 +116,8 @@ public class PlayerBoardGroup extends Group {
 	            	}
 	        		border = new CardHighlight(img, 8);
 	        		img.addActorAt(0, border);
+	        		
+	        		isPlayableCardSelected = false;
 	            }
 			});
 			boardCardImages.add(img);
@@ -147,6 +150,8 @@ public class PlayerBoardGroup extends Group {
 	            	}
 	        		border = new CardHighlight(img, 8);
 	        		img.addActorAt(0, border);
+	        		
+	        		isPlayableCardSelected = true;
 	            }
 			});			
 		}
@@ -166,6 +171,10 @@ public class PlayerBoardGroup extends Group {
 	
 	public void dismissHighlight() {
 		if (border != null) border.remove();
+	}
+	
+	public boolean isSelectedCardPlayable() {
+		return isPlayableCardSelected;
 	}
 	
 	
