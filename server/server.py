@@ -20,7 +20,6 @@ except Exception as IOError:
 app = Flask(__name__)
 app.secret_key = '\xeb9\xb9}_\x83\xcb\xafp\xf1P\xcb@\x83\x0b\xb4Z"\xc9\x91\xbd\xf0\xaa\xac'
 
-
 def res_builder(msg, code):
     return {
         "msg": msg,
@@ -32,6 +31,13 @@ def storeLobbies():
         json.dump(lobbies, outfile, encoding='utf-8')
 
 
+@app.route("/reset", methods=["GET"])
+def reset():
+    for ip_list in lobbies:
+        lobbies[ip_list] = ["111.222.333.444"]
+    storeLobbies()
+    return "OK"
+
 @app.route("/list", methods=["GET"])
 def list_lobbies():
     name_list = []
@@ -41,17 +47,18 @@ def list_lobbies():
     return res
 
 
-@app.route("/new&name=<string:name>", methods=["POST"])
-def new_lobby(name):
+@app.route("/new&ip=<string:ip>&Lobby=<string:_lobby>", methods=["POST"])
+def new_lobby(ip, _lobby):
     try:
-        if unquote_plus(name) not in list(lobbies.keys()):
-            lobbies[name] = []
+        lobby = unquote_plus(_lobby)
+        if lobby not in list(lobbies.keys()):
+            lobbies[lobby] = [ip]
 
             res = res_builder("Ok", 0)
 
             storeLobbies()
         else:
-            res = res_builder("Name already present", 1)
+            res = res_builder("Lobby name already present", 1)
 
     except Exception as e:
         res = res_builder("Error: " + str(e.message), -1)
@@ -59,8 +66,9 @@ def new_lobby(name):
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
 
-@app.route("/getplayers&lobby=<string:lobby>", methods=["POST"])
-def get_players(lobby):
+@app.route("/getplayers&lobby=<string:_lobby>", methods=["GET"])
+def get_players(_lobby):
+    lobby = unquote_plus(_lobby)
     players = []
     for ip in lobbies[lobby]:
         players.append(ip)
@@ -68,21 +76,39 @@ def get_players(lobby):
     return res
 
 
-@app.route("/addplayer&ip=<string:ip>&lobby=<string:lobby>", methods=["POST"])
-def add_player(ip, lobby):
+@app.route("/removeplayer&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
+def remove_player(ip, _lobby):
     try:
+        lobby = unquote_plus(_lobby)
+
+        if ip in lobbies[lobby]:
+            lobbies[lobby].remove(ip)
+
+            res = res_builder("Ok", 0)
+
+            storeLobbies()
+        else:
+            res = res_builder("Player wasn't in lobby", 1)
+
+    except Exception as e:
+        res = res_builder("Error: " + str(e.message), -1)
+
+    return json.dumps(res, sort_keys=True, separators=(',', ':'))
+
+
+@app.route("/addplayer&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
+def add_player(ip, _lobby):
+    try:
+        lobby = unquote_plus(_lobby)
+
         if ip not in lobbies[lobby]:
             lobbies[lobby].append(ip)
 
             res = res_builder("Ok", 0)
 
             storeLobbies()
-
-            print "Adding " + ip + " to " + lobby
         else:
             res = res_builder("Already joined", 1)
-
-            print "Ip " + ip + " already present in " + lobby
 
     except Exception as e:
         res = res_builder("Error: " + str(e.message), -1)
