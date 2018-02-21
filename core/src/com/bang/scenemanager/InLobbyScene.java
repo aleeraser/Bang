@@ -32,8 +32,6 @@ public class InLobbyScene extends Scene {
         this.isCreator = isCreator;
         this.lobbyName = lobbyName;
 
-        System.out.println(lobbyName);
-
         this.setup();
     }
 
@@ -98,7 +96,7 @@ public class InLobbyScene extends Scene {
         UIUtils.createBtn(btnJoin, "Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                updatePlayerList();
             }
         });
 
