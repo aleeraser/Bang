@@ -64,6 +64,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.tableCards;
     }
 
+    public Card getHandCard(int i){ //return a pointer to the card!
+        return handCards.get(i);
+    }
+
     public int getLifes() {
         return this.lifes;
     }
@@ -156,15 +160,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             String name = this.tableCards.get(i).getShortName();
             if (name.matches("Volcanic") || name.matches("Carabine") || name.matches("Remington") 
                     || name.matches("Schofield") || name.matches("Winchester") ){
-                if(name.matches("Volcanic")) this.volcanic = false;
                 this.removeTableCard(i);
+                if (name.matches("Volcanic"))
+                    this.volcanic = false;
                 break;
             }
         }
         
     }
 
-    public void playCard(int index, IPlayer target, int targetIndex) {
+    public void playCard(int index, int targetIndex) {
+        IPlayer target = players.get(index);
         Card c = handCards.get(index);
         handCards.remove(index);
         String name = c.getShortName();
@@ -202,13 +208,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.shotDistance = 1;
                 this.volcanic = true;
             }
+            else if (name.matches("Indiani")){
+                for (int i = 0; i < players.size(); i++) {
+                    if (i != this.pos) {
+                        try {
+                            players.get(i).indiani();
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.allertPlayerMissing(i);
+                            //e.printStackTrace();
+                        }
+                    }
+                }
+            }
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
     }
     
     public void playCard(int index) {
-        this.playCard(index, (IPlayer) this, this.pos);
+        this.playCard(index, this.pos);
     }
 
     public void removeTableCard(int index){
@@ -218,7 +237,55 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removeHandCard(int index){
         this.handCards.remove(index);
     }
+
+    private void catBalou(int cIndex, int pIndex, Boolean fromTable){
+        IPlayer target = players.get(pIndex);
+        try{
+            if(fromTable){
+                target.removeTableCard(cIndex);
+            }
+            else{
+                target.removeHandCard(cIndex);
+            }
+        }catch (RemoteException e) {
+            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+            this.allertPlayerMissing(pIndex);
+        }
+    }
     
+    private void panico(int cIndex, int pIndex, Boolean fromTable) {
+        IPlayer target = players.get(pIndex);
+        try {
+            Card c;
+            if (fromTable) {
+                c = target.getCards().get(cIndex).copyCard();
+                target.removeTableCard(cIndex);
+            } else {
+                c = target.getHandCard(cIndex).copyCard();
+                target.removeHandCard(cIndex);
+            }
+            this.handCards.add(c);
+
+        } catch (RemoteException e) {
+            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+            this.allertPlayerMissing(pIndex);
+        }
+    }
+
+    public void indiani(){
+        Boolean found = false;
+        for (int i=0; i < handCards.size(); i++){
+            if (handCards.get(i).getShortName().matches("Bang")){
+                this.handCards.remove(i);
+                found = true;
+                break;
+            }
+        }
+        if (!found){
+            this.decreaseLifes();
+        }
+    }
+
     private static String findIp() {
         SocketException exception = null;
 
