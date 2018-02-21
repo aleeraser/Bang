@@ -83,8 +83,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void shot(IPlayer target, int i) { //i is the target index
 
         try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
-            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
-            if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            if (findDistance(i,this.pos) + target.getDistance() < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 target.decreaseLifes(); // TODO da migliorare, lui potrebbe avere un mancato
                 System.out.println(target.getLifes());
             } else
@@ -97,14 +96,36 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
 
     }
+
+    private int findDistance(int i, int j){
+        int lDist = 0;
+        int rDist = 0;
+        if (i>j){
+            int tmp=i;
+            i=j;
+            j=tmp;
+        }
+        for (int ii = i; ii<j; ii++ ){
+            if (players.get(ii) != null ){
+                lDist++;
+            }
+        }
+        for (int jj = j; jj!=i; jj=(jj+1)%this.players.size()){
+            if (players.get(jj) != null) {
+                rDist++;
+            }
+        }
+
+        return Math.min(lDist,rDist);
+    }
     //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
     public void removePlayer( int index, String ip) {
         if(this.ips.get(index).matches(ip)){
-            this.players.remove(index);
-            this.ips.remove(index);
-            if (index < this.pos) {
+            this.players.set(index,null);
+            this.ips.set(index,null);
+            /*if (index < this.pos) {
                 this.pos--;
-            }
+            }*/
         }
         else System.out.println("the ip does not match!");
     }
@@ -113,7 +134,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.removePlayer(index, ips.get(index)); //first remove from own list.
 
         for (int i = 0; i < players.size(); i++) {
-            if (i != this.pos) {
+            if (i != this.pos && players.get(i) != null) {
                 try {
                     players.get(i).removePlayer(index, ips.get(index));
                 } catch (RemoteException e) {
@@ -171,58 +192,60 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void playCard(int index, int targetIndex) {
         IPlayer target = players.get(index);
-        Card c = handCards.get(index);
-        handCards.remove(index);
-        String name = c.getShortName();
-        if (c.hasTarget()) {
-            if (name.matches("Bang"))
-                this.shot(target, targetIndex);
-    
-            //attiva l'effetto sul target
-        } else {
-            tableCards.add(c);
-            if (name.matches("Mirino"))
-                this.view++;
-            else if (name.matches("Mustang")) {
-                findGun();
-                this.distance++;
-            }
-            else if (name.matches("Carabine")){
-                findGun();
-                this.shotDistance = 4;
-            }
-            else if (name.matches("Remington")){
-                findGun();
-                this.shotDistance = 3;
-            }
-            else if (name.matches("Schofield")){
-                findGun();
-                this.shotDistance = 2;
-            }
-            else if (name.matches("Winchester")){
-                findGun();
-                this.shotDistance = 5;
-            }
-            else if (name.matches("Winchester")) {
-                findGun();
-                this.shotDistance = 1;
-                this.volcanic = true;
-            }
-            else if (name.matches("Indiani")){
-                for (int i = 0; i < players.size(); i++) {
-                    if (i != this.pos) {
-                        try {
-                            players.get(i).indiani();
-                        } catch (RemoteException e) {
-                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                            this.allertPlayerMissing(i);
-                            //e.printStackTrace();
+        if (target != null){
+            Card c = handCards.get(index);
+            handCards.remove(index);
+            String name = c.getShortName();
+            if (c.hasTarget()) {
+                if (name.matches("Bang"))
+                    this.shot(target, targetIndex);
+        
+                //attiva l'effetto sul target
+            } else {
+                tableCards.add(c);
+                if (name.matches("Mirino"))
+                    this.view++;
+                else if (name.matches("Mustang")) {
+                    findGun();
+                    this.distance++;
+                }
+                else if (name.matches("Carabine")){
+                    findGun();
+                    this.shotDistance = 4;
+                }
+                else if (name.matches("Remington")){
+                    findGun();
+                    this.shotDistance = 3;
+                }
+                else if (name.matches("Schofield")){
+                    findGun();
+                    this.shotDistance = 2;
+                }
+                else if (name.matches("Winchester")){
+                    findGun();
+                    this.shotDistance = 5;
+                }
+                else if (name.matches("Winchester")) {
+                    findGun();
+                    this.shotDistance = 1;
+                    this.volcanic = true;
+                }
+                else if (name.matches("Indiani")){
+                    for (int i = 0; i < players.size(); i++) {
+                        if (i != this.pos && players.get(i) != null) {
+                            try {
+                                players.get(i).indiani();
+                            } catch (RemoteException e) {
+                                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                                this.allertPlayerMissing(i);
+                                //e.printStackTrace();
+                            }
                         }
                     }
                 }
+                //TODO valutare se gestire la volcanic;
+                //attiva l'effetto su te stesso
             }
-            //TODO valutare se gestire la volcanic;
-            //attiva l'effetto su te stesso
         }
     }
     
@@ -256,8 +279,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private void panico(int cIndex, int pIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
         try {
-            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
-            if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            if (findDistance(pIndex, this.pos) + target.getDistance() < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 Card c;
                 if (fromTable) {
                     c = target.getCards().get(cIndex).copyCard();
@@ -358,7 +380,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     private void syncDeck(){
         for (int i = 0; i<players.size(); i++){
-            if(i != this.pos){
+            if(i != this.pos && players.get(i) != null){
                 try{
                     players.get(i).setDeck(this.deck);
                 }
