@@ -16,6 +16,8 @@ import org.apache.http.entity.StringEntity;
 
 import java.nio.charset.StandardCharsets;
 
+import javax.swing.DefaultListCellRenderer.UIResource;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -39,28 +41,23 @@ public class NetworkUtils {
     }
 
     public static JSONObject postHTTP(String _url, String param, String val) throws Exception {
-        HttpClient httpclient = HttpClients.createDefault();
         String url = _url + "&" + URLEncoder.encode(param, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
-        HttpPost httppost = new HttpPost(url);
-
-        CloseableHttpResponse response = (CloseableHttpResponse)httpclient.execute(httppost);
-        HttpEntity entity = response.getEntity();
-        String result = "";
-
-        if (entity != null) {
-            InputStream is = entity.getContent();
-            try {
-                result = IOUtils.toString(is, StandardCharsets.UTF_8);
-            } finally {
-                is.close();
-            }
-        }
-
-        JSONObject res = new JSONObject(result);
+        JSONObject res = executePOST(url);
         return res;
     }
 
-    public static String postHTTP_JSON(String _url, JSONObject data) throws Exception {
+    public static JSONObject postHTTP(String _url, String[] params, String[] vals) throws Exception {        
+        String url = _url;
+
+        for (int i = 0; i < params.length; i++) {
+            url += "&" + URLEncoder.encode(params[i], "UTF-8") + "=" + URLEncoder.encode(vals[i], "UTF-8");
+        }
+
+        JSONObject res = executePOST(url);
+        return res;
+    }
+
+    public static String postHTTP(String _url, JSONObject data) throws Exception {
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
@@ -84,5 +81,26 @@ public class NetworkUtils {
         }
 
         return "OK";
+    }
+
+    private static JSONObject executePOST(String url) throws Exception {
+        HttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost(url);
+
+        CloseableHttpResponse response = (CloseableHttpResponse) httpclient.execute(httppost);
+        HttpEntity entity = response.getEntity();
+        String result = "";
+
+        if (entity != null) {
+            InputStream is = entity.getContent();
+            try {
+                result = IOUtils.toString(is, StandardCharsets.UTF_8);
+            } finally {
+                is.close();
+            }
+        }
+
+        JSONObject res = new JSONObject(result);
+        return res;
     }
 }
