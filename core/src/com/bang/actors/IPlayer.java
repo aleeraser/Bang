@@ -20,6 +20,8 @@ public interface IPlayer extends Remote {
 
     ArrayList<IPlayer> getPlayers() throws RemoteException; 
 
+    void refreshPList() throws RemoteException;
+
     ArrayList<Card> getCards(int[] callerClock) throws RemoteException; 
 
     Card getHandCard(int i,int[] callerClock) throws RemoteException;
