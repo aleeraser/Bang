@@ -12,13 +12,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
 import com.bang.actors.IPlayer;
 import com.bang.actors.Player;
 
@@ -33,7 +30,7 @@ public class SceneManager {
     protected LabelStyle labelStyle;
     protected TextFieldStyle textFieldStyle;
     protected IPlayer player;
-    protected String baseURL;
+    protected String currentLobby;
 
     public SceneManager() {
         gameScene = null;
@@ -48,27 +45,7 @@ public class SceneManager {
             e.printStackTrace();
         }
 
-        final String[] server_url = new String[3]; // only for debugging
-        server_url[0] = "http://emilia.cs.unibo.it:5002";
-        server_url[1] = "http://marullo.cs.unibo.it:5002";
-        server_url[2] = "http://localhost:5002";
-        final int server_index = 1;
-        baseURL = server_url[server_index];
-
-
-        // skinName = "default" o "visui" (o altre, se verranno aggiunte)
-        String skinPath, skinBtn, skinName = "rusty-robot";
-
-        if (skinName == "default") {
-            skinPath = "skins/default/uiskin";
-            skinBtn = "default-rect";
-        } else if (skinName == "rusty-robot") {
-            skinPath = "skins/rusty-robot/rusty-robot-ui";
-            skinBtn = "button";
-        } else {
-            skinPath = "skins/visui/uiskin";
-            skinBtn = "button";
-        }
+        String skinPath = "skins/rusty-robot/rusty-robot-ui";
 
         font = new BitmapFont();
         textureAtlas = new TextureAtlas(Gdx.files.internal(skinPath + ".atlas"));
@@ -77,8 +54,8 @@ public class SceneManager {
         // Button textures
         textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = font;
-        textButtonStyle.up = skin.getDrawable(skinBtn);
-        textButtonStyle.down = skin.getDrawable(skinBtn + "-pressed");
+        textButtonStyle.up = skin.getDrawable("button");
+        textButtonStyle.down = skin.getDrawable("button-pressed");
 
         // Label textures
         labelStyle = new LabelStyle();
@@ -99,7 +76,7 @@ public class SceneManager {
         //scene.setGameManager(this);
         Gdx.input.setInputProcessor(scene.getStage());
     }
-
+    
     public Stage getCurrentStage() {
         return gameScene.getStage();
     }
@@ -132,7 +109,11 @@ public class SceneManager {
         return player;
     }
 
-    public String getBaseURL() {
-        return baseURL;
+    public void setCurrentLobby(String l) {
+        currentLobby = l;
+    }
+
+    public String getCurrentLobby() {
+        return currentLobby;
     }
 }

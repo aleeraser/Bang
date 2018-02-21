@@ -47,7 +47,7 @@ def list_lobbies():
     return res
 
 
-@app.route("/new&ip=<string:ip>&Lobby=<string:_lobby>", methods=["POST"])
+@app.route("/new&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
 def new_lobby(ip, _lobby):
     try:
         lobby = unquote_plus(_lobby)
@@ -66,7 +66,7 @@ def new_lobby(ip, _lobby):
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
 
-@app.route("/getplayers&lobby=<string:_lobby>", methods=["GET"])
+@app.route("/get_players&lobby=<string:_lobby>", methods=["GET"])
 def get_players(_lobby):
     lobby = unquote_plus(_lobby)
     players = []
@@ -76,13 +76,16 @@ def get_players(_lobby):
     return res
 
 
-@app.route("/removeplayer&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
+@app.route("/remove_player&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
 def remove_player(ip, _lobby):
     try:
         lobby = unquote_plus(_lobby)
 
         if ip in lobbies[lobby]:
             lobbies[lobby].remove(ip)
+
+            if not lobbies[lobby]:
+                del lobbies[lobby]
 
             res = res_builder("Ok", 0)
 
@@ -96,7 +99,7 @@ def remove_player(ip, _lobby):
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
 
-@app.route("/addplayer&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
+@app.route("/add_player&ip=<string:ip>&lobby=<string:_lobby>", methods=["POST"])
 def add_player(ip, _lobby):
     try:
         lobby = unquote_plus(_lobby)
