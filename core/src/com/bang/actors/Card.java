@@ -23,6 +23,10 @@ public class Card {
 		this.suit = suit;
 		this.hasTarget = type;
 	}
+
+	public Card copyCard(){
+		return new Card(this.name, this.value, this.suit, this.hasTarget);
+	}
 	
 	public String getName() {
 		return name;
