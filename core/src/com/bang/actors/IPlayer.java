@@ -34,6 +34,8 @@ public interface IPlayer extends Remote {
 
     void playCard(int index) throws RemoteException;
 
+    void indiani() throws RemoteException;
+
     void removeTableCard(int index) throws RemoteException;
 
     void removeHandCard(int index) throws RemoteException;

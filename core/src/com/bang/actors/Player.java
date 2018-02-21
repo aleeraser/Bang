@@ -158,8 +158,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             String name = this.tableCards.get(i).getShortName();
             if (name.matches("Volcanic") || name.matches("Carabine") || name.matches("Remington") 
                     || name.matches("Schofield") || name.matches("Winchester") ){
-                if(name.matches("Volcanic")) this.volcanic = false;
                 this.removeTableCard(i);
+                if (name.matches("Volcanic"))
+                    this.volcanic = false;
                 break;
             }
         }
@@ -204,6 +205,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
+            }
+            else if (name.matches("Indiani")){
+                for (int i = 0; i < players.size(); i++) {
+                    if (i != this.pos) {
+                        try {
+                            players.get(i).indiani();
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.allertPlayerMissing(i);
+                            //e.printStackTrace();
+                        }
+                    }
+                }
             }
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
@@ -253,6 +267,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
             this.allertPlayerMissing(pIndex);
+        }
+    }
+
+    public void indiani(){
+        Boolean found = false;
+        for (int i=0; i < handCards.size(); i++){
+            if (handCards.get(i).getShortName().matches("Bang")){
+                this.handCards.remove(i);
+                found = true;
+                break;
+            }
+        }
+        if (!found){
+            this.decreaseLifes();
         }
     }
 
