@@ -8,7 +8,7 @@ import com.bang.utils.CardsUtils;
 
 public class SelectedCardGroup extends Group {
 	
-	protected static float BOARD_RATIO = (float)0.82;
+	protected static float BOARD_RATIO = (float)0.87;
 	
 	protected float width, height;
 	protected SceneManager sceneManager;

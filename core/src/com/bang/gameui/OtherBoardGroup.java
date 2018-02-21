@@ -157,6 +157,10 @@ public class OtherBoardGroup extends Group {
 		return height;
 	}
 	
+	public void dismissHighlight() {
+		if (border != null) border.remove();
+	}
+	
 	
 	/* Card Highlight class */
 	class CardHighlight extends Actor {

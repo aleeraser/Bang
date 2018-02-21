@@ -18,7 +18,7 @@ import com.bang.utils.UIUtils;
 public class GameScene extends Scene {
 	
 	PlayerBoardGroup playerBoard;
-	OtherBoardGroup otherBoard;
+	ArrayList<OtherBoardGroup> otherBoardList;
 	SelectedCardGroup selectedCard;
 	TextButton playCardButton;
 	
@@ -38,7 +38,7 @@ public class GameScene extends Scene {
         batch = stage.getBatch();
         backgroundImage = null;
         
-        selectedCard = new SelectedCardGroup((float)(stage.getWidth() * 0.22), sceneManager);
+        selectedCard = new SelectedCardGroup((float)(stage.getWidth() * 0.23), sceneManager);
         selectedCard.setPosition(10, 10);
         stage.addActor(selectedCard);
         
@@ -64,6 +64,7 @@ public class GameScene extends Scene {
             public void clicked(InputEvent event, float x, float y) {
             	//System.out.println("Ouside handler");
             	Card clickedCard = playerBoard.getLastClickedCard();
+            	dismissOldHighlights();
             	if (clickedCard != null) {
             		System.out.println(clickedCard.getName());
             		selectedCard.showCard(clickedCard);
@@ -83,18 +84,52 @@ public class GameScene extends Scene {
         playerBoard.updateBoardCards(cards);
         playerBoard.updateHandCards(cards);
         
-        otherPlayerNumber = 7;
+        otherPlayerNumber = 4;
         
         obHeight = (float)(stage.getHeight() * 0.24);
         obWidth = (float)(stage.getWidth() / (otherPlayerNumber + 1));
         
+        otherBoardList = new ArrayList<OtherBoardGroup>();
+        
         for (int i = 0; i < otherPlayerNumber; i++) {
-        	OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager);
-	        otherBoard.setPosition(50 + 10 *i + obWidth * i, 500);
+        	final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager);
+	        otherBoardList.add(otherBoard);
+        	otherBoard.setPosition(50 + 10 *i + obWidth * i, 500);
 	        otherBoard.updateBoardCards(cards);
 	        otherBoard.updateHandCards(cards);
+	        
+	        otherBoard.addListener(new ClickListener() {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {
+	            	//System.out.println("Ouside handler");
+	            	Card clickedCard = otherBoard.getLastClickedCard();
+	            	dismissOldHighlights(otherBoard);
+	            	if (clickedCard != null) {
+	            		System.out.println(clickedCard.getName());
+	            		selectedCard.showCard(clickedCard);
+	            	}
+	            }
+	        });
+	        
 	        stage.addActor(otherBoard);
         }
+	}
+	
+	/* Called by player board */
+	protected void dismissOldHighlights() {		
+		for (OtherBoardGroup b : otherBoardList) {
+			b.dismissHighlight();
+		}
+	}
+	
+	/* Called by otherBoardGroup */
+	protected void dismissOldHighlights(OtherBoardGroup otherBoardGroup) {
+		if (otherBoardGroup != null) {
+			for (OtherBoardGroup b : otherBoardList) {
+				if (b != otherBoardGroup) b.dismissHighlight();
+			}
+			playerBoard.dismissHighlight();
+		}
 	}
 	
 }

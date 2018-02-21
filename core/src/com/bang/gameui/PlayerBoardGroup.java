@@ -108,6 +108,13 @@ public class PlayerBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	
+	            	// Card border
+	            	if (border != null) {
+	            		border.remove();
+	            	}
+	        		border = new CardHighlight(img, 8);
+	        		img.addActorAt(0, border);
 	            }
 			});
 			boardCardImages.add(img);
@@ -133,8 +140,7 @@ public class PlayerBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
-	            	
-	            	        		
+	                	        		
 	        		// Card border
 	            	if (border != null) {
 	            		border.remove();
@@ -156,6 +162,10 @@ public class PlayerBoardGroup extends Group {
 	
 	public float getHeight() {
 		return height;
+	}
+	
+	public void dismissHighlight() {
+		if (border != null) border.remove();
 	}
 	
 	
