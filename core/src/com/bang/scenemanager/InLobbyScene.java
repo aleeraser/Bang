@@ -97,6 +97,7 @@ public class InLobbyScene extends Scene {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
                             ArrayList<String> playerIPs = updatePlayerList();
+                            UIUtils.print(playerIPs.toString());
                             IPlayer me = sceneManager.getPlayer();
                             try {
                                 me.setIpList(playerIPs);
