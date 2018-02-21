@@ -1,24 +1,16 @@
 package com.bang.scenemanager;
 
-import org.apache.http.util.NetUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
@@ -31,30 +23,13 @@ public class NewLobbyScene extends Scene {
     String server_url;
     Label sceneTitle;
     TextField lobbyName;
+    final ArrayList<Actor> removeOnError = new ArrayList<Actor>();
 
     public NewLobbyScene(SceneManager sceneManager, String[] lobs) {
         this.sceneManager = sceneManager;
         lob_names = lobs;
-        server_url = sceneManager.getBaseURL();
+        server_url = NetworkUtils.getBaseURL();
         this.setup();
-    }
-
-    private void showError(String err, Exception e) {
-        if (e != null) {
-            UIUtils.print("Error getting lobby list\nERROR: " + e);
-            e.printStackTrace();
-        } else {
-            UIUtils.print(err);
-        }
-        text = new Label(err, sceneManager.getLabelStyle());
-        text.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2, 300, 100);
-        text.setFontScale(1f, 1f);
-        text.setAlignment(Align.center);
-
-        lobbyName.remove();
-        sceneTitle.remove();
-
-        stage.addActor(text);
     }
 
     @Override
@@ -69,21 +44,24 @@ public class NewLobbyScene extends Scene {
         sceneTitle.setFontScale(1.1f, 1.1f);
         sceneTitle.setAlignment(Align.center);
         stage.addActor(sceneTitle);
+        removeOnError.add(sceneTitle);
 
         lobbyName = new TextField("", sceneManager.getSkin());
         lobbyName.setStyle(sceneManager.getTextfieldStyle());
         lobbyName.setBounds(stage.getWidth() / 6, stage.getHeight() / 2 - 50, stage.getWidth() / 3 * 2, 80);
         lobbyName.setAlignment(Align.center);
         stage.addActor(lobbyName);
+        removeOnError.add(lobbyName);
 
+        // Back
         UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                /* Go back */
                 sceneManager.setScene(new RoomListScene(sceneManager));
             }
         });
 
+        // New lobby
         UIUtils.createBtn(btnAdd, "Crea", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(),
                 new ChangeListener() {
                     @Override
@@ -99,14 +77,14 @@ public class NewLobbyScene extends Scene {
 
                             JSONObject res = NetworkUtils.postHTTP(server_url + "/new", params, vals);
                             if (res.getInt("code") == 1) { // nome già presente
-
-                                showError(res.getString("msg"), null);
+                                UIUtils.showError(res.getString("msg"), null, stage, sceneManager, text, removeOnError);
                             } else {
-                                sceneManager.setScene(new RoomListScene(sceneManager));
+                                sceneManager.setScene(new InLobbyScene(sceneManager, lobbyName.getText(), true));
                             }
 
                         } catch (Exception e) {
-                            showError("Errore di connessione al server", null);
+                            UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text,
+                                    removeOnError);
                         }
                     }
                 });

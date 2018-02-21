@@ -16,14 +16,16 @@ import org.apache.http.entity.StringEntity;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.swing.DefaultListCellRenderer.UIResource;
-
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 public class NetworkUtils {
 
-    private static final String USER_AGENT = "Mozilla/5.0";
+    public static String getBaseURL() {
+        // return "http://emilia.cs.unibo.it:5002";
+        return "http://marullo.cs.unibo.it:5002";
+        // return "http://localhost:5002";
+    }
 
     public static String getHTTP(String _url) {
         String result;
