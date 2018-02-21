@@ -124,4 +124,26 @@ public class CardsUtils {
 		
 	}
 	
+	public static Group createBackCardImageGroup(double cardImageHeight) {
+		
+		Group g;
+		Image card;
+		double width, height;
+		
+		g = new Group();
+		height = cardImageHeight;
+		width = cardImageHeight * CARD_HEIGHT_WIDTH_RATIO;
+		
+		// Card image handling
+		card = new Image(new Texture(Gdx.files.internal(CARD_PATH + "/" + "retro.png")));
+		card.setSize((float)width, (float)height);
+		g.setSize((float)width, (float)height);
+		card.setPosition(0, 0);
+				
+		g.addActor(card);
+		
+		return g;
+		
+	}
+	
 }

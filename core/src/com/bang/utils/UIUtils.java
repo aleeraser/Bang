@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class UIUtils {
 
+    public static int btnWidth = 200;
+
     public static TextButton createBtn(TextButton b, String t, float x, float y, Stage stage,
             TextButtonStyle textButtonStyle, ChangeListener cl) {
 

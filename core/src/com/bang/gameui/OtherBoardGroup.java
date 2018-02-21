@@ -18,7 +18,7 @@ import com.bang.actors.Card;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
-public class PlayerBoardGroup extends Group {
+public class OtherBoardGroup extends Group {
 	
 	protected float CHAR_WIDTH_PERCENTAGE = (float) 0.2;
 	protected float CHAR_HEIGHT_PERCENTAGE = (float) 0.4;
@@ -55,7 +55,7 @@ public class PlayerBoardGroup extends Group {
 	protected Card lastClickedCard;
 	protected CardHighlight border;	
 	
-	public PlayerBoardGroup(float width, float height, SceneManager sceneManager) {
+	public OtherBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
 		this.height = height;
 		this.sceneManager = sceneManager;
@@ -108,10 +108,17 @@ public class PlayerBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	
+	            	// Card border
+	            	if (border != null) {
+	            		border.remove();
+	            	}
+	        		border = new CardHighlight(img, 8);
+	        		img.addActorAt(0, border);
 	            }
 			});
 			boardCardImages.add(img);
-			img.setPosition(cardListPosX + index * spacing, cardHeight + 2 * (LIST_POS_HEIGHT_PERCENTAGE * height));
+			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
 			this.addActor(img);
 		}
 	}
@@ -124,23 +131,15 @@ public class PlayerBoardGroup extends Group {
 		
 		int index = 0;
 		for (index = 0; index < handCards.size(); index++) {
-			final Group img = handCards.get(index).generateImage(cardHeight);
+			final Group img = handCards.get(index).generateBackImage(cardHeight);
 			final Card c = handCards.get(index);
 			handCardImages.add(img);
-			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
+			img.setPosition(cardListPosX + index * spacing, cardHeight + 2 * (LIST_POS_HEIGHT_PERCENTAGE * height));
 			this.addActor(img);
 			img.addListener(new ClickListener() {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
-	            	
-	            	        		
-	        		// Card border
-	            	if (border != null) {
-	            		border.remove();
-	            	}
-	        		border = new CardHighlight(img, 8);
-	        		img.addActorAt(0, border);
 	            }
 			});			
 		}
@@ -180,8 +179,6 @@ public class PlayerBoardGroup extends Group {
 	        shapeRenderer.begin(ShapeType.Filled);
 	        //shapeRenderer.begin(ShapeType.Line);
 	        shapeRenderer.setColor(Color.BLUE);
-	        
-	        //System.out.println(g.getHeight() + "   " + this.getHeight());
 	        
 	        shapeRenderer.rect(
 	        		g.getParent().getX() + g.getX() - boardWidth/2, 
