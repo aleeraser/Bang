@@ -1,6 +1,9 @@
 package com.bang.actors;
 
 import java.util.Enumeration;
+
+import com.bang.utils.UIUtils;
+
 import java.util.ArrayList;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
@@ -418,7 +421,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+
+            UIUtils.print(ips.get(i));
         }
+        UIUtils.print("Pos: " + this.pos);
     }
 
     private void syncDeck(){
