@@ -81,7 +81,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void shot(IPlayer target, int i) { //i is the target index
-
+        
         try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
             if (findDistance(i,this.pos) + target.getDistance() < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 target.decreaseLifes(); // TODO da migliorare, lui potrebbe avere un mancato
@@ -118,6 +118,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         return Math.min(lDist,rDist);
     }
+
     //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
     public void removePlayer( int index, String ip) {
         if(this.ips.get(index).matches(ip)){
@@ -147,19 +148,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void beer(IPlayer target, int i) {
+        if(target != null){
+            try {
+                System.out.println("nella shot");
+                target.increaseLifes();
+                System.out.println(target.getLifes());
+            } catch (RemoteException e) {
+                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
-        try {
-            System.out.println("nella shot");
-            target.increaseLifes();
-            System.out.println(target.getLifes());
-        } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                this.allertPlayerMissing(i);
 
-            this.allertPlayerMissing(i);
-
-            //e.printStackTrace();
+                //e.printStackTrace();
+            }
         }
-
     }
 
     public void decreaseLifes() {
@@ -353,23 +354,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
-        int unreachable = 0;
         for (int i = 0; i < ips.size(); i++) {
             try {
                 if (this.ip.matches(ips.get(i))) {
-                    this.pos = i - unreachable;
+                    this.pos = i ;
                     this.players.add((IPlayer) this);
                 } else if (this.ping(ips.get(i))) {
-                    System.out.println("inizio naming");
                     IPlayer player = (IPlayer) Naming.lookup("rmi://" + ips.get(i) + "/Player");
-                    System.out.println("finita naming");
                     this.players.add(player);
                 } else
-                    unreachable++;
+                    players.add(null);
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (RemoteException e) {
-                unreachable++;
+                players.add(null);
                 //e.printStackTrace();
                 System.out.println("remote call to " + ips.get(i) + " failed. ");
             } catch (MalformedURLException e) {
