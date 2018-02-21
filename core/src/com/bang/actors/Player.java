@@ -21,7 +21,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> deck = new ArrayList<Card>();
     //private CharacterPower character;
     private int shotDistance;
-    private int view; //bonus sulla distanza a cui di vedono i nemici
+    private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
     private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
@@ -80,10 +80,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void shot(IPlayer target, int i) { //i is the target index
 
-        try {
-            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici
+        try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
+            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
             if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
-                target.decreaseLifes();
+                target.decreaseLifes(); // TODO da migliorare, lui potrebbe avere un mancato
                 System.out.println(target.getLifes());
             } else
                 System.out.println("Target out of range");
@@ -254,16 +254,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private void panico(int cIndex, int pIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
         try {
-            Card c;
-            if (fromTable) {
-                c = target.getCards().get(cIndex).copyCard();
-                target.removeTableCard(cIndex);
-            } else {
-                c = target.getHandCard(cIndex).copyCard();
-                target.removeHandCard(cIndex);
+            int dist = Math.abs(target.getPos() - this.pos); //distanza data dalla differenza degli indici 
+            if (Math.min(this.players.size() - dist, dist) + target.getDistance() < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                Card c;
+                if (fromTable) {
+                    c = target.getCards().get(cIndex).copyCard();
+                    target.removeTableCard(cIndex);
+                } else {
+                    c = target.getHandCard(cIndex).copyCard();
+                    target.removeHandCard(cIndex);
+                }
+                this.handCards.add(c);
             }
-            this.handCards.add(c);
-
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
             this.allertPlayerMissing(pIndex);
