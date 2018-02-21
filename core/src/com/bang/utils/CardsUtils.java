@@ -72,6 +72,7 @@ public class CardsUtils {
 		// Card image handling
 		card = new Image(new Texture(Gdx.files.internal(CARD_PATH + "/" + cardName)));
 		card.setSize((float)width, (float)height);
+		g.setSize((float)width, (float)height);
 		card.setPosition(0, 0);
 		
 		

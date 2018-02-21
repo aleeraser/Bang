@@ -125,15 +125,23 @@ public class PlayerBoardGroup extends Group {
 		for (index = 0; index < handCards.size(); index++) {
 			final Group img = handCards.get(index).generateImage(cardHeight);
 			final Card c = handCards.get(index);
+			handCardImages.add(img);
+			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
+			this.addActor(img);
 			img.addListener(new ClickListener() {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	
+	            	CardHighlight border;	        		
+	        		// Card border
+	        		border = new CardHighlight(img);
+	        		//border.setPosition(img.getX(), img.getY());
+	        		border.setSize((float)img.getWidth() + 10, (float)img.getHeight() + 10);
+	        		
+	        		img.addActorAt(0, border);
 	            }
-			});
-			handCardImages.add(img);
-			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
-			this.addActor(img);
+			});			
 		}
 	}
 	
@@ -169,11 +177,11 @@ public class PlayerBoardGroup extends Group {
 	        //shapeRenderer.begin(ShapeType.Line);
 	        shapeRenderer.setColor(Color.BLUE);
 	        
-	        System.out.println(g.getHeight() + "   " + this.getHeight());
+	        //System.out.println(g.getHeight() + "   " + this.getHeight());
 	        
 	        shapeRenderer.rect(
-	        		g.getX() - ((this.getWidth() - g.getWidth())/2), 
-	        		g.getY() - ((this.getHeight() - g.getHeight())/2), 
+	        		g.getParent().getX() + g.getX()/* - ((this.getWidth() - g.getWidth())/2)*/, 
+	        		g.getParent().getY() + g.getY()/* - ((this.getHeight() - g.getHeight())/2)*/, 
 	        		this.getWidth(), 
 	        		this.getHeight()
 	        		);

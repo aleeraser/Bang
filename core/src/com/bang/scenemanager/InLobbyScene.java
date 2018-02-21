@@ -55,6 +55,7 @@ public class InLobbyScene extends Scene {
             public void changed(ChangeEvent event, Actor actor) {
                 /* Go back */
             	/* TODO Exit lobby or delete lobby */
+            	//NetworkUtils.getHTTP(sceneManager.getBaseURL() + "/list");
                 sceneManager.setScene(new RoomListScene(sceneManager));
             }
         });
