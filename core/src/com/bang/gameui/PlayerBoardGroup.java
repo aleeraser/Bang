@@ -53,6 +53,7 @@ public class PlayerBoardGroup extends Group {
 	
 	// Action
 	protected Card lastClickedCard;
+	protected CardHighlight border;	
 	
 	public PlayerBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
@@ -133,12 +134,12 @@ public class PlayerBoardGroup extends Group {
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
 	            	
-	            	CardHighlight border;	        		
+	            	        		
 	        		// Card border
-	        		border = new CardHighlight(img);
-	        		//border.setPosition(img.getX(), img.getY());
-	        		border.setSize((float)img.getWidth() + 10, (float)img.getHeight() + 10);
-	        		
+	            	if (border != null) {
+	            		border.remove();
+	            	}
+	        		border = new CardHighlight(img, 8);
 	        		img.addActorAt(0, border);
 	            }
 			});			
@@ -163,10 +164,13 @@ public class PlayerBoardGroup extends Group {
 		
 		ShapeRenderer shapeRenderer;
 		Group card;
+		int boardWidth;
 		
-	    public CardHighlight(Group card) {
+	    public CardHighlight(Group card, int boardWidth) {
 	    	shapeRenderer = new ShapeRenderer();
 	    	this.card = card;
+	    	this.boardWidth = boardWidth;
+	    	this.setSize((float)card.getWidth() + boardWidth, (float)card.getHeight() + boardWidth);
 	    }
 	    
 	    @Override
@@ -180,8 +184,8 @@ public class PlayerBoardGroup extends Group {
 	        //System.out.println(g.getHeight() + "   " + this.getHeight());
 	        
 	        shapeRenderer.rect(
-	        		g.getParent().getX() + g.getX()/* - ((this.getWidth() - g.getWidth())/2)*/, 
-	        		g.getParent().getY() + g.getY()/* - ((this.getHeight() - g.getHeight())/2)*/, 
+	        		g.getParent().getX() + g.getX() - boardWidth/2, 
+	        		g.getParent().getY() + g.getY() - boardWidth/2, 
 	        		this.getWidth(), 
 	        		this.getHeight()
 	        		);
