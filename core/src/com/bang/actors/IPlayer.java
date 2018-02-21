@@ -8,7 +8,7 @@ public interface IPlayer extends Remote {
 
     //void setPlayerList(ArrayList<Player> pl); //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
 
-    //void setIpList(ArrayList<String> ips,int[] callerClock) throws RemoteException; //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
+    void setIpList(ArrayList<String> ips) throws RemoteException; //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
 
     String getIp() throws RemoteException;
 
@@ -17,6 +17,8 @@ public interface IPlayer extends Remote {
     int getPos(int[] callerClock) throws RemoteException;
 
     ArrayList<IPlayer> getPlayers(int[] callerClock) throws RemoteException; 
+
+    ArrayList<IPlayer> getPlayers() throws RemoteException; 
 
     ArrayList<Card> getCards(int[] callerClock) throws RemoteException; 
 
@@ -37,5 +39,7 @@ public interface IPlayer extends Remote {
     void removePlayer( int index, String ip,int[] callerClock) throws RemoteException;
 
     void increaseLifes(int[] callerClock) throws RemoteException;
+
+    void initPlayerList(ArrayList<String> ips) throws RemoteException;
 
 }
