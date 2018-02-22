@@ -56,7 +56,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.initPlayerList(ips);
     }
 
-    private int[] clocksCompare(int[] clock1, int[] clock2) {
+    private int[] clockIncrease(int[] clock1, int[] clock2) {
         int resClock[] = new int[clock1.length];
         for (int i = 0; i < clock1.length; i++) {
             resClock[i] = Math.max(clock1[i], clock2[i]);
@@ -66,12 +66,34 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return resClock;
     }
 
+    private int clockCompare(int[] clock1, int[] clock2){ //1 if clock1 > clock2, 2 if clock2 > clock1, 0 else 
+        Boolean found = true;
+        for (int i=0; i < clock1.length; i++){
+            if(clock1[i] < clock2[i]){
+                found = false;
+                break;
+            }
+        }
+        if (found) return 1;
+        found = true;
+        for (int i = 0; i < clock1.length; i++) {
+            if (clock2[i] < clock1[i]) {
+                found = false;
+                break;
+            }
+        }
+        if (found) return 2;
+        return 0;
+    }
+
+    
+
     public String getIp() {
         return this.ip;
     }
 
     public int getPos(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return this.pos;
     }
 
@@ -81,32 +103,32 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public ArrayList<IPlayer> getPlayers(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return this.players;
     }
 
     public ArrayList<Card> getCards(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return this.tableCards;
     }
 
     public Card getHandCard(int i, int[] callerClock) { //return a pointer to the card!
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return handCards.get(i);
     }
 
     public int getLifes(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return this.lifes;
     }
 
     public int getDistance(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         return this.distance;
     }
 
     public void setDeck(ArrayList<Card> deck, int[] callerClock) { //used by other processes to synchronize the decks
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         this.deck = deck;
     }
 
@@ -153,7 +175,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
     public void removePlayer(int index, String ip, int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         if (this.ips.get(index).matches(ip)) {
             this.players.set(index, null);
             this.ips.set(index, null);
@@ -200,7 +222,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void decreaseLifes(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         this.lifes--;
         if (this.lifes <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
@@ -209,7 +231,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void increaseLifes(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         if (this.lifes < 5) {
             this.lifes++;
         }
@@ -285,17 +307,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     private void playCard(int index, int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         this.playCard(index, this.pos);
     }
 
     public void removeTableCard(int index, int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         this.tableCards.remove(index);
     }
 
     public void removeHandCard(int index, int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         this.handCards.remove(index);
     }
 
@@ -341,7 +363,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void indiani(int[] callerClock) {
-        this.clock = clocksCompare(callerClock, this.clock);
+        this.clock = clockIncrease(callerClock, this.clock);
         Boolean found = false;
         for (int i = 0; i < handCards.size(); i++) {
             if (handCards.get(i).getShortName().matches("Bang")) {
