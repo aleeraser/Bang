@@ -90,7 +90,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.lifes;
     }
 
-    public Clock getClcok(){
+    public Clock getClck(){
         return this.clock; 
     }
 
