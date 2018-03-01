@@ -12,8 +12,12 @@ public class Clock {
         this.owner = owner;
     }
  
-    public int[] getClock(){
+    public int[] getVec(){
         return this.clock;
+    }
+
+    public int getClockByIndex( int i){
+        return this.clock[i];
     }
 
     protected void clockIncreaseLocal(){
@@ -53,9 +57,9 @@ public class Clock {
 
     protected Boolean cutConsistencyCheck( ArrayList<Clock> cut){
         for (int i = 0; i < cut.size(); i++ ){
-            int localVal = cut.get(i).getClock()[i]; // i-esima posizione dell'i-esimo orologio
+            int localVal = cut.get(i).getVec()[i]; // i-esima posizione dell'i-esimo orologio
             for (int j=0; j<cut.size(); j++ ){
-                if (cut.get(j).getClock()[i] > localVal){ //il valore i-esimo del proce i-esimo deve essere >= del valore i-esimo di ogni altro proc.
+                if (cut.get(j).getVec()[i] > localVal){ //il valore i-esimo del proce i-esimo deve essere >= del valore i-esimo di ogni altro proc.
                     return false;
                 }
             }
