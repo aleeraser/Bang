@@ -2,10 +2,16 @@ package com.bang.gameui;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class LogBox {
 	
@@ -20,6 +26,14 @@ public class LogBox {
 		eventList = new ArrayList<String>();
 		scrollPane = new ScrollPane(paneList);
 		
+		ScrollPane.ScrollPaneStyle scrollStyle;
+
+		/*Texture scrollTexture = new Texture(Gdx.files.internal("images/bang_logo_edit.png"));
+		NinePatch scrollNine = new NinePatch(new TextureRegion(scrollTexture,6,6),2,2,2,2);
+		scrollStyle = new ScrollPane.ScrollPaneStyle();
+		scrollStyle.vScrollKnob = new NinePatchDrawable(box);
+		scrollPane = new ScrollPane(paneList, scrollStyle);*/
+		
 		strList = new String[0];
 		paneList.setItems(eventList.toArray(new String[0]));
 		scrollPane.setBounds(200, 200, 200, 200);
@@ -31,6 +45,7 @@ public class LogBox {
 		 eventList.add(eventStr);
 		 paneList.setItems(eventList.toArray(new String[0]));
 		 paneList.layout();
+		 scrollPane.setScrollPercentY(100);
 	}
 	
 	public void setSize(float width, float height) {
