@@ -46,6 +46,9 @@ public class Bang extends ApplicationAdapter {
 
         super.render();
         s.draw();
+        
+        /* To allow scrolling */
+        s.act();
     }
 
     @Override
