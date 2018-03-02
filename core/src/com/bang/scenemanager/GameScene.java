@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
+import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
 import com.bang.gameui.SelectedCardGroup;
@@ -21,6 +22,7 @@ public class GameScene extends Scene {
 	ArrayList<OtherBoardGroup> otherBoardList;
 	SelectedCardGroup selectedCard;
 	TextButton playCardButton;
+	LogBox logBox;
 	
 	/* Gameplay info */
 	boolean isPlayableCardSelected;
@@ -58,6 +60,7 @@ public class GameScene extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
             	System.out.println("Should play card");
+            	logBox.addEvent("Carta giocata");
             }
         });
         
@@ -96,6 +99,7 @@ public class GameScene extends Scene {
         
         otherPlayerNumber = 4;
         
+        /* Dynamic sizing of other players boards */
         obHeight = (float)(stage.getHeight() * 0.24);
         obWidth = (float)(stage.getWidth() / (otherPlayerNumber + 1));
         
@@ -125,6 +129,12 @@ public class GameScene extends Scene {
 	        });
 	        
 	        stage.addActor(otherBoard);
+	        
+	        /* Log Box */
+	        logBox = new LogBox(sceneManager.getSkin());
+	        logBox.setPosition(playerBoard.getWidth() + playerBoard.getX(), 50);
+	        logBox.setSize(450, 300);
+	        stage.addActor(logBox.getPane());
         }
 	}
 	
