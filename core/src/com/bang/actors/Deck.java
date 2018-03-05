@@ -3,9 +3,25 @@ package com.bang.actors;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
-    private ArrayList<Card> orderedCardList, deck;
+import org.json.*;
+
+public class Deck {
+    
+    private ArrayList<Card> deck;
+    
+    public Deck(int cardsNumber) {
+        ArrayList<Card> orderedCardList = buildOrderdList();
+    
+        // init deck object
+        ArrayList<Integer> deckIndices = randomArrayList(cardsNumber);
+    
+        for (int i = 0; i < cardsNumber; i++) {
+            deck.add(orderedCardList.get(deckIndices.get(i)));
+        }
+    }
 
     private ArrayList<Integer> randomArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -18,14 +34,24 @@ public class Deck {
         return list;
     }
 
-    public Deck(int cardsNumber) {
-        // init deck object
-        ArrayList<Integer> deckIndices = randomArrayList(cardsNumber);
+    private ArrayList<Card> buildOrderdList() {
+        ArrayList<Card> orderedCardList = new ArrayList<Card>();
 
-        for (int i = 0; i < cardsNumber; i++) {
-            deck.add(orderedCardList.get(deckIndices.get(i)));
+        FileHandle jsonSource = Gdx.files.internal("cardlist.json");
+        JSONArray jsonList = new JSONArray(jsonSource.readString());
+
+        Card card;
+
+        for (int i = 0; i < jsonList.length(); i++) {
+            JSONObject entry = jsonList.getJSONObject(i);
+            card = new Card(entry.getString("name"), entry.getString("value"), entry.getInt("suit"));
+
+            orderedCardList.add(card);
         }
+
+        return orderedCardList;
     }
+
 
     public Deck getDeck() {
         return this;
