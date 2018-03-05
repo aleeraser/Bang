@@ -21,6 +21,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
+    private Boolean turn;
+    private int deckIndex;
+
     //private CharacterPower character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
@@ -44,6 +47,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.pos = -1;
         this.volcanic = false;
         this.barrel = false;
+
+        this.turn = false;
+        this.deckIndex=0;
+    }
+
+    public void giveTurn(int deckIndex, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.turn = true;
+        this.deckIndex = deckIndex;
     }
 
     public void refreshPList() {
