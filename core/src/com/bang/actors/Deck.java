@@ -11,9 +11,12 @@ import org.json.*;
 public class Deck {
     
     private ArrayList<Card> orderedDeck;
+    private ArrayList<Integer> deckIndices;
+    private int nextCardIndex;
     
     public Deck() {
         this.orderedDeck = buildOrderedDeck();
+        this.nextCardIndex = 0;
     }
 
     private ArrayList<Integer> randomArrayList(int n) {
@@ -27,7 +30,7 @@ public class Deck {
         return list;
     }
 
-    public ArrayList<Card> buildOrderedDeck() {
+    private ArrayList<Card> buildOrderedDeck() {
         ArrayList<Card> orderedDeck = new ArrayList<Card>();
 
         FileHandle jsonSource = Gdx.files.internal("cardlist.json");
@@ -52,11 +55,27 @@ public class Deck {
     }
 
     public ArrayList<Integer> shuffleDeck() {
-        ArrayList<Integer> deckIndices = randomArrayList(orderedDeck.size());
-        return deckIndices;
+        this.deckIndices = randomArrayList(orderedDeck.size());
+        return this.deckIndices;
     }
 
     public Card getCard(int cardIndex) {
-        return orderedDeck.get(cardIndex);
+        return this.orderedDeck.get(cardIndex);
+    }
+
+    public void setIndices(ArrayList<Integer> indices) {
+        this.deckIndices = indices;
+    }
+
+    public ArrayList<Integer> getIndices() {
+        return this.deckIndices;
+    }
+
+    public void setNextCardIndex(int i) {
+        nextCardIndex = i;
+    }
+
+    public int getNextCardIndex() {
+        return nextCardIndex;
     }
 }

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.bang.actors.Card;
 import com.bang.actors.IPlayer;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
@@ -114,6 +115,7 @@ public class InLobbyScene extends Scene {
                                         player.setIpList(playerIPs);
                                     }
                                 }
+                                me.syncDeck(me.getDeck().shuffleDeck());
                             } catch (RemoteException e) {
                                 UIUtils.showError("Failed to set ip list", e, stage, sceneManager, text, removeOnError);
                             }

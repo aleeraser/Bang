@@ -16,7 +16,7 @@ public interface IPlayer extends Remote {
 
     Deck getDeck() throws RemoteException;
 
-    void syncDeck() throws RemoteException;
+    void syncDeck(ArrayList<Integer> indices) throws RemoteException;
 
     int getLifes(int[] callerClock) throws RemoteException;
 
@@ -36,7 +36,7 @@ public interface IPlayer extends Remote {
 
     int getDistance(int[] callerClock) throws RemoteException;
     
-    void setDeckOrder(int[] order,int[] callerClock) throws RemoteException;
+    void setDeckOrder(ArrayList<Integer> order,int[] callerClock) throws RemoteException;
 
     void decreaseLifes(int[] callerClock) throws RemoteException;
 
