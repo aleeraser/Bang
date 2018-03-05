@@ -16,7 +16,7 @@ public interface IPlayer extends Remote {
 
     int getPos(int[] callerClock) throws RemoteException;
 
-    Clock getClock() throws RemoteException;
+    Clock getClock(int[] callerClock) throws RemoteException;
 
     ArrayList<IPlayer> getPlayers(int[] callerClock) throws RemoteException; 
 

@@ -56,6 +56,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.initPlayerList(ips);
     }
 
+    public void setIp(String ip){
+        this.ip=ip;
+    }
+
     public String getIp() {
         return this.ip;
     }
@@ -90,7 +94,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.lifes;
     }
 
-    public Clock getClock(){
+    public Clock getClock( int[] callerClock){
+        this.clock.clockIncrease(callerClock);
         return this.clock; 
     }
 
@@ -439,7 +444,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             for (int i=0; i<players.size(); i++){
                 if (this.players.get(i)!= null){
                     try{
-                        clockList.add(this.players.get(i).getClock());
+                        clockList.add(this.players.get(i).getClock(this.clock.getVec()));
                     }catch(RemoteException e){
                         System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                         allertPlayerMissing(i);
