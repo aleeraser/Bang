@@ -13,7 +13,7 @@ public class Deck {
     private ArrayList<Card> orderedDeck;
     
     public Deck() {
-        orderedDeck = buildOrderedDeck();
+        this.orderedDeck = buildOrderedDeck();
     }
 
     private ArrayList<Integer> randomArrayList(int n) {
@@ -54,10 +54,6 @@ public class Deck {
     public ArrayList<Integer> shuffleDeck() {
         ArrayList<Integer> deckIndices = randomArrayList(orderedDeck.size());
         return deckIndices;
-    }
-
-    public Deck getDeck() {
-        return this;
     }
 
     public Card getCard(int cardIndex) {
