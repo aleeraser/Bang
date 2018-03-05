@@ -21,6 +21,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
+    private int[] deckOrder;
     private Boolean turn;
     private int deckIndex;
 
@@ -48,6 +49,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.volcanic = false;
         this.barrel = false;
 
+        this.deck = new Deck();
         this.turn = false;
         this.deckIndex=0;
     }
@@ -74,6 +76,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public String getIp() {
         return this.ip;
+    }
+
+    public Deck getDeck(){
+        return this.deck;
     }
 
     public int getPos(int[] callerClock) {
@@ -116,9 +122,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.distance;
     }
 
-    public void setDeck(Deck deck, int[] callerClock) { //used by other processes to synchronize the decks
+    public void setDeckOrder(int[] order, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
-        this.deck = deck;
+        this.deckOrder = order;
     }
 
     private void shot(IPlayer target, int i) { //i is the target index
@@ -435,12 +441,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         UIUtils.print("Pos: " + this.pos);
     }
 
-    private void syncDeck() {
+    public void syncDeck() {
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
                 try {
                     this.clock.clockIncreaseLocal();
-                    players.get(i).setDeck(this.deck, this.clock.getVec());
+                    players.get(i).setDeckOrder(this.deckOrder, this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                     allertPlayerMissing(i);

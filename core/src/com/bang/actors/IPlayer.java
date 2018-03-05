@@ -14,6 +14,10 @@ public interface IPlayer extends Remote {
 
     String getIp() throws RemoteException;
 
+    Deck getDeck() throws RemoteException;
+
+    void syncDeck() throws RemoteException;
+
     int getLifes(int[] callerClock) throws RemoteException;
 
     int getPos(int[] callerClock) throws RemoteException;
@@ -32,7 +36,7 @@ public interface IPlayer extends Remote {
 
     int getDistance(int[] callerClock) throws RemoteException;
     
-    void setDeck(Deck deck,int[] callerClock) throws RemoteException;
+    void setDeckOrder(int[] order,int[] callerClock) throws RemoteException;
 
     void decreaseLifes(int[] callerClock) throws RemoteException;
 
