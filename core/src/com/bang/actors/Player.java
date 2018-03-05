@@ -122,6 +122,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
         this.deck.setIndices(indices);
+
+        ArrayList<Integer> indexis = this.deck.getIndices();
+        for (int i=0; i<indexis.size(); i++){
+            System.out.println(indexis.get(i));
+        }  
     }
 
     private void shot(IPlayer target, int i) { //i is the target index
