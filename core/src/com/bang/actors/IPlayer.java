@@ -30,7 +30,7 @@ public interface IPlayer extends Remote {
 
     int getDistance(int[] callerClock) throws RemoteException;
     
-    void setDeck(ArrayList<Card> deck,int[] callerClock) throws RemoteException;
+    void setDeck(Deck deck,int[] callerClock) throws RemoteException;
 
     void decreaseLifes(int[] callerClock) throws RemoteException;
 

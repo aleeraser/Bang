@@ -20,7 +20,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private String ip;
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
-    private ArrayList<Card> deck = new ArrayList<Card>();
+    private Deck deck;
     //private CharacterPower character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
@@ -104,7 +104,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.distance;
     }
 
-    public void setDeck(ArrayList<Card> deck, int[] callerClock) { //used by other processes to synchronize the decks
+    public void setDeck(Deck deck, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
         this.deck = deck;
     }
