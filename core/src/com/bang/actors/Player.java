@@ -9,7 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
+//import java.rmi.registry.LocateRegistry;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -271,7 +271,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else if (name.matches("Winchester")) {
                     findGun();
                     this.shotDistance = 5;
-                } else if (name.matches("Winchester")) {
+                } else if (name.matches("Volcanic")) {
                     findGun();
                     this.shotDistance = 1;
                     this.volcanic = true;
