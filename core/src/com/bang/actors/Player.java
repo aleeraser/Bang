@@ -271,7 +271,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else if (name.matches("Winchester")) {
                     findGun();
                     this.shotDistance = 5;
-                } else if (name.matches("Winchester")) {
+                } else if (name.matches("Volcanic")) {
                     findGun();
                     this.shotDistance = 1;
                     this.volcanic = true;
