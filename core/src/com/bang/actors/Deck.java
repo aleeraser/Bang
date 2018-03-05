@@ -10,17 +10,10 @@ import org.json.*;
 
 public class Deck {
     
-    private ArrayList<Card> deck;
+    private ArrayList<Card> orderedDeck;
     
-    public Deck(int cardsNumber) {
-        ArrayList<Card> orderedCardList = buildOrderdList();
-    
-        // init deck object
-        ArrayList<Integer> deckIndices = randomArrayList(cardsNumber);
-    
-        for (int i = 0; i < cardsNumber; i++) {
-            deck.add(orderedCardList.get(deckIndices.get(i)));
-        }
+    public Deck() {
+        orderedDeck = buildOrderedDeck();
     }
 
     private ArrayList<Integer> randomArrayList(int n) {
@@ -34,8 +27,8 @@ public class Deck {
         return list;
     }
 
-    private ArrayList<Card> buildOrderdList() {
-        ArrayList<Card> orderedCardList = new ArrayList<Card>();
+    public ArrayList<Card> buildOrderedDeck() {
+        ArrayList<Card> orderedDeck = new ArrayList<Card>();
 
         FileHandle jsonSource = Gdx.files.internal("cardlist.json");
         JSONArray jsonList = new JSONArray(jsonSource.readString());
@@ -46,18 +39,22 @@ public class Deck {
             JSONObject entry = jsonList.getJSONObject(i);
             card = new Card(entry.getString("name"), entry.getString("value"), entry.getInt("suit"));
 
-            orderedCardList.add(card);
+            orderedDeck.add(card);
         }
 
-        return orderedCardList;
+        return orderedDeck;
     }
 
+    public ArrayList<Integer> shuffleDeck() {
+        ArrayList<Integer> deckIndices = randomArrayList(orderedDeck.size());
+        return deckIndices;
+    }
 
     public Deck getDeck() {
         return this;
     }
 
     public Card getCard(int cardIndex) {
-        return deck.get(cardIndex);
+        return orderedDeck.get(cardIndex);
     }
 }
