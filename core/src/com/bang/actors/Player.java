@@ -21,9 +21,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
-    private int[] deckOrder;
     private Boolean turn;
-    private int deckIndex;
 
     //private CharacterPower character;
     private int shotDistance;
@@ -51,13 +49,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.deck = new Deck();
         this.turn = false;
-        this.deckIndex=0;
     }
 
     public void giveTurn(int deckIndex, int[] callerClock){
         this.clock.clockIncrease(callerClock);
         this.turn = true;
-        this.deckIndex = deckIndex;
+        this.deck.setNextCardIndex(deckIndex);
     }
 
     public void refreshPList() {
@@ -122,9 +119,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.distance;
     }
 
-    public void setDeckOrder(int[] order, int[] callerClock) { //used by other processes to synchronize the decks
+    public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
-        this.deckOrder = order;
+        this.deck.setIndices(indices);
     }
 
     private void shot(IPlayer target, int i) { //i is the target index
@@ -441,12 +438,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         UIUtils.print("Pos: " + this.pos);
     }
 
-    public void syncDeck() {
+    public void syncDeck(ArrayList<Integer> indices) {
+        this.deck.setIndices(indices);
+
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
                 try {
                     this.clock.clockIncreaseLocal();
-                    players.get(i).setDeckOrder(this.deckOrder, this.clock.getVec());
+                    players.get(i).setDeckOrder(this.deck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                     allertPlayerMissing(i);
