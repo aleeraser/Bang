@@ -2,6 +2,7 @@ package com.bang.actors;
 
 import java.util.Enumeration;
 
+import com.badlogic.gdx.utils.Array;
 import com.bang.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
-    private ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+    private ArrayList<IPlayer> players ;
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
     private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
     private Boolean volcanic;
@@ -63,8 +64,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.ips = ips;
-        clock = new Clock(ips.size(), this.pos); //initialize also the vector clock
         this.initPlayerList(ips);
+        clock = new Clock(ips.size(), this.pos); //initialize also the vector clock
     }
 
     public void setIp(String ip){
@@ -418,6 +419,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
+        this.players = new ArrayList<IPlayer>();
         for (int i = 0; i < ips.size(); i++) {
             try {
                 if (this.ip.matches(ips.get(i))) {
