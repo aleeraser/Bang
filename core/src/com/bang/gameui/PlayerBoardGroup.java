@@ -1,5 +1,6 @@
 package com.bang.gameui;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -34,7 +35,7 @@ public class PlayerBoardGroup extends Group {
 	// Character card
 	protected float charWidth, charHeight;
 	protected float charPosX, charPosY;
-	protected Image charImage;
+	protected Group charImage;
 	
 	// For both kind of cards
 	protected float cardHeight, cardWidth;
@@ -73,11 +74,18 @@ public class PlayerBoardGroup extends Group {
 		this.addActor(boardImage);
 		
 		// Char image handling
-		charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
+		//charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
 		charWidth = width * CHAR_WIDTH_PERCENTAGE;
 		charHeight = (float) (charWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
 		charPosY = height/2 - charHeight/2;
+		
+		try {
+			charImage = sceneManager.getPlayer().getCharacter().getCharacterCard(charHeight);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 		charImage.setSize(charWidth, charHeight);
 		charImage.setPosition(charPosX, charPosY);
 		

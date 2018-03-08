@@ -32,7 +32,7 @@ public class CardsUtils {
 	public static final int SUIT_CLUBS = 4;
 	
 	private static final String CARD_PATH = "cards";
-	private static final String CHARATCTER_CARD_PATH = "cards_character"; 
+	private static final String CHARATCTER_CARD_PATH = "cards_characters"; 
 	
 	public static final String CARD_BANG = "bang.png";
 	public static final String CARD_BARREL = "barrel.png";

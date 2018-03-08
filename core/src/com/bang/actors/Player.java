@@ -22,9 +22,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
+    private CharacterDeck characterDeck;
     private Boolean turn;
 
-    //private CharacterPower character;
+    private Character character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
@@ -51,6 +52,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.barrel = false;
 
         this.deck = new Deck();
+        this.characterDeck = new CharacterDeck();
         this.turn = false;
 
         this.playerTimeout = 100;
@@ -99,6 +101,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Deck getDeck() {
         return this.deck;
     }
+    
+    public CharacterDeck getCharacterDeck() {
+    	return this.characterDeck;
+    }
 
     public int getPos(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
@@ -138,6 +144,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public int getDistance(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.distance;
+    }
+    
+    public void setCharacter(Character character) {
+    	this.character = character;
+    }
+    
+    public Character getCharacter() {
+    	return this.character;
     }
 
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
@@ -483,6 +497,36 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 try {
                     this.clock.clockIncreaseLocal();
                     players.get(i).setDeckOrder(this.deck.getIndices(), this.clock.getVec());
+                } catch (RemoteException e) {
+                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    allertPlayerMissing(i);
+                    //e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    // Character cards deck
+    public void setCharacterDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the char decks
+        this.clock.clockIncrease(callerClock);
+        this.characterDeck.setIndices(indices);
+
+        ArrayList<Integer> indexis = this.characterDeck.getIndices();
+        for (int i = 0; i < indexis.size(); i++) {
+            System.out.println("CharDeck: " + indexis.get(i));
+        }
+
+        startTimeoutTime = System.currentTimeMillis();
+    }
+    
+    public void syncCharacterDeck(ArrayList<Integer> indices) {
+        this.characterDeck.setIndices(indices);
+
+        for (int i = 0; i < players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
+                try {
+                    this.clock.clockIncreaseLocal();
+                    players.get(i).setCharacterDeckOrder(this.characterDeck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                     allertPlayerMissing(i);
