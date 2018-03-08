@@ -31,7 +31,8 @@ public class CardsUtils {
 	public static final int SUIT_DIAMONDS = 3;
 	public static final int SUIT_CLUBS = 4;
 	
-	private static final String CARD_PATH = "cards"; 
+	private static final String CARD_PATH = "cards";
+	private static final String CHARATCTER_CARD_PATH = "cards_character"; 
 	
 	public static final String CARD_BANG = "bang.png";
 	public static final String CARD_BARREL = "barrel.png";
@@ -144,6 +145,27 @@ public class CardsUtils {
 		
 		return g;
 		
+	}
+	
+	public static Group createCharacterCardImageGroup(String charName, double cardImageHeight) {
+		
+		Group g;
+		Image card;
+		double width, height;
+		
+		g = new Group();
+		height = cardImageHeight;
+		width = cardImageHeight * CARD_HEIGHT_WIDTH_RATIO;
+		
+		// Card image handling
+		card = new Image(new Texture(Gdx.files.internal(CHARATCTER_CARD_PATH + "/" + charName)));
+		card.setSize((float)width, (float)height);
+		g.setSize((float)width, (float)height);
+		card.setPosition(0, 0);
+				
+		g.addActor(card);
+		
+		return g;		
 	}
 	
 }
