@@ -71,6 +71,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.draw();
                 }
                 this.playerTimeout = 120000;
+                this.giveTurn();
             }
             else{
                 // standard turn
@@ -216,6 +217,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 this.draw();
                             }
                             this.playerTimeout = 120000;
+                            this.giveTurn();
                         } else {
                             // standard turn
                             this.draw();
