@@ -80,6 +80,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
+    public void draw() {
+        this.handCards.add(deck.draw());
+    }
+
+    public void drawCharacter() {
+        this.character = characterDeck.drawCharacter();
+    }
+
     public void refreshPList() {
         players = new ArrayList<IPlayer>();
     }
@@ -87,7 +95,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
         this.ips = ips;
         this.initPlayerList(ips);
-        clock = new Clock(ips.size(), this.pos); //initialize also the vector clock
+        this.clock = new Clock(ips.size(), this.pos); //initialize also the vector clock
     }
 
     public void setIp(String ip) {
