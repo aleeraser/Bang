@@ -49,7 +49,7 @@ public class GameScene extends Scene {
         backgroundImage = null;
         
         /* TEST */
-        try {
+        /*try {
 			sceneManager.player = new Player();
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
@@ -58,7 +58,7 @@ public class GameScene extends Scene {
 			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
 		} catch (RemoteException e) {
 			e.printStackTrace();
-		}
+		}*/
 
         sceneManager.setInGame(true);
         
