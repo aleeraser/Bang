@@ -15,10 +15,12 @@ public interface IPlayer extends Remote {
     String getIp() throws RemoteException;
 
     Deck getDeck() throws RemoteException;
+    
+    CharacterDeck getCharacterDeck() throws RemoteException;
 
     void syncDeck(ArrayList<Integer> indices) throws RemoteException;
 
-    void checkTimeout(long currentTime);
+    void checkTimeout(long currentTime) throws RemoteException;
 
     int getLifes(int[] callerClock) throws RemoteException;
 
@@ -53,5 +55,15 @@ public interface IPlayer extends Remote {
     void increaseLifes(int[] callerClock) throws RemoteException;
 
     void initPlayerList(ArrayList<String> ips) throws RemoteException;
+    
+    void setCharacter(Character character) throws RemoteException;
+    
+    Character getCharacter() throws RemoteException;
+    
+    void setCharacterDeckOrder(ArrayList<Integer> indices, int[] callerClock) throws RemoteException;
+    
+    public void syncCharacterDeck(ArrayList<Integer> indices) throws RemoteException;
+    
+    
 
 }

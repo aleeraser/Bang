@@ -77,7 +77,7 @@ public class SceneManager {
         //scene.setGameManager(this);
         Gdx.input.setInputProcessor(scene.getStage());
     }
-    
+
     public Stage getCurrentStage() {
         return gameScene.getStage();
     }

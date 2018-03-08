@@ -1,5 +1,6 @@
 package com.bang.scenemanager;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
+import com.bang.actors.Character;
+import com.bang.actors.Player;
 import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
@@ -43,6 +46,18 @@ public class GameScene extends Scene {
 		stage = new Stage();
         batch = stage.getBatch();
         backgroundImage = null;
+        
+        /* TEST */
+        /*try {
+			sceneManager.player = new Player();
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		};
+        try {
+			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}*/
 
         sceneManager.setInGame(true);
         
