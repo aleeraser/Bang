@@ -10,16 +10,16 @@ import org.json.*;
 
 public class Deck {
     
-    private ArrayList<Card> orderedDeck;
-    private ArrayList<Integer> deckIndices;
-    private int nextCardIndex;
+    protected ArrayList<Card> orderedDeck;
+    protected ArrayList<Integer> deckIndices;
+    protected int nextCardIndex;
     
     public Deck() {
         this.orderedDeck = buildOrderedDeck();
         this.nextCardIndex = 0;
     }
 
-    private ArrayList<Integer> randomArrayList(int n) {
+    protected ArrayList<Integer> randomArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
         for (int i = 0; i < n; i++) {
@@ -77,5 +77,9 @@ public class Deck {
 
     public int getNextCardIndex() {
         return nextCardIndex;
+    }
+
+    public Card draw() {
+        return getCard(nextCardIndex++);
     }
 }

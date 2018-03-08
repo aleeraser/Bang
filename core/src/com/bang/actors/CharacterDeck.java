@@ -1,33 +1,19 @@
 package com.bang.actors;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 import org.json.*;
 
-public class CharacterDeck {
-    
-    private ArrayList<Character> orderedCharDeck;
-    private ArrayList<Integer> charDeckIndices;
-    private int nextCardIndex;
+public class CharacterDeck extends Deck{
+
+    protected ArrayList<Character> orderedDeck;
     
     public CharacterDeck() {
-        this.orderedCharDeck = buildOrderedDeck();
-        this.nextCardIndex = 0;
-    }
-
-    private ArrayList<Integer> randomArrayList(int n) {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-
-        for (int i = 0; i < n; i++) {
-            list.add(i);
-        }
-
-        Collections.shuffle(list);
-        return list;
+        orderedDeck = buildOrderedDeck();
+        nextCardIndex = 0;
     }
 
     private ArrayList<Character> buildOrderedDeck() {
@@ -49,28 +35,11 @@ public class CharacterDeck {
         return orderedDeck;
     }
 
-    public ArrayList<Integer> shuffleDeck() {
-        this.charDeckIndices = randomArrayList(orderedCharDeck.size());
-        return this.charDeckIndices;
+    public Character drawCharacter() {
+        return getCharacter(nextCardIndex++);
     }
 
-    public Character getCard(int cardIndex) {
-        return this.orderedCharDeck.get(cardIndex);
-    }
-
-    public void setIndices(ArrayList<Integer> indices) {
-        this.charDeckIndices = indices;
-    }
-
-    public ArrayList<Integer> getIndices() {
-        return this.charDeckIndices;
-    }
-
-    public void setNextCardIndex(int i) {
-        nextCardIndex = i;
-    }
-
-    public int getNextCardIndex() {
-        return nextCardIndex;
+    public Character getCharacter(int cardIndex) {
+        return this.orderedDeck.get(cardIndex);
     }
 }
