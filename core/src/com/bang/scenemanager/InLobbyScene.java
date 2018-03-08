@@ -26,16 +26,16 @@ public class InLobbyScene extends Scene {
     ScrollPane scrollPane;
     TextButton btnBack, btnJoin, btnNewLobby;
     Label text, title;
-    boolean isCreator;
+    boolean isRoomMaster;
     String lobbyName;
     String[] playerNames;
     final ArrayList<Actor> removeOnError = new ArrayList<Actor>();
 
-    public InLobbyScene(SceneManager sceneManager, String lobbyName, boolean isCreator) {
+    public InLobbyScene(SceneManager sceneManager, String lobbyName, boolean isRoomMaster) {
         this.sceneManager = sceneManager;
         sceneManager.setCurrentLobby(lobbyName);
 
-        this.isCreator = isCreator;
+        this.isRoomMaster = isRoomMaster;
         this.lobbyName = lobbyName;
 
         this.setup();
@@ -81,7 +81,7 @@ public class InLobbyScene extends Scene {
                     } else {
                         sceneManager.setScene(new RoomListScene(sceneManager));
                     }
-                    
+
                 } catch (Exception e) {
                     list.remove();
                     scrollPane.remove();
@@ -99,7 +99,7 @@ public class InLobbyScene extends Scene {
         });
 
         // Start
-        if (isCreator) {
+        if (isRoomMaster) {
             UIUtils.createBtn(btnJoin, "Inizia Partita", Gdx.graphics.getWidth() - 230, 10, stage,
                     sceneManager.getTextButtonStyle(), new ChangeListener() {
                         @Override
@@ -110,13 +110,14 @@ public class InLobbyScene extends Scene {
                             try {
                                 me.setIpList(playerIPs);
                                 ArrayList<IPlayer> playerList = me.getPlayers();
-                                for (IPlayer player: playerList) {
+                                for (IPlayer player : playerList) {
                                     if (player != me) {
                                         player.setIpList(playerIPs);
                                     }
                                 }
                                 me.syncCharacterDeck(me.getCharacterDeck().shuffleDeck());
                                 me.syncDeck(me.getDeck().shuffleDeck());
+                                sceneManager.setScene(new GameScene(sceneManager));
                             } catch (RemoteException e) {
                                 UIUtils.showError("Failed to set ip list", e, stage, sceneManager, text, removeOnError);
                             }
@@ -132,13 +133,13 @@ public class InLobbyScene extends Scene {
         playerNames = new String[0];
 
         try {
-            String[] params = new String[1],
-                     vals = new String[1];
-            
+            String[] params = new String[1], vals = new String[1];
+
             params[0] = "lobby";
             vals[0] = lobbyName;
 
-            JSONArray ret = new JSONArray(NetworkUtils.getHTTP(NetworkUtils.getBaseURL() + "/get_players", params, vals));
+            JSONArray ret = new JSONArray(
+                    NetworkUtils.getHTTP(NetworkUtils.getBaseURL() + "/get_players", params, vals));
             int player_num = ret.length();
             playerNames = new String[player_num];
             for (int i = 0; i < ret.length(); i++) {
