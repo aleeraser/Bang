@@ -24,8 +24,8 @@ public class Bang extends ApplicationAdapter {
     @Override
     public void create() {
         sceneManager = new SceneManager();
-        sceneManager.setScene(new MainMenuScene(sceneManager));
-        //sceneManager.setScene(new GameScene(sceneManager));
+        //sceneManager.setScene(new MainMenuScene(sceneManager));
+        sceneManager.setScene(new GameScene(sceneManager));
         //sceneManager.setScene(new InLobbyScene(sceneManager, "TestLobby", true));
     }
 
@@ -51,7 +51,11 @@ public class Bang extends ApplicationAdapter {
         s.act();
 
         if (sceneManager.isInGame()) {
-            sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+            try {
+				sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
         }
     }
 

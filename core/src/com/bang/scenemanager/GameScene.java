@@ -54,7 +54,7 @@ public class GameScene extends Scene {
 			e1.printStackTrace();
 		};
         try {
-			sceneManager.getPlayer().setCharacter(new Character("bartcassisdy.png", 4));
+			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}*/
