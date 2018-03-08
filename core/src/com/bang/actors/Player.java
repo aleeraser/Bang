@@ -59,6 +59,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.startTimeoutTime = 0;
     }
 
+    public boolean isMyTurn(){
+        return(this.pos==this.turn);
+    }
+
     public void setTurn(int deckIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.turn = turnHolder;
