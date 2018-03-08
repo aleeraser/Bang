@@ -42,6 +42,8 @@ public interface IPlayer extends Remote {
 
     ArrayList<Card> getCards(int[] callerClock) throws RemoteException;
 
+    ArrayList<Card> getHandCards() throws RemoteException;
+
     Card getHandCard(int i, int[] callerClock) throws RemoteException;
 
     int getDistance(int[] callerClock) throws RemoteException;

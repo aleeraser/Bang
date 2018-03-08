@@ -157,6 +157,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return handCards.get(i);
     }
 
+    public ArrayList<Card> getHandCards(){
+        return this.handCards;
+    }
+
     public int getLifes(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.lifes;
