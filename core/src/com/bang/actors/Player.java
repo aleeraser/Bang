@@ -64,6 +64,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
+        this.startTimeoutTime = System.currentTimeMillis();
         //pesca carte;
     }
 
