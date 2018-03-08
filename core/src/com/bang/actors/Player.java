@@ -191,10 +191,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     if (next == this.pos) { //you are the next
                         this.turn = this.pos;
                         if (this.character == null) {
-                            //pesca char
-                            //pesca carte pari alle vite del char
+                            // initial turn
+                            this.drawCharacter();
+                            for (int i = 0; i < this.character.getLives(); i++) {
+                                this.draw();
+                            }
                         } else {
-                            //pesca 2 carte
+                            // standard turn
+                            this.draw();
+                            this.draw();
                             this.playerTimeout = 120000;
                         }
                     } else {
@@ -202,8 +207,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
                 }
-                // ping il player con il token
-                // se non risponde gestisci il player morto
             }
 
         }
