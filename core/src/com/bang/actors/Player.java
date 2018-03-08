@@ -28,12 +28,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
-    private ArrayList<IPlayer> players ;
+    private ArrayList<IPlayer> players;
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
     private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
     private Boolean volcanic;
     private Boolean barrel;
     private Clock clock;
+    private long startTimeoutTime;
+    private long playerTimeout;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -50,9 +52,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.deck = new Deck();
         this.turn = false;
+
+        this.playerTimeout = 100;
     }
 
-    public void giveTurn(int deckIndex, int[] callerClock){
+    public void giveTurn(int deckIndex, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.turn = true;
         this.deck.setNextCardIndex(deckIndex);
@@ -68,15 +72,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         clock = new Clock(ips.size(), this.pos); //initialize also the vector clock
     }
 
-    public void setIp(String ip){
-        this.ip=ip;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getIp() {
         return this.ip;
     }
 
-    public Deck getDeck(){
+    public Deck getDeck() {
         return this.deck;
     }
 
@@ -110,9 +114,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.lifes;
     }
 
-    public Clock getClock( int[] callerClock){
+    public Clock getClock(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        return this.clock; 
+        return this.clock;
     }
 
     public int getDistance(int[] callerClock) {
@@ -125,9 +129,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.deck.setIndices(indices);
 
         ArrayList<Integer> indexis = this.deck.getIndices();
-        for (int i=0; i<indexis.size(); i++){
+        for (int i = 0; i < indexis.size(); i++) {
             System.out.println(indexis.get(i));
-        }  
+        }
+
+        startTimeoutTime = System.currentTimeMillis();
+    }
+
+    public void checkTimeout(long currentTime) {
+        if (currentTime - startTimeoutTime > this.playerTimeout) {
+            // ping il player con il token
+            // se non risponde gestisci il player morto
+        }
     }
 
     private void shot(IPlayer target, int i) { //i is the target index
@@ -462,22 +475,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void checkConsistency(){ //nota: non sono sicuro che questa funziona servirà mai o vada fatta così
-        while(true){
+    private void checkConsistency() { //nota: non sono sicuro che questa funziona servirà mai o vada fatta così
+        while (true) {
             ArrayList<Clock> clockList = new ArrayList<Clock>();
-            for (int i=0; i<players.size(); i++){
-                if (this.players.get(i)!= null){
-                    try{
+            for (int i = 0; i < players.size(); i++) {
+                if (this.players.get(i) != null) {
+                    try {
                         clockList.add(this.players.get(i).getClock(this.clock.getVec()));
-                    }catch(RemoteException e){
+                    } catch (RemoteException e) {
                         System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                         allertPlayerMissing(i);
                     }
                 }
             }
-            if(this.clock.cutConsistencyCheck(clockList)){
-                return ;
-            };
+            if (this.clock.cutConsistencyCheck(clockList)) {
+                return;
+            }
+            ;
         }
     }
 

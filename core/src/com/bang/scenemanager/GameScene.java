@@ -43,6 +43,8 @@ public class GameScene extends Scene {
 		stage = new Stage();
         batch = stage.getBatch();
         backgroundImage = null;
+
+        sceneManager.setInGame(true);
         
         isPlayableCardSelected = false;
         

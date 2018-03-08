@@ -31,6 +31,7 @@ public class SceneManager {
     protected TextFieldStyle textFieldStyle;
     protected IPlayer player;
     protected String currentLobby;
+    protected boolean inGame;
 
     public SceneManager() {
         gameScene = null;
@@ -110,10 +111,18 @@ public class SceneManager {
     }
 
     public void setCurrentLobby(String l) {
-        currentLobby = l;
+        this.currentLobby = l;
     }
 
     public String getCurrentLobby() {
         return currentLobby;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean value) {
+        this.inGame = value;
     }
 }

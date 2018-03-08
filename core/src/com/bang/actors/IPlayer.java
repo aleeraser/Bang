@@ -18,6 +18,8 @@ public interface IPlayer extends Remote {
 
     void syncDeck(ArrayList<Integer> indices) throws RemoteException;
 
+    void checkTimeout(long currentTime);
+
     int getLifes(int[] callerClock) throws RemoteException;
 
     int getPos(int[] callerClock) throws RemoteException;

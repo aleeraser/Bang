@@ -49,6 +49,10 @@ public class Bang extends ApplicationAdapter {
         
         /* To allow scrolling */
         s.act();
+
+        if (sceneManager.isInGame()) {
+            sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+        }
     }
 
     @Override
