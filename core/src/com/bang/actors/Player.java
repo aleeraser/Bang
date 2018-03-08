@@ -22,8 +22,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
+    private int turn; //turn holder index
     private CharacterDeck characterDeck;
-    private Boolean turn;
 
     private Character character;
     private int shotDistance;
@@ -52,16 +52,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.barrel = false;
 
         this.deck = new Deck();
+
+        this.turn = 0;
         this.characterDeck = new CharacterDeck();
-        this.turn = false;
 
         this.playerTimeout = 100;
+        this.startTimeoutTime = 0;
     }
 
-    public void setTurn(int deckIndex, int holder, int[] callerClock) {
+    public void setTurn(int deckIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        this.turn = true;
+        this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
+        this.startTimeoutTime = System.currentTimeMillis();
+        //pesca carte;
     }
 
     public void giveTurn() {
@@ -109,9 +113,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Deck getDeck() {
         return this.deck;
     }
-    
+
     public CharacterDeck getCharacterDeck() {
-    	return this.characterDeck;
+        return this.characterDeck;
     }
 
     public int getPos(int[] callerClock) {
@@ -153,13 +157,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         return this.distance;
     }
-    
+
     public void setCharacter(Character character) {
-    	this.character = character;
+        this.character = character;
     }
-    
+
     public Character getCharacter() {
-    	return this.character;
+        return this.character;
     }
 
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
@@ -171,14 +175,37 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println(indexis.get(i));
         }
 
-        startTimeoutTime = System.currentTimeMillis();
+        this.startTimeoutTime = System.currentTimeMillis();
     }
 
     public void checkTimeout(long currentTime) {
-        Long delta = currentTime - startTimeoutTime;
-        if (delta > this.playerTimeout) {
-            // ping il player con il token
-            // se non risponde gestisci il player morto
+        if (this.startTimeoutTime > 0 && this.turn != this.pos) { //if not the game isn't still started
+            if (currentTime - startTimeoutTime > this.playerTimeout) {
+                try {
+                    players.get(this.turn).getPos(this.clock.getVec());
+                    this.startTimeoutTime = System.currentTimeMillis();
+                    //this code is executed only if the player is still up
+                } catch (RemoteException e) { //the turn Holder is crashed
+                    this.removePlayer(this.turn, ips.get(this.turn), this.clock.getVec()); //remove the player locally
+                    int next = this.findNext(this.turn);
+                    if (next == this.pos) { //you are the next
+                        this.turn = this.pos;
+                        if (this.character == null) {
+                            //pesca char
+                            //pesca carte pari alle vite del char
+                        } else {
+                            //pesca 2 carte
+                            this.playerTimeout = 120000;
+                        }
+                    } else {
+                        this.turn = this.pos;
+                        this.startTimeoutTime = System.currentTimeMillis();
+                    }
+                }
+                // ping il player con il token
+                // se non risponde gestisci il player morto
+            }
+
         }
     }
 
@@ -221,6 +248,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
 
         return Math.min(lDist, rDist);
+    }
+
+    private int findNext(int index) {
+        int checked = 0;
+        int i = (index + 1) % this.players.size();
+        while (checked < this.players.size()) {
+            if (this.players.get(i) != null) {
+                return i;
+            }
+            checked++;
+            i = (i + 1) % this.players.size();
+        }
+        return index; //this will not be ever reached;
     }
 
     //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
@@ -513,7 +553,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
     }
-    
+
     // Character cards deck
     public void setCharacterDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the char decks
         this.clock.clockIncrease(callerClock);
@@ -526,7 +566,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         startTimeoutTime = System.currentTimeMillis();
     }
-    
+
     public void syncCharacterDeck(ArrayList<Integer> indices) {
         this.characterDeck.setIndices(indices);
 
@@ -597,3 +637,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     
     } */
 }
+
+//TODO ping al player in pos turno per vedere se è vivo, se è vivo aspetti, altrimenti ti dichiari in possesso del turno.
+// tutticontrollano chi ha il turno, se quello con il turno muore controlli se tu sei quello subito dopo, nel caso ti dichiari avente il turno, altrimenti inizi a controllare quello subito dopo.
+//quando uno passa il turno avverte tutti. e tutti resettano il tempo di riferimento
+//quando uno ha ricevuto le carte iniziali cambia il temeout per un tempo plausibile al gioco.

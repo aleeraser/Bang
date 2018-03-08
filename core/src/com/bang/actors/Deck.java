@@ -9,11 +9,11 @@ import com.badlogic.gdx.files.FileHandle;
 import org.json.*;
 
 public class Deck {
-    
+
     protected ArrayList<Card> orderedDeck;
     protected ArrayList<Integer> deckIndices;
     protected int nextCardIndex;
-    
+
     public Deck() {
         this.orderedDeck = buildOrderedDeck();
         this.nextCardIndex = 0;
@@ -41,11 +41,10 @@ public class Deck {
         for (int i = 0; i < jsonList.length(); i++) {
             JSONObject entry = jsonList.getJSONObject(i);
             String name = entry.getString("name");
-            if (name.matches("bang") || name.matches("panico") || name.matches("catbalou") || name.matches("duello") 
-                    || name.matches("prigione") ){
-                card = new Card(name, entry.getString("value"), entry.getInt("suit"), true);    
-            }
-            else{
+            if (name.matches("bang") || name.matches("panico") || name.matches("catbalou") || name.matches("duello")
+                    || name.matches("prigione")) {
+                card = new Card(name, entry.getString("value"), entry.getInt("suit"), true);
+            } else {
                 card = new Card(name, entry.getString("value"), entry.getInt("suit"));
             }
             orderedDeck.add(card);
