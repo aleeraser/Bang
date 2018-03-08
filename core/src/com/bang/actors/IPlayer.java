@@ -53,5 +53,9 @@ public interface IPlayer extends Remote {
     void increaseLifes(int[] callerClock) throws RemoteException;
 
     void initPlayerList(ArrayList<String> ips) throws RemoteException;
+    
+    void setCharacter(Character character) throws RemoteException;
+    
+    Character getCharacter() throws RemoteException;
 
 }

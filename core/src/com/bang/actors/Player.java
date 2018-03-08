@@ -24,7 +24,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Deck deck;
     private Boolean turn;
 
-    //private CharacterPower character;
+    private Character character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
     private int distance; //incremento della distanza a cui viene visto
@@ -122,6 +122,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public int getDistance(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.distance;
+    }
+    
+    public void setCharacter(Character character) {
+    	this.character = character;
+    }
+    
+    public Character getCharacter() {
+    	return this.character;
     }
 
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
