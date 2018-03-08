@@ -9,17 +9,17 @@ import com.badlogic.gdx.files.FileHandle;
 import org.json.*;
 
 public class Deck {
-    
-    private ArrayList<Card> orderedDeck;
-    private ArrayList<Integer> deckIndices;
-    private int nextCardIndex;
-    
+
+    protected ArrayList<Card> orderedDeck;
+    protected ArrayList<Integer> deckIndices;
+    protected int nextCardIndex;
+
     public Deck() {
         this.orderedDeck = buildOrderedDeck();
         this.nextCardIndex = 0;
     }
 
-    private ArrayList<Integer> randomArrayList(int n) {
+    protected ArrayList<Integer> randomArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
         for (int i = 0; i < n; i++) {
@@ -41,11 +41,10 @@ public class Deck {
         for (int i = 0; i < jsonList.length(); i++) {
             JSONObject entry = jsonList.getJSONObject(i);
             String name = entry.getString("name");
-            if (name.matches("bang") || name.matches("panico") || name.matches("catbalou") || name.matches("duello") 
-                    || name.matches("prigione") ){
-                card = new Card(name, entry.getString("value"), entry.getInt("suit"), true);    
-            }
-            else{
+            if (name.matches("bang") || name.matches("panico") || name.matches("catbalou") || name.matches("duello")
+                    || name.matches("prigione")) {
+                card = new Card(name, entry.getString("value"), entry.getInt("suit"), true);
+            } else {
                 card = new Card(name, entry.getString("value"), entry.getInt("suit"));
             }
             orderedDeck.add(card);
@@ -77,5 +76,9 @@ public class Deck {
 
     public int getNextCardIndex() {
         return nextCardIndex;
+    }
+
+    public Card draw() {
+        return getCard(nextCardIndex++);
     }
 }
