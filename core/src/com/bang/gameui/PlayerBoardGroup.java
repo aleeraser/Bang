@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
+import com.bang.actors.Character;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -57,11 +58,20 @@ public class PlayerBoardGroup extends Group {
 	protected CardHighlight border;	
 	protected boolean isPlayableCardSelected;
 	
+	// Character
+	protected Character character;
+	protected boolean isLastClickedChar;
+	
 	public PlayerBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
 		this.height = height;
 		this.sceneManager = sceneManager;
 		this.setSize(width, height);
+		try {
+			character = sceneManager.getPlayer().getCharacter();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		setupLayout();
 	}
 	
@@ -92,6 +102,7 @@ public class PlayerBoardGroup extends Group {
 		charImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+            	isLastClickedChar = true;
             	System.out.println("Inside handler");
             }
         });
@@ -117,6 +128,7 @@ public class PlayerBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	isLastClickedChar = false;
 	            	
 	            	// Card border
 	            	if (border != null) {
@@ -151,6 +163,7 @@ public class PlayerBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	isLastClickedChar = false;
 	                	        		
 	        		// Card border
 	            	if (border != null) {
@@ -183,6 +196,14 @@ public class PlayerBoardGroup extends Group {
 	
 	public boolean isSelectedCardPlayable() {
 		return isPlayableCardSelected;
+	}
+	
+	public boolean isLastClickedCharacter() {
+		return isLastClickedChar;
+	}
+	
+	public com.bang.actors.Character getCharacter() {
+		return character;
 	}
 	
 	

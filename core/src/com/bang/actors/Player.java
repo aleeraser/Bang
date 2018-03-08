@@ -24,7 +24,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Deck deck;
     private int turn; //turn holder index
     private CharacterDeck characterDeck;
-
     private Character character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
@@ -65,7 +64,21 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
         this.startTimeoutTime = System.currentTimeMillis();
-        //pesca carte;
+        if (turnHolder == this.pos){
+            if (this.character == null){
+                this.drawCharacter();
+                for (int i = 0; i < this.character.getLives(); i++) {
+                    this.draw();
+                }
+                this.playerTimeout = 120000;
+            }
+            else{
+                // standard turn
+                this.draw();
+                this.draw();
+            }
+                   
+        }
     }
 
     public void giveTurn() {
@@ -93,7 +106,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void refreshPList() {
-        players = new ArrayList<IPlayer>();
+        this.players = new ArrayList<IPlayer>();
     }
 
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
@@ -139,7 +152,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public Card getHandCard(int i, int[] callerClock) { //return a pointer to the card!
-        this.clock.clockIncrease(callerClock);
+        this.clock.clockIncrease(callerClock);//pesca char
+        //pesca carte pari alle vite del char
         return handCards.get(i);
     }
 
@@ -190,17 +204,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     int next = this.findNext(this.turn);
                     if (next == this.pos) { //you are the next
                         this.turn = this.pos;
+
                         if (this.character == null) {
                             // initial turn
                             this.drawCharacter();
                             for (int i = 0; i < this.character.getLives(); i++) {
                                 this.draw();
                             }
+                            this.playerTimeout = 120000;
                         } else {
                             // standard turn
                             this.draw();
                             this.draw();
-                            this.playerTimeout = 120000;
                         }
                     } else {
                         this.turn = this.pos;
@@ -514,7 +529,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
-        this.players = new ArrayList<IPlayer>();
+        this.refreshPList();
         for (int i = 0; i < ips.size(); i++) {
             try {
                 if (this.ip.matches(ips.get(i))) {
