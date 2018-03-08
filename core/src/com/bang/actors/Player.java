@@ -24,7 +24,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Deck deck;
     private int turn; //turn holder index
     private CharacterDeck characterDeck;
-
     private Character character;
     private int shotDistance;
     private int view; //bonus sulla distanza a cui si vedono i nemici
@@ -65,7 +64,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
         this.startTimeoutTime = System.currentTimeMillis();
-        //pesca carte;
+        if (turnHolder == this.pos){
+            if (this.character == null){
+                //pesca char
+                //pesca carte pari alle vite del char
+                this.playerTimeout = 120000;
+            }
+            //pesca 2 carte;        
+        }
     }
 
     public void giveTurn() {
@@ -85,7 +91,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void refreshPList() {
-        players = new ArrayList<IPlayer>();
+        this.players = new ArrayList<IPlayer>();
     }
 
     public void setIpList(ArrayList<String> ips) { //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
@@ -185,10 +191,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if(this.character == null){
                             //pesca char
                             //pesca carte pari alle vite del char
+                            this.playerTimeout = 120000;
                         }
                         else{
                             //pesca 2 carte
-                            this.playerTimeout = 120000;
                         }
                     }
                     else{
@@ -505,7 +511,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void initPlayerList(ArrayList<String> ips) {
-        this.players = new ArrayList<IPlayer>();
+        this.refreshPList();
         for (int i = 0; i < ips.size(); i++) {
             try {
                 if (this.ip.matches(ips.get(i))) {
