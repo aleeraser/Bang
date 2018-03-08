@@ -56,10 +56,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.playerTimeout = 100;
     }
 
-    public void giveTurn(int deckIndex, int[] callerClock) {
+    public void setTurn(int deckIndex, int holder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.turn = true;
         this.deck.setNextCardIndex(deckIndex);
+    }
+
+    public void giveTurn() {
+        Integer nextPlayer = findNext(this.pos);
+
+        for (int i = 0; i < players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
+                try {
+                    players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
+                } catch (RemoteException e) {
+                    UIUtils.print("Error while passing token to player " + i + ".");
+                    this.allertPlayerMissing(i);
+                    //e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void refreshPList() {
@@ -137,7 +153,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void checkTimeout(long currentTime) {
-        if (currentTime - startTimeoutTime > this.playerTimeout) {
+        Long delta = currentTime - startTimeoutTime;
+        if (delta > this.playerTimeout) {
             // ping il player con il token
             // se non risponde gestisci il player morto
         }
