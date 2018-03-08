@@ -54,7 +54,7 @@ public class Deck {
     }
 
     public ArrayList<Integer> shuffleDeck() {
-        this.deckIndices = randomArrayList(orderedDeck.size());
+        this.deckIndices = randomArrayList(this.orderedDeck.size());
         return this.deckIndices;
     }
 
