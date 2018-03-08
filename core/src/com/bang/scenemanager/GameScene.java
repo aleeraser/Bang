@@ -25,6 +25,7 @@ public class GameScene extends Scene {
 	PlayerBoardGroup playerBoard;
 	ArrayList<OtherBoardGroup> otherBoardList;
 	SelectedCardGroup selectedCard;
+	Character selectedCharacter;
 	TextButton playCardButton;
 	LogBox logBox;
 	
@@ -48,7 +49,7 @@ public class GameScene extends Scene {
         backgroundImage = null;
         
         /* TEST */
-        /*try {
+        try {
 			sceneManager.player = new Player();
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
@@ -57,7 +58,7 @@ public class GameScene extends Scene {
 			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
 		} catch (RemoteException e) {
 			e.printStackTrace();
-		}*/
+		}
 
         sceneManager.setInGame(true);
         
@@ -90,15 +91,22 @@ public class GameScene extends Scene {
         playerBoard.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	//System.out.println("Ouside handler");
-            	Card clickedCard = playerBoard.getLastClickedCard();
-            	dismissOldHighlights();
-            	if (clickedCard != null) {
-            		System.out.println(clickedCard.getName());
-            		selectedCard.showCard(clickedCard);
-            		
-            		isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
-            		playCardButton.setVisible(isPlayableCardSelected);
+            	
+            	if (!playerBoard.isLastClickedCharacter()) {
+	            	Card clickedCard = playerBoard.getLastClickedCard();
+	            	dismissOldHighlights();
+	            	if (clickedCard != null) {
+	            		System.out.println(clickedCard.getName());
+	            		selectedCard.showCard(clickedCard);
+	            		
+	            		isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
+	            		playCardButton.setVisible(isPlayableCardSelected);
+	            	}
+            	}
+            	
+            	else {
+            		dismissOldHighlights();
+            		selectedCard.showCharacterCard(playerBoard.getCharacter());
             	}
             }
         });

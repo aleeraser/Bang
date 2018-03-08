@@ -3,6 +3,7 @@ package com.bang.gameui;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bang.actors.Card;
+import com.bang.actors.Character;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -33,6 +34,13 @@ public class SelectedCardGroup extends Group {
 		cardImage = CardsUtils.createCardImageGroup(card.getName(), card.getValue(), card.getSuit(), height * BOARD_RATIO);
 		cardImage.setPosition((float)(width * (1-BOARD_RATIO) * 0.5), (float)(height * (1-BOARD_RATIO) * 0.5));
 		this.addActor(cardImage);
+	}
+	
+	public void  showCharacterCard(Character character) {
+		//removeShownCard();
+		cardImage = character.getCharacterCard(height * BOARD_RATIO);
+		cardImage.setPosition((float)(width * (1-BOARD_RATIO) * 0.5), (float)(height * (1-BOARD_RATIO) * 0.5));
+		this.addActor(cardImage);		
 	}
 	
 	protected void removeShownCard() {
