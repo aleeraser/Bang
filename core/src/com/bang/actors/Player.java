@@ -3,6 +3,8 @@ package com.bang.actors;
 import java.util.Enumeration;
 
 import com.badlogic.gdx.utils.Array;
+import com.bang.scenemanager.GameScene;
+import com.bang.scenemanager.SceneManager;
 import com.bang.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Clock clock;
     private long startTimeoutTime;
     private long playerTimeout;
+    private SceneManager sceneManager;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -80,6 +83,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
                    
         }
+        this.sceneManager.setScene(new GameScene(sceneManager));
     }
 
     public void giveTurn() {
@@ -227,6 +231,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.turn = this.pos;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
+                    this.sceneManager.setScene(new GameScene(sceneManager));
                 }
             }
 
@@ -626,6 +631,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             ;
         }
+    }
+
+    public void setSceneManager(SceneManager sc) {
+        this.sceneManager = sc;
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
