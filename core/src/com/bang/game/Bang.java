@@ -57,6 +57,9 @@ public class Bang extends ApplicationAdapter {
                 UIUtils.print("Error while polling player");
                 e.printStackTrace();
             }
+        } else {
+            if (sceneManager.getPlayer().isMyTurn())
+                sceneManager.setScene(new GameScene(sceneManager));
         }
     }
 
