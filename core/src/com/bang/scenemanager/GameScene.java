@@ -113,20 +113,25 @@ public class GameScene extends Scene {
         
         stage.addActor(playerBoard);
         
-        ArrayList<Card> cards = new ArrayList<Card>();
+        /*ArrayList<Card> cards = new ArrayList<Card>();
         cards.add(new Card(CardsUtils.CARD_BANG, CardsUtils.CARD_ACE, CardsUtils.SUIT_DIAMONDS));
         cards.add(new Card(CardsUtils.CARD_MISSED, CardsUtils.CARD_THREE, CardsUtils.SUIT_CLUBS));
         cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
         cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
         cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
+        */
         
-        try {
-			playerBoard.updateBoardCards(sceneManager.getPlayer().getHandCards());
-		} catch (RemoteException e) {
-			e.printStackTrace();
+        ArrayList<Card> cards = new ArrayList<Card>();
+		try {
+			cards = sceneManager.getPlayer().getHandCards();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
         
-        playerBoard.updateHandCards(cards);
+
+		playerBoard.updateBoardCards(cards);
+		playerBoard.updateHandCards(cards); 
         
         otherPlayerNumber = 4;
         
