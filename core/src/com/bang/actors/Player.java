@@ -61,6 +61,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
+        //pesca carte;
     }
 
     public void refreshPList() {
@@ -138,7 +139,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void checkTimeout(long currentTime) {
-        if (this.startTimeoutTime > 0){ //if not the game isn't still started
+        if (this.startTimeoutTime > 0 && this.turn != this.pos){ //if not the game isn't still started
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try{
                     players.get(this.turn).getPos(this.clock.getVec());
@@ -146,7 +147,22 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     //this code is executed only if the player is still up
                 }catch (RemoteException e) { //the turn Holder is crashed
                     this.removePlayer(this.turn, ips.get(this.turn), this.clock.getVec()); //remove the player locally
-
+                    int next = this.findNext(this.turn); 
+                    if (next == this.pos){ //you are the next
+                        this.turn = this.pos;
+                        if(this.character == null){
+                            //pesca char
+                            //pesca carte pari alle vite del char
+                        }
+                        else{
+                            //pesca 2 carte
+                            this.playerTimeout = 120000;
+                        }
+                    }
+                    else{
+                        this.turn = this.pos;
+                        this.startTimeoutTime = System.currentTimeMillis();
+                    }
                 }
                 // ping il player con il token
                 // se non risponde gestisci il player morto
@@ -555,7 +571,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
 
 
-//TODO ping al player in pos turno per vedere se è vivo, se è viso aspetti, altrimenti ti dichiari in possesso del turno.
+//TODO ping al player in pos turno per vedere se è vivo, se è vivo aspetti, altrimenti ti dichiari in possesso del turno.
 // tutticontrollano chi ha il turno, se quello con il turno muore controlli se tu sei quello subito dopo, nel caso ti dichiari avente il turno, altrimenti inizi a controllare quello subito dopo.
 //quando uno passa il turno avverte tutti. e tutti resettano il tempo di riferimento
 //quando uno ha ricevuto le carte iniziali cambia il temeout per un tempo plausibile al gioco.
