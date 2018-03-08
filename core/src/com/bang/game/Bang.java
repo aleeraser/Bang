@@ -46,12 +46,17 @@ public class Bang extends ApplicationAdapter {
 
         super.render();
         s.draw();
-        
+
         /* To allow scrolling */
         s.act();
 
         if (sceneManager.isInGame()) {
-            sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+            try {
+                sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+            } catch (RemoteException e) {
+                UIUtils.print("Error while polling player");
+                e.printStackTrace();
+            }
         }
     }
 
