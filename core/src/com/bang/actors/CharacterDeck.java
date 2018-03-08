@@ -15,6 +15,11 @@ public class CharacterDeck extends Deck{
         orderedDeck = buildOrderedDeck();
         nextCardIndex = 0;
     }
+    
+    public ArrayList<Integer> shuffleDeck() {
+        this.deckIndices = randomArrayList(this.orderedDeck.size());
+        return this.deckIndices;
+    }
 
     private ArrayList<Character> buildOrderedDeck() {
         ArrayList<Character> orderedDeck = new ArrayList<Character>();
@@ -40,6 +45,6 @@ public class CharacterDeck extends Deck{
     }
 
     public Character getCharacter(int cardIndex) {
-        return this.orderedDeck.get(cardIndex);
+        return this.orderedDeck.get(this.deckIndices.get(cardIndex));
     }
 }

@@ -59,7 +59,7 @@ public class Deck {
     }
 
     public Card getCard(int cardIndex) {
-        return this.orderedDeck.get(cardIndex);
+        return this.orderedDeck.get(deckIndices.get(cardIndex));
     }
 
     public void setIndices(ArrayList<Integer> indices) {

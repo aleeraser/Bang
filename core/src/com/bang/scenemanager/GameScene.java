@@ -130,8 +130,8 @@ public class GameScene extends Scene {
 		}
         
 
-		playerBoard.updateBoardCards(cards);
-		playerBoard.updateHandCards(cards); 
+		playerBoard.updateHandCards(cards);
+		playerBoard.updateBoardCards(new ArrayList<Card>()); 
         
         otherPlayerNumber = 4;
         
