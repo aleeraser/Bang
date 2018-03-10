@@ -11,6 +11,17 @@ public class Clock {
         this.clock = new int[length];
         this.owner = owner;
     }
+	
+	public String toString() {
+		String s = "[";
+		
+		for (int i: clock) {
+			s = s + " " + i + " ";
+		}
+		
+		s = s + "]";
+		return s;
+	}
  
     public int[] getVec(){
         return this.clock;

@@ -72,20 +72,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (this.character == null){
                 this.drawCharacter();
                 for (int i = 0; i < this.character.getLives(); i++) {
-                	System.out.println("Drawing character card... " + this.clock.clock.toString());
+                	System.out.println("Drawing character card... " + this.clock.toString());
                     this.draw();
-                    System.out.println("Drew character card. " + this.clock.clock.toString());
+                    System.out.println("Drew character card. " + this.clock.toString());
                 }
                 this.playerTimeout = 120000;
-                System.out.println("Calling 'giveTurn' " + this.clock.clock.toString());
+                System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 this.giveTurn();
             }
             else{
                 // standard turn
-            	System.out.println("Standard turn, drawing two cards... " + this.clock.clock.toString());
+            	System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.draw();
                 this.draw();
-                System.out.println("Standard turn, drew two cards. " + this.clock.clock.toString());
+                System.out.println("Standard turn, drew two cards. " + this.clock.toString());
             }
                    
         }
