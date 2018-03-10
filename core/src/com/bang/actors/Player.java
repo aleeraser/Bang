@@ -72,15 +72,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (this.character == null){
                 this.drawCharacter();
                 for (int i = 0; i < this.character.getLives(); i++) {
+                	System.out.println("Drawing character card... " + this.clock.clock.toString());
                     this.draw();
+                    System.out.println("Drew character card. " + this.clock.clock.toString());
                 }
                 this.playerTimeout = 120000;
+                System.out.println("Calling 'giveTurn' " + this.clock.clock.toString());
                 this.giveTurn();
             }
             else{
                 // standard turn
+            	System.out.println("Standard turn, drawing two cards... " + this.clock.clock.toString());
                 this.draw();
                 this.draw();
+                System.out.println("Standard turn, drew two cards. " + this.clock.clock.toString());
             }
                    
         }
@@ -91,8 +96,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
+            	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.clock.toString());
                 try {
                     players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
+                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.clock.toString());
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.allertPlayerMissing(i);
@@ -194,9 +201,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.deck.setIndices(indices);
 
         ArrayList<Integer> indexis = this.deck.getIndices();
-        for (int i = 0; i < indexis.size(); i++) {
+
+        /*for (int i = 0; i < indexis.size(); i++) {
             System.out.println(indexis.get(i));
-        }
+        }*/
 
         this.startTimeoutTime = System.currentTimeMillis();
     }
@@ -588,9 +596,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.characterDeck.setIndices(indices);
 
         ArrayList<Integer> indexis = this.characterDeck.getIndices();
-        for (int i = 0; i < indexis.size(); i++) {
+        
+        /*for (int i = 0; i < indexis.size(); i++) {
             System.out.println("CharDeck: " + indexis.get(i));
-        }
+        }*/
 
         startTimeoutTime = System.currentTimeMillis();
     }
