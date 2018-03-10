@@ -103,6 +103,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 try {
                     players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
                     System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
+                    
+                    /* */
+                    return;
+                    
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.allertPlayerMissing(i);
