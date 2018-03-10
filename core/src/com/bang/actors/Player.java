@@ -97,6 +97,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void giveTurn() {
         Integer nextPlayer = findNext(this.pos);
 
+        /* ORIGINALE */
         /*for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
             	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
@@ -111,7 +112,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }*/
         
-        /* TEST */
+        /* TEST, sembra funzionare ma non so se va anche in caso di guasti */
         try {
             players.get(nextPlayer).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
             System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());                    
