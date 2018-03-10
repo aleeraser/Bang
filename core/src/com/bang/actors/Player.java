@@ -97,23 +97,30 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void giveTurn() {
         Integer nextPlayer = findNext(this.pos);
 
-        for (int i = 0; i < players.size(); i++) {
+        /*for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
             	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
                 try {
                     players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
-                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
-                    
-                    /* */
-                    return;
-                    
+                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());                    
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.allertPlayerMissing(i);
                     //e.printStackTrace();
                 }
             }
+        }*/
+        
+        /* TEST */
+        try {
+            players.get(nextPlayer).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
+            System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());                    
+        } catch (RemoteException e) {
+            UIUtils.print("Error while passing token to player " + nextPlayer + ".");
+            this.allertPlayerMissing(nextPlayer);
+            //e.printStackTrace();
         }
+        
     }
 
     public void draw() {
