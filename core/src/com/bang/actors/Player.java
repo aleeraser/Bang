@@ -65,16 +65,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void setTurn(int deckIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
+        System.out.println("Starting 'setTurn'... " + this.clock.toString());
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
         this.startTimeoutTime = System.currentTimeMillis();
         if (turnHolder == this.pos){
             if (this.character == null){
+            	System.out.println("Drawing character card... " + this.clock.toString());
                 this.drawCharacter();
+                System.out.println("Drew character card. " + this.clock.toString());
                 for (int i = 0; i < this.character.getLives(); i++) {
-                	System.out.println("Drawing character card... " + this.clock.toString());
+                	System.out.println("Drawing card... " + this.clock.toString());
                     this.draw();
-                    System.out.println("Drew character card. " + this.clock.toString());
+                    System.out.println("Drew card. " + this.clock.toString());
                 }
                 this.playerTimeout = 120000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
@@ -96,10 +99,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
-            	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.clock.toString());
+            	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
                 try {
                     players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
-                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.clock.toString());
+                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.allertPlayerMissing(i);
