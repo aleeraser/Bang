@@ -17,10 +17,10 @@ public class UIUtils {
 
     public static int btnWidth = 200;
 
-    public static TextButton createBtn(TextButton b, String t, float x, float y, Stage stage,
-            TextButtonStyle textButtonStyle, ChangeListener cl) {
+    public static TextButton createBtn(String t, float x, float y, Stage stage, TextButtonStyle textButtonStyle,
+            ChangeListener cl) {
 
-        b = new TextButton(t, textButtonStyle);
+        TextButton b = new TextButton(t, textButtonStyle);
         b.setTransform(true);
 
         stage.addActor(b);
@@ -40,7 +40,7 @@ public class UIUtils {
     }
 
     public static void showError(String err, Exception e, Stage s, SceneManager sm, Label t, ArrayList<Actor> actors) {
-        for (Actor a: actors) {
+        for (Actor a : actors) {
             a.remove();
         }
 

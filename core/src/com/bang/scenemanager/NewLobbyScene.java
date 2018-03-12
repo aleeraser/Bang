@@ -18,7 +18,7 @@ import com.bang.utils.UIUtils;
 
 public class NewLobbyScene extends Scene {
     
-    TextButton btnBack, btnAdd;
+    TextButton btnBack, btnNewLobby;
     Label text;
     String[] lob_names;
     String server_url;
@@ -56,7 +56,7 @@ public class NewLobbyScene extends Scene {
         removeOnError.add(lobbyName);
         
         // Back
-        UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnBack = UIUtils.createBtn("Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sceneManager.setScene(new RoomListScene(sceneManager));
@@ -64,7 +64,7 @@ public class NewLobbyScene extends Scene {
         });
         
         // New lobby
-        UIUtils.createBtn(btnAdd, "Crea", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(),
+        btnNewLobby = UIUtils.createBtn("Crea", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(),
         new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
