@@ -96,6 +96,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void giveTurn() {
         Integer nextPlayer = findNext(this.pos);
+        this.turn = nextPlayer;
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null && i != nextPlayer) {
