@@ -9,7 +9,7 @@ public interface IPlayer extends Remote {
     //void setPlayerList(ArrayList<Player> pl); //assumiamo che la lista venga inizializzata alla creazione della stanza e passata ad ogni giocatore.
     boolean isMyTurn() throws RemoteException;
 
-    public boolean isMyTurnEnded() throws RemoteException;
+    int getTurn() throws RemoteException;
     
     void giveTurn() throws RemoteException;
 

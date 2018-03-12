@@ -22,7 +22,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
     private Deck deck;
-    private int turn; //turn holder index
+    private int turnOwner; //turn holder index
     private CharacterDeck characterDeck;
     private Character character;
     private int shotDistance;
@@ -36,7 +36,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Clock clock;
     private long startTimeoutTime;
     private long playerTimeout;
-    private Boolean readyToGiveTurn;
+    private int turn;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -53,26 +53,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.deck = new Deck();
 
-        this.turn = 0;
+        this.turnOwner = 0;
         this.characterDeck = new CharacterDeck();
 
         this.playerTimeout = 100;
         this.startTimeoutTime = 0;
-        this.readyToGiveTurn = false;
+        this.turn = 0;
     }
 
     public boolean isMyTurn() {
-        return (this.pos == this.turn);
+        return (this.pos == this.turnOwner);
     }
 
-    public boolean isMyTurnEnded(){
-        return this.readyToGiveTurn;
+    public int getTurn(){
+        return this.turn;
     }
 
     public void setTurn(int deckIndex, int characterIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         System.out.println("Starting 'setTurn'... " + this.clock.toString());
-        this.turn = turnHolder;
+        this.turnOwner = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
         this.characterDeck.setNextCardIndex(characterIndex);
         this.startTimeoutTime = System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.playerTimeout = 30000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 //this.giveTurn();
-                this.readyToGiveTurn = true;
+                this.turn ++ ;
             } else {
                 // standard turn
                 System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
@@ -102,9 +102,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void giveTurn() {
-        this.readyToGiveTurn = false;
         Integer nextPlayer = findNext(this.pos);
-        this.turn = nextPlayer;
+        this.turnOwner = nextPlayer;
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null && i != nextPlayer) {
@@ -228,20 +227,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void checkTimeout(long currentTime) {
-        if (this.startTimeoutTime > 0 && this.turn != this.pos) { //if not the game isn't still started
+        if (this.startTimeoutTime > 0 && this.turnOwner != this.pos) { //if not the game isn't still started
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try {
                     System.out.println("checking if the turn holder is alive");
-                    players.get(this.turn).getPos(this.clock.getVec());
+                    players.get(this.turnOwner).getPos(this.clock.getVec());
                     this.startTimeoutTime = System.currentTimeMillis();
                     //this code is executed only if the player is still up
                 } catch (RemoteException e) { //the turn Holder is crashed
-                    this.removePlayer(this.turn, ips.get(this.turn), this.clock.getVec()); //remove the player locally
-                    System.out.println("the Player " + this.turn +" crashed.");
-                    int next = this.findNext(this.turn);
+                    this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
+                    System.out.println("the Player " + this.turnOwner +" crashed.");
+                    int next = this.findNext(this.turnOwner);
                     if (next == this.pos) { //you are the next
                         System.out.println("I'm taking the turn");
-                        this.turn = this.pos;
+                        this.turnOwner = this.pos;
 
                         if (this.character == null) {
                             // initial turn
@@ -251,14 +250,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             }
                             this.playerTimeout = 30000;
                             //this.giveTurn();
-                            this.readyToGiveTurn = true;
+                            this.turn ++;
                         } else {
                             // standard turn
                             this.draw();
                             this.draw();
                         }
                     } else {
-                        this.turn = this.pos;
+                        this.turnOwner = this.pos;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
                 }
