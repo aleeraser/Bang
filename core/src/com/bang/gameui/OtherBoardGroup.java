@@ -74,12 +74,13 @@ public class OtherBoardGroup extends Group {
 		this.addActor(boardImage);
 		
 		// Char image handling
-		/*charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
+		//charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
 		charWidth = width * CHAR_WIDTH_PERCENTAGE;
 		charHeight = (float) (charWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
 		charPosY = height/2 - charHeight/2;
-		charImage.setSize(charWidth, charHeight);
+		
+		/*charImage.setSize(charWidth, charHeight);
 		charImage.setPosition(charPosX, charPosY);
 		
 		charImage.addListener(new ClickListener() {
