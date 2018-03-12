@@ -26,7 +26,7 @@ public class GameScene extends Scene {
 	ArrayList<OtherBoardGroup> otherBoardList;
 	SelectedCardGroup selectedCard;
 	Character selectedCharacter;
-	TextButton playCardButton;
+	TextButton playCardButton, endTurnButton;
 	LogBox logBox;
 	
 	/* Gameplay info */
@@ -71,7 +71,7 @@ public class GameScene extends Scene {
         playCardButton = UIUtils.createBtn(
         		playCardButton, 
         		"Gioca Carta", 
-        		(float)(selectedCard.getX() + selectedCard.getWidth() + 150), 
+        		(float)(selectedCard.getX() + selectedCard.getWidth() + 100), 
         		(float)4, 
         		stage, 
         		sceneManager.getTextButtonStyle(), 
@@ -80,6 +80,21 @@ public class GameScene extends Scene {
             public void changed(ChangeEvent event, Actor actor) {
             	System.out.println("Should play card");
             	logBox.addEvent("Carta giocata");
+            }
+        });
+        
+        endTurnButton = UIUtils.createBtn(
+        		endTurnButton, 
+        		"Termina turno", 
+        		(float)(selectedCard.getX() + selectedCard.getWidth() + 200), 
+        		(float)4, 
+        		stage, 
+        		sceneManager.getTextButtonStyle(), 
+        		new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	System.out.println("End turn");
+            	logBox.addEvent("Turno terminato");
             }
         });
         
@@ -99,8 +114,14 @@ public class GameScene extends Scene {
 	            		System.out.println(clickedCard.getName());
 	            		selectedCard.showCard(clickedCard);
 	            		
-	            		isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
-	            		playCardButton.setVisible(isPlayableCardSelected);
+                        isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
+                        try {
+                            playCardButton.setVisible(isPlayableCardSelected && sceneManager.getPlayer().isMyTurn());
+                            endTurnButton.setVisible(sceneManager.getPlayer().isMyTurn());
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                            UIUtils.print("ERROR");
+                        }
 	            	}
             	}
             	
