@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.bang.actors.IPlayer;
 import com.bang.scenemanager.GameScene;
 import com.bang.scenemanager.MainMenuScene;
 import com.bang.scenemanager.SceneManager;
@@ -37,6 +38,7 @@ public class Bang extends ApplicationAdapter {
         Stage s = sceneManager.getCurrentStage();
         Texture bg = sceneManager.getCurrentBackgroundImage();
         Batch batch = s.getBatch();
+        IPlayer me = sceneManager.getPlayer();
 
         if (bg != null) {
             batch.begin();
@@ -52,11 +54,14 @@ public class Bang extends ApplicationAdapter {
 
         try {
             if (sceneManager.isInGame()) {
-                sceneManager.getPlayer().checkTimeout(System.currentTimeMillis());
+                me.checkTimeout(System.currentTimeMillis());
             }
             
-            if (sceneManager.getPlayer().isMyTurn() && !sceneManager.isInGame()) {
+            if (me.isMyTurn()) {
                     sceneManager.setScene(new GameScene(sceneManager));
+                    if (me.isMyTurnEnded()) {
+                        me.giveTurn();
+                    }
             }
         } catch (RemoteException e) {
             UIUtils.print("Error while polling player");

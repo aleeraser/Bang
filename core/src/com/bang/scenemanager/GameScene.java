@@ -96,7 +96,18 @@ public class GameScene extends Scene {
             }
         });
         
-        // playCardButton.setVisible(false);
+        
+        
+        try {
+            endTurnButton.setTouchable(sceneManager.getPlayer().isMyTurn() ? Touchable.enabled : Touchable.disabled);
+            String bool = sceneManager.getPlayer().isMyTurn() ? "yes" : "no";
+            UIUtils.print("End button is clickable: " + bool);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            UIUtils.print("ERROR");
+        }
+
+
         
         playerBoard = new PlayerBoardGroup((float)(stage.getWidth() * 0.4), (float)(stage.getHeight() * 0.3), sceneManager);
         playerBoard.setPosition((float)(selectedCard.getX() + selectedCard.getWidth() + 20), (float)(stage.getHeight() * 0.15));	
@@ -115,7 +126,12 @@ public class GameScene extends Scene {
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
                         try {
                             playCardButton.setTouchable(isPlayableCardSelected && sceneManager.getPlayer().isMyTurn() ? Touchable.enabled : Touchable.disabled);
+                            String bool = isPlayableCardSelected && sceneManager.getPlayer().isMyTurn() ? "yes" : "no";
+                            UIUtils.print("Play button is clickable: " + bool);
+                            
                             endTurnButton.setTouchable(sceneManager.getPlayer().isMyTurn() ? Touchable.enabled : Touchable.disabled);
+                            bool = sceneManager.getPlayer().isMyTurn() ? "yes" : "no";
+                            UIUtils.print("End button is clickable: " + bool);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                             UIUtils.print("ERROR");
