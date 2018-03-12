@@ -177,7 +177,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public ArrayList<IPlayer> getPlayers() {
         UIUtils.print(this.players.size() + "");
         return this.getPlayers(new int[this.players.size()]);
-    }
+    }if(i!=this.pos&&players.get(i)!=null)
+
+    {
 
     public ArrayList<IPlayer> getPlayers(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
@@ -263,7 +265,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.turn ++;
                         }
                     } else {
-                        this.turnOwner = this.pos;
+                        this.turnOwner = next;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
                 }
