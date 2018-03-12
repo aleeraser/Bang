@@ -219,7 +219,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void checkTimeout(long currentTime) {
-        System.out.println("in checkTimeout-> start: " + this.startTimeoutTime + "current: " + currentTime);
         if (this.startTimeoutTime > 0 && this.turn != this.pos) { //if not the game isn't still started
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try {

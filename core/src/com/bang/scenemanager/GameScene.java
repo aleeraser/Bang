@@ -71,7 +71,7 @@ public class GameScene extends Scene {
         playCardButton = UIUtils.createBtn(
         		playCardButton, 
         		"Gioca Carta", 
-        		(float)(selectedCard.getX() + selectedCard.getWidth() + 50), 
+        		(float)(selectedCard.getX() + selectedCard.getWidth() + 20), 
         		(float)4, 
         		stage, 
         		sceneManager.getTextButtonStyle(), 
@@ -98,7 +98,7 @@ public class GameScene extends Scene {
             }
         });
         
-        playCardButton.setVisible(false);
+        // playCardButton.setVisible(false);
         
         playerBoard = new PlayerBoardGroup((float)(stage.getWidth() * 0.4), (float)(stage.getHeight() * 0.3), sceneManager);
         playerBoard.setPosition((float)(selectedCard.getX() + selectedCard.getWidth() + 20), (float)(stage.getHeight() * 0.15));	
