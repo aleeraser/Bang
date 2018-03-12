@@ -6,18 +6,16 @@ import java.util.ArrayList;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
-import com.bang.actors.Player;
+import com.bang.actors.IPlayer;
 import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
 import com.bang.gameui.SelectedCardGroup;
-import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
 
 public class GameScene extends Scene {
@@ -133,7 +131,12 @@ public class GameScene extends Scene {
 		playerBoard.updateHandCards(cards);
 		playerBoard.updateBoardCards(new ArrayList<Card>()); 
         
-        otherPlayerNumber = 4;
+        try {
+			otherPlayerNumber = sceneManager.player.getPlayers().size() - 1;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         /* Dynamic sizing of other players boards */
         obHeight = (float)(stage.getHeight() * 0.24);
@@ -141,12 +144,37 @@ public class GameScene extends Scene {
         
         otherBoardList = new ArrayList<OtherBoardGroup>();
         
+        /* Get player info */
+        IPlayer me = sceneManager.player;
+        int playerNum = 0;
+        int myPos = 0;
+        ArrayList<IPlayer> players;
+        
+        try {
+        	players = me.getPlayers();
+        	playerNum = players.size();
+        	myPos = me.getPos(new int [playerNum]);        	
+        } catch (RemoteException e1) {
+			e1.printStackTrace();
+			System.out.println("ERROR: not able to get other playes info.");
+			return;
+		}
+        
         for (int i = 0; i < otherPlayerNumber; i++) {
         	final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager);
 	        otherBoardList.add(otherBoard);
         	otherBoard.setPosition(50 + 10 *i + obWidth * i, 500);
-	        otherBoard.updateBoardCards(cards);
-	        otherBoard.updateHandCards(cards);
+        	
+        	int index = (myPos + 1 + i) % (playerNum);
+        	
+        	try {
+        		otherBoard.updateBoardCards(players.get(index).getCards(new int [playerNum]));
+        		otherBoard.updateHandCards(players.get(index).getHandCards());
+        	} catch (RemoteException e) {
+        		e.printStackTrace();
+        		System.out.println("ERROR: not able to get other playes info.");
+        		return;
+        	}
 	        
 	        otherBoard.addListener(new ClickListener() {
 	            @Override
