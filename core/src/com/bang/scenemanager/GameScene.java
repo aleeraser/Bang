@@ -201,15 +201,20 @@ public class GameScene extends Scene {
 	        otherBoard.addListener(new ClickListener() {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {
-	            	//System.out.println("Ouside handler");
-	            	Card clickedCard = otherBoard.getLastClickedCard();
-	            	dismissOldHighlights(otherBoard);
-	            	if (clickedCard != null) {
-	            		System.out.println(clickedCard.getName());
-	            		selectedCard.showCard(clickedCard);
-	            		
-	            		isPlayableCardSelected = false;
-	            		playCardButton.setVisible(isPlayableCardSelected);
+	            	if (otherBoard.isLastClickedCharacter() == false){
+		            	Card clickedCard = otherBoard.getLastClickedCard();
+		            	dismissOldHighlights(otherBoard);
+		            	if (clickedCard != null) {
+		            		System.out.println(clickedCard.getName());
+		            		selectedCard.showCard(clickedCard);
+		            		
+		            		isPlayableCardSelected = false;
+		            		playCardButton.setVisible(isPlayableCardSelected);
+		            	}
+	            	}
+	            	else {
+	            		dismissOldHighlights();
+	            		selectedCard.showCharacterCard(otherBoard.getCharacter());
 	            	}
 	            }
 	        });

@@ -56,6 +56,11 @@ public class OtherBoardGroup extends Group {
 	// Action
 	protected Card lastClickedCard;
 	protected CardHighlight border;	
+	protected boolean isPlayableCardSelected;
+	
+	// Character
+	protected Character character;
+	protected boolean isLastClickedChar;
 	
 	public OtherBoardGroup(float width, float height, SceneManager sceneManager) {
 		this.width = width;
@@ -111,6 +116,7 @@ public class OtherBoardGroup extends Group {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	lastClickedCard = c;
+	            	isLastClickedChar = false;
 	            	
 	            	// Card border
 	            	if (border != null) {
@@ -142,13 +148,15 @@ public class OtherBoardGroup extends Group {
 			img.addListener(new ClickListener() {
 				@Override
 	            public void clicked(InputEvent event, float x, float y) {
-	            	lastClickedCard = c;
+	            	//lastClickedCard = c;
 	            }
 			});			
 		}
 	}
 	
 	public void setCharacter(Character character) {
+		this.character = character;
+		
 		charWidth = width * CHAR_WIDTH_PERCENTAGE;
 		charHeight = (float) (charWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
@@ -162,7 +170,7 @@ public class OtherBoardGroup extends Group {
 		charImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            	//isLastClickedChar = true;
+            	isLastClickedChar = true;
             	System.out.println("Inside handler");
             }
         });
@@ -184,6 +192,14 @@ public class OtherBoardGroup extends Group {
 	
 	public void dismissHighlight() {
 		if (border != null) border.remove();
+	}
+	
+	public boolean isLastClickedCharacter() {
+		return isLastClickedChar;
+	}
+	
+	public com.bang.actors.Character getCharacter() {
+		return character;
 	}
 	
 	
