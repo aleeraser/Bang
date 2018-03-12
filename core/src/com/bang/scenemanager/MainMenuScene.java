@@ -11,7 +11,7 @@ import com.bang.utils.UIUtils;
 
 public class MainMenuScene extends Scene {
 
-    TextButton btnJoinLobby;
+    TextButton btnStart;
 
     Label text;
 
@@ -28,7 +28,7 @@ public class MainMenuScene extends Scene {
 
         backgroundImage = new Texture(Gdx.files.internal("images/bang_logo_edit.png"));
 
-        UIUtils.createBtn(btnJoinLobby, "Inizia!", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10,
+        btnStart = UIUtils.createBtn("Inizia!", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10,
                 stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

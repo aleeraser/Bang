@@ -51,7 +51,7 @@ public class RoomListScene extends Scene {
         scrollPane.layout();
 
         // Back
-        UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnBack = UIUtils.createBtn("Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sceneManager.setScene(new MainMenuScene(sceneManager));
@@ -59,7 +59,7 @@ public class RoomListScene extends Scene {
         });
 
         // Join room
-        UIUtils.createBtn(btnJoin, "Entra", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnJoin = UIUtils.createBtn("Entra", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
@@ -90,7 +90,7 @@ public class RoomListScene extends Scene {
 
         // New room
         final String[] lobs = updateLobbyList();
-        UIUtils.createBtn(btnNewLobby, "Nuova stanza", Gdx.graphics.getWidth() - 230, 10, stage,
+        btnNewLobby = UIUtils.createBtn("Nuova stanza", Gdx.graphics.getWidth() - 230, 10, stage,
                 sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

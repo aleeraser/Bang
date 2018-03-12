@@ -10,6 +10,7 @@ import java.util.Arrays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -24,7 +25,7 @@ public class InLobbyScene extends Scene {
 
     List<String> list;
     ScrollPane scrollPane;
-    TextButton btnBack, btnJoin, btnNewLobby;
+    TextButton btnBack, btnUpdate, btnStart;
     Label text, title;
     boolean isRoomMaster;
     String lobbyName;
@@ -61,7 +62,7 @@ public class InLobbyScene extends Scene {
         scrollPane.layout();
 
         // Back
-        UIUtils.createBtn(btnBack, "Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnBack = UIUtils.createBtn("Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
@@ -91,16 +92,24 @@ public class InLobbyScene extends Scene {
         });
 
         // Update
-        UIUtils.createBtn(btnJoin, "Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                updatePlayerList();
-            }
-        });
+        btnUpdate = UIUtils.createBtn("Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        int size = updatePlayerList().size();
+                        if (isRoomMaster) {
+                            if (size > 1) {
+                                btnStart.setTouchable(Touchable.enabled);
+                            } else {
+                                btnStart.setTouchable(Touchable.disabled);
+                            }
+                        }
+                    }
+                });
 
         // Start
         if (isRoomMaster) {
-            UIUtils.createBtn(btnJoin, "Inizia Partita", Gdx.graphics.getWidth() - 230, 10, stage,
+            btnStart = UIUtils.createBtn("Inizia Partita", Gdx.graphics.getWidth() - 230, 10, stage,
                     sceneManager.getTextButtonStyle(), new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
@@ -125,9 +134,11 @@ public class InLobbyScene extends Scene {
                             }
                         }
                     });
+            btnStart.setTouchable(Touchable.disabled);
         }
 
         updatePlayerList();
+
     }
 
     protected ArrayList<String> updatePlayerList() {

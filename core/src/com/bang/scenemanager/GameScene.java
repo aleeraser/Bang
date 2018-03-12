@@ -69,7 +69,6 @@ public class GameScene extends Scene {
         stage.addActor(selectedCard);
         
         playCardButton = UIUtils.createBtn(
-        		playCardButton, 
         		"Gioca Carta", 
         		(float)(selectedCard.getX() + selectedCard.getWidth() + 20), 
         		(float)4, 
@@ -84,7 +83,6 @@ public class GameScene extends Scene {
         });
         
         endTurnButton = UIUtils.createBtn(
-        		endTurnButton, 
         		"Termina turno", 
         		(float)(selectedCard.getX() + selectedCard.getWidth() + 250), 
         		(float)4, 
