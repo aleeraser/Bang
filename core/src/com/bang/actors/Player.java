@@ -80,7 +80,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.draw();
                     System.out.println("Drew card. " + this.clock.toString());
                 }
-                this.playerTimeout = 120000;
+                this.playerTimeout = 30000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 this.giveTurn();
             } else {
@@ -215,16 +215,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.deck.setIndices(indices);
 
-        ArrayList<Integer> indexis = this.deck.getIndices();
-
-        /*for (int i = 0; i < indexis.size(); i++) {
-            System.out.println(indexis.get(i));
-        }*/
-
         this.startTimeoutTime = System.currentTimeMillis();
     }
 
     public void checkTimeout(long currentTime) {
+        System.out.println("in checkTimeout-> start: " + this.startTimeoutTime + "current: " + currentTime);
         if (this.startTimeoutTime > 0 && this.turn != this.pos) { //if not the game isn't still started
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try {
@@ -245,7 +240,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             for (int i = 0; i < this.character.getLives(); i++) {
                                 this.draw();
                             }
-                            this.playerTimeout = 120000;
+                            this.playerTimeout = 30000;
                             this.giveTurn();
                         } else {
                             // standard turn
