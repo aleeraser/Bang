@@ -222,6 +222,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (this.startTimeoutTime > 0 && this.turn != this.pos) { //if not the game isn't still started
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try {
+                    System.out.println("checking if the turn holder is alive");
                     players.get(this.turn).getPos(this.clock.getVec());
                     this.startTimeoutTime = System.currentTimeMillis();
                     //this code is executed only if the player is still up

@@ -1,9 +1,17 @@
 package com.bang.actors;
 
+import java.io.Serializable;
+
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.bang.utils.CardsUtils;
 
-public class Card {
+public class Card implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8118838334949635992L;
+	
 	
 	protected String name;
 	protected String value;
