@@ -191,6 +191,7 @@ public class GameScene extends Scene {
         	int index = (myPos + 1 + i) % (playerNum);
         	
         	try {
+        		otherBoard.setCharacter(players.get(index).getCharacter());
         		otherBoard.updateBoardCards(players.get(index).getCards(new int [playerNum]));
         		otherBoard.updateHandCards(players.get(index).getHandCards());
         	} catch (RemoteException e) {
