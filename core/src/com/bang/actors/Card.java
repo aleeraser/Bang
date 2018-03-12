@@ -16,24 +16,24 @@ public class Card implements Serializable {
 	protected String name;
 	protected String value;
 	protected int suit;
-	protected Boolean hasTarget;
+	protected String type;
 	
 	public Card(String name, String value, int suit) {
 		this.name = name;
 		this.value = value;
 		this.suit = suit;
-		this.hasTarget = null;
+		this.type = null;
 	}
 
-	public Card(String name, String value, int suit, Boolean type) {
+	public Card(String name, String value, int suit, String type) {
 		this.name = name;
 		this.value = value;
 		this.suit = suit;
-		this.hasTarget = type;
+		this.type = type;
 	}
 
 	public Card copyCard(){
-		return new Card(this.name, this.value, this.suit, this.hasTarget);
+		return new Card(this.name, this.value, this.suit, this.type);
 	}
 	
 	public String getName() {
@@ -60,7 +60,7 @@ public class Card implements Serializable {
 		return CardsUtils.createBackCardImageGroup(height);
 	}
 
-	public Boolean hasTarget(){
-		return this.hasTarget;
+	public String getType(){
+		return this.type;
 	}
 }
