@@ -62,6 +62,7 @@ public class Bang extends ApplicationAdapter {
                     me.giveTurn();
                 } else if (me.getTurn() == 2) {
                     sceneManager.setScene(new GameScene(sceneManager));
+                    me.giveTurn();
                 }
             }
         } catch (RemoteException e) {
