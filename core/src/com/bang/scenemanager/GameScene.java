@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -71,7 +72,7 @@ public class GameScene extends Scene {
         playCardButton = UIUtils.createBtn(
         		playCardButton, 
         		"Gioca Carta", 
-        		(float)(selectedCard.getX() + selectedCard.getWidth() + 100), 
+        		(float)(selectedCard.getX() + selectedCard.getWidth() + 50), 
         		(float)4, 
         		stage, 
         		sceneManager.getTextButtonStyle(), 
@@ -86,7 +87,7 @@ public class GameScene extends Scene {
         endTurnButton = UIUtils.createBtn(
         		endTurnButton, 
         		"Termina turno", 
-        		(float)(selectedCard.getX() + selectedCard.getWidth() + 200), 
+        		(float)(selectedCard.getX() + selectedCard.getWidth() + 250), 
         		(float)4, 
         		stage, 
         		sceneManager.getTextButtonStyle(), 
@@ -116,8 +117,8 @@ public class GameScene extends Scene {
 	            		
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
                         try {
-                            playCardButton.setVisible(isPlayableCardSelected && sceneManager.getPlayer().isMyTurn());
-                            endTurnButton.setVisible(sceneManager.getPlayer().isMyTurn());
+                            playCardButton.setTouchable(isPlayableCardSelected && sceneManager.getPlayer().isMyTurn() ? Touchable.enabled : Touchable.disabled);
+                            endTurnButton.setTouchable(sceneManager.getPlayer().isMyTurn() ? Touchable.enabled : Touchable.disabled);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                             UIUtils.print("ERROR");
