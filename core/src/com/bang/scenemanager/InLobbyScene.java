@@ -96,7 +96,12 @@ public class InLobbyScene extends Scene {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        updatePlayerList();
+                        if (updatePlayerList().size() > 1) {
+                            btnStart.setTouchable(Touchable.enabled);
+                        } else {
+                            btnStart.setTouchable(Touchable.disabled);
+                        }
+
                     }
                 });
 
