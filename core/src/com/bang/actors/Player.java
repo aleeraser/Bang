@@ -77,7 +77,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.characterDeck.setNextCardIndex(characterIndex);
         this.startTimeoutTime = System.currentTimeMillis();
         if (turnHolder == this.pos) {
-            if (this.character == null) {
+            if (this.turn==0) {
                 System.out.println("Drawing character card... " + this.clock.toString());
                 this.drawCharacter();
                 System.out.println("Drew character card. " + this.clock.toString());
@@ -90,12 +90,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 //this.giveTurn();
                 this.turn ++ ;
-            } else {
+            } else if(turn >1){
                 // standard turn
                 System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.draw();
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
+            }
+            else {
+                this.turn ++;
             }
 
         }
@@ -242,7 +245,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         System.out.println("I'm taking the turn");
                         this.turnOwner = this.pos;
 
-                        if (this.character == null) {
+                        if (this.turn==0) {
                             // initial turn
                             this.drawCharacter();
                             for (int i = 0; i < this.character.getLives(); i++) {
@@ -251,10 +254,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.playerTimeout = 30000;
                             //this.giveTurn();
                             this.turn ++;
-                        } else {
+                        } else if (this.turn>1) {
                             // standard turn
                             this.draw();
                             this.draw();
+                        }
+                        else {
+                            this.turn ++;
                         }
                     } else {
                         this.turnOwner = this.pos;
