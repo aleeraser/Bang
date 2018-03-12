@@ -132,11 +132,11 @@ public class InLobbyScene extends Scene {
                             }
                         }
                     });
+            btnStart.setTouchable(Touchable.disabled);
         }
 
         updatePlayerList();
 
-        btnStart.setTouchable(Touchable.disabled);
     }
 
     protected ArrayList<String> updatePlayerList() {
