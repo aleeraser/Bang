@@ -55,15 +55,16 @@ public class Bang extends ApplicationAdapter {
         try {
             if (sceneManager.isInGame()) {
                 me.checkTimeout(System.currentTimeMillis());
+
+                GameScene gs = (GameScene)sceneManager.getCurrentScene();
+                gs.update();
             }
             
             if (me.isMyTurn() && !sceneManager.isInGame()) {
                 if (me.getTurn() == 1) {
-                    UIUtils.print("Sono nel turno 1, ho appena consegnato il turno");
                     me.giveTurn();
                 } else if (me.getTurn() == 2) {
                     sceneManager.setScene(new GameScene(sceneManager));
-                    UIUtils.print("Sono nel turno 2, ho appena consegnato il turno. Dovrebbe esserci la GUI.");
                     me.giveTurn();
                 }
             }
