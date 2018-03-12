@@ -36,6 +36,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Clock clock;
     private long startTimeoutTime;
     private long playerTimeout;
+    private Boolean readyToGiveTurn;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -57,10 +58,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.playerTimeout = 100;
         this.startTimeoutTime = 0;
+        this.readyToGiveTurn = false;
     }
 
     public boolean isMyTurn() {
         return (this.pos == this.turn);
+    }
+
+    public boolean isMyTurnEnded(){
+        return this.readyToGiveTurn;
     }
 
     public void setTurn(int deckIndex, int characterIndex, int turnHolder, int[] callerClock) {
@@ -82,7 +88,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 this.playerTimeout = 30000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
-                this.giveTurn();
+                //this.giveTurn();
+                this.readyToGiveTurn = true;
             } else {
                 // standard turn
                 System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
@@ -95,6 +102,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void giveTurn() {
+        this.readyToGiveTurn = false;
         Integer nextPlayer = findNext(this.pos);
         this.turn = nextPlayer;
 
@@ -242,7 +250,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 this.draw();
                             }
                             this.playerTimeout = 30000;
-                            this.giveTurn();
+                            //this.giveTurn();
+                            this.readyToGiveTurn = true;
                         } else {
                             // standard turn
                             this.draw();
