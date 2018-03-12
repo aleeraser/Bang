@@ -59,38 +59,38 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.startTimeoutTime = 0;
     }
 
-    public boolean isMyTurn(){
-        return(this.pos==this.turn);
+    public boolean isMyTurn() {
+        return (this.pos == this.turn);
     }
 
-    public void setTurn(int deckIndex, int turnHolder, int[] callerClock) {
+    public void setTurn(int deckIndex, int characterIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         System.out.println("Starting 'setTurn'... " + this.clock.toString());
         this.turn = turnHolder;
         this.deck.setNextCardIndex(deckIndex);
+        this.characterDeck.setNextCardIndex(characterIndex);
         this.startTimeoutTime = System.currentTimeMillis();
-        if (turnHolder == this.pos){
-            if (this.character == null){
-            	System.out.println("Drawing character card... " + this.clock.toString());
+        if (turnHolder == this.pos) {
+            if (this.character == null) {
+                System.out.println("Drawing character card... " + this.clock.toString());
                 this.drawCharacter();
                 System.out.println("Drew character card. " + this.clock.toString());
                 for (int i = 0; i < this.character.getLives(); i++) {
-                	System.out.println("Drawing card... " + this.clock.toString());
+                    System.out.println("Drawing card... " + this.clock.toString());
                     this.draw();
                     System.out.println("Drew card. " + this.clock.toString());
                 }
                 this.playerTimeout = 120000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 this.giveTurn();
-            }
-            else{
+            } else {
                 // standard turn
-            	System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
+                System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.draw();
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
             }
-                   
+
         }
     }
 
@@ -99,10 +99,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null && i != nextPlayer) {
-            	System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
+                System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
                 try {
-                    players.get(i).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
-                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());                    
+                    players.get(i).setTurn(deck.getNextCardIndex(), characterDeck.getNextCardIndex(), nextPlayer,
+                            this.clock.getVec());
+                    System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.allertPlayerMissing(i);
@@ -110,16 +111,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
         }
-        /* TEST, sembra funzionare ma non so se va anche in caso di guasti */
+
         try {
-            players.get(nextPlayer).setTurn(deck.getNextCardIndex(), nextPlayer, this.clock.getVec());
-            System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());                    
+            players.get(nextPlayer).setTurn(deck.getNextCardIndex(), characterDeck.getNextCardIndex(), nextPlayer,
+                    this.clock.getVec());
+            System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
         } catch (RemoteException e) {
             UIUtils.print("Error while passing token to player " + nextPlayer + ".");
             this.allertPlayerMissing(nextPlayer);
             //e.printStackTrace();
         }
-        
+
     }
 
     public void draw() {
@@ -182,7 +184,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return handCards.get(i);
     }
 
-    public ArrayList<Card> getHandCards(){
+    public ArrayList<Card> getHandCards() {
         return this.handCards;
     }
 
@@ -609,7 +611,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.characterDeck.setIndices(indices);
 
         ArrayList<Integer> indexis = this.characterDeck.getIndices();
-        
+
         /*for (int i = 0; i < indexis.size(); i++) {
             System.out.println("CharDeck: " + indexis.get(i));
         }*/
