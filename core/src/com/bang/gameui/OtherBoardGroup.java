@@ -1,5 +1,6 @@
 package com.bang.gameui;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
+import com.bang.actors.Character;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -34,7 +36,7 @@ public class OtherBoardGroup extends Group {
 	// Character card
 	protected float charWidth, charHeight;
 	protected float charPosX, charPosY;
-	protected Image charImage;
+	protected Group charImage;
 	
 	// For both kind of cards
 	protected float cardHeight, cardWidth;
@@ -72,12 +74,13 @@ public class OtherBoardGroup extends Group {
 		this.addActor(boardImage);
 		
 		// Char image handling
-		charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
+		//charImage = new Image( new Texture(Gdx.files.internal("cards_characters/bartcassidy.png")));
 		charWidth = width * CHAR_WIDTH_PERCENTAGE;
 		charHeight = (float) (charWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
 		charPosY = height/2 - charHeight/2;
-		charImage.setSize(charWidth, charHeight);
+		
+		/*charImage.setSize(charWidth, charHeight);
 		charImage.setPosition(charPosX, charPosY);
 		
 		charImage.addListener(new ClickListener() {
@@ -87,7 +90,7 @@ public class OtherBoardGroup extends Group {
             }
         });
 		
-		this.addActor(charImage);
+		this.addActor(charImage);*/
 		
 		cardHeight = (float) (height * 0.42);
 		cardListWidth = width - charWidth - (float)3.5*charPosX;
@@ -143,6 +146,28 @@ public class OtherBoardGroup extends Group {
 	            }
 			});			
 		}
+	}
+	
+	public void setCharacter(Character character) {
+		charWidth = width * CHAR_WIDTH_PERCENTAGE;
+		charHeight = (float) (charWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
+		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
+		charPosY = height/2 - charHeight/2;
+		
+		charImage = character.getCharacterCard(charHeight);
+		
+		charImage.setSize(charWidth, charHeight);
+		charImage.setPosition(charPosX, charPosY);
+		
+		charImage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            	//isLastClickedChar = true;
+            	System.out.println("Inside handler");
+            }
+        });
+		
+		this.addActor(charImage);
 	}
 	
 	public Card getLastClickedCard() {

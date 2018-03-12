@@ -1,6 +1,10 @@
 ## General
 .vscode
 start.sh
+upload_build.sh
+
+## Build
+desktop/build/libs/*
 
 ## Server-specific files
 server/serverenv
