@@ -57,11 +57,12 @@ public class Bang extends ApplicationAdapter {
                 me.checkTimeout(System.currentTimeMillis());
             }
             
-            if (me.isMyTurn()) {
+            if (me.isMyTurn() && !sceneManager.isInGame()) {
+                if (me.getTurn() == 1) {
+                    me.giveTurn();
+                } else if (me.getTurn() == 2) {
                     sceneManager.setScene(new GameScene(sceneManager));
-                    if (me.isMyTurnEnded()) {
-                        me.giveTurn();
-                    }
+                }
             }
         } catch (RemoteException e) {
             UIUtils.print("Error while polling player");
