@@ -396,12 +396,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             Card c = handCards.get(index);
             handCards.remove(index);
             String name = c.getShortName();
-            if (c.hasTarget()) {
+            if (c.getType().matches("target")) {
                 if (name.matches("Bang"))
                     this.shot(target, targetIndex);
 
                 //attiva l'effetto sul target
-            } else {
+            } else if (c.getType().matches("table")) {
                 tableCards.add(c);
                 if (name.matches("Mirino"))
                     this.view++;
@@ -424,16 +424,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     findGun();
                     this.shotDistance = 1;
                     this.volcanic = true;
-                } else if (name.matches("Indiani")) {
-                    for (int i = 0; i < players.size(); i++) {
-                        if (i != this.pos && players.get(i) != null) {
-                            try {
-                                this.clock.clockIncreaseLocal();
-                                players.get(i).indiani(this.clock.getVec());
-                            } catch (RemoteException e) {
-                                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                this.allertPlayerMissing(i);
-                                //e.printStackTrace();
+                }
+                else{ //single-usage cards
+                    if (name.matches("Indiani")) {
+                        for (int i = 0; i < players.size(); i++) {
+                            if (i != this.pos && players.get(i) != null) {
+                                try {
+                                    this.clock.clockIncreaseLocal();
+                                    players.get(i).indiani(this.clock.getVec());
+                                } catch (RemoteException e) {
+                                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                                    this.allertPlayerMissing(i);
+                                    //e.printStackTrace();
+                                }
                             }
                         }
                     }

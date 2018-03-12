@@ -41,12 +41,7 @@ public class Deck {
         for (int i = 0; i < jsonList.length(); i++) {
             JSONObject entry = jsonList.getJSONObject(i);
             String name = entry.getString("name");
-            if (name.matches("bang") || name.matches("panico") || name.matches("catbalou") || name.matches("duello")
-                    || name.matches("prigione")) {
-                card = new Card(name, entry.getString("value"), entry.getInt("suit"), true);
-            } else {
-                card = new Card(name, entry.getString("value"), entry.getInt("suit"));
-            }
+            card = new Card(name, entry.getString("value"), entry.getInt("suit"), entry.getString("type"));            
             orderedDeck.add(card);
         }
 
