@@ -51,6 +51,8 @@ public interface IPlayer extends Remote {
 
     ArrayList<Card> getHandCards() throws RemoteException;
 
+    int getHandCardsSize() throws RemoteException;
+
     Card getHandCard(int i, int[] callerClock) throws RemoteException;
 
     int getDistance(int[] callerClock) throws RemoteException;
@@ -77,6 +79,11 @@ public interface IPlayer extends Remote {
 
     void setCharacterDeckOrder(ArrayList<Integer> indices, int[] callerClock) throws RemoteException;
 
-    public void syncCharacterDeck(ArrayList<Integer> indices) throws RemoteException;
+    void syncCharacterDeck(ArrayList<Integer> indices) throws RemoteException;
 
+    void playCard(int index) throws RemoteException;
+
+    void playCard(int index,int targetIndex) throws RemoteException; 
+    
+    void playCard(int index,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
 }
