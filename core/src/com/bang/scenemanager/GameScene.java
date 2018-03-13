@@ -27,7 +27,8 @@ public class GameScene extends Scene {
 	SelectedCardGroup selectedCard;
 	Character selectedCharacter;
 	TextButton playCardButton, endTurnButton;
-	LogBox logBox;
+    LogBox logBox;
+    IPlayer me;
 	
 	/* Gameplay info */
 	boolean isPlayableCardSelected;
@@ -47,6 +48,7 @@ public class GameScene extends Scene {
 		stage = new Stage();
         batch = stage.getBatch();
         backgroundImage = null;
+        me = sceneManager.getPlayer();
         
         /* TEST */
         /*try {
@@ -55,7 +57,7 @@ public class GameScene extends Scene {
 			e1.printStackTrace();
 		};
         try {
-			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
+			me.setCharacter(new Character("slabthekiller", 4));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}*/
@@ -136,7 +138,7 @@ public class GameScene extends Scene {
         
         ArrayList<Card> cards = new ArrayList<Card>();
 		try {
-			cards = sceneManager.getPlayer().getHandCards();
+			cards = me.getHandCards();
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -244,8 +246,9 @@ public class GameScene extends Scene {
     
     public void update() {
         try {
-            playerBoard.updateHandCards(sceneManager.getPlayer().getHandCards());
-            playerBoard.updateBoardCards(sceneManager.getPlayer().getCards(new int[sceneManager.getPlayer().getPlayers().size()]));
+            playerBoard.updateHandCards(me.getHandCards());
+            playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
+            me.redraw(false);
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");

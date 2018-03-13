@@ -37,6 +37,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private long startTimeoutTime;
     private long playerTimeout;
     private int turn;
+    private Boolean mustUpdateGUI;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -59,13 +60,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.playerTimeout = 100;
         this.startTimeoutTime = 0;
         this.turn = 0;
+        this.mustUpdateGUI = false;
     }
 
     public boolean isMyTurn() {
         return (this.pos == this.turnOwner);
     }
 
-    public int getTurn(){
+    public int getTurn() {
         return this.turn;
     }
 
@@ -77,7 +79,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.characterDeck.setNextCardIndex(characterIndex);
         this.startTimeoutTime = System.currentTimeMillis();
         if (turnHolder == this.pos) {
-            if (this.turn==0) {
+            if (this.turn == 0) {
                 System.out.println("Drawing character card... " + this.clock.toString());
                 this.drawCharacter();
                 System.out.println("Drew character card. " + this.clock.toString());
@@ -89,19 +91,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.playerTimeout = 30000;
                 System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 //this.giveTurn();
-                this.turn ++ ;
-            } else if(turn >1){
+                this.turn++;
+            } else if (turn > 1) {
                 // standard turn
                 System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.draw();
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
+            } else {
+                this.turn++;
             }
-            else {
-                this.turn ++;
-            }
-
         }
+        redraw();
     }
 
     public void giveTurn() {
@@ -239,13 +240,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     //this code is executed only if the player is still up
                 } catch (RemoteException e) { //the turn Holder is crashed
                     this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
-                    System.out.println("the Player " + this.turnOwner +" crashed.");
+                    System.out.println("the Player " + this.turnOwner + " crashed.");
                     int next = this.findNext(this.turnOwner);
                     if (next == this.pos) { //you are the next
                         System.out.println("I'm taking the turn");
                         this.turnOwner = this.pos;
 
-                        if (this.turn==0) {
+                        if (this.turn == 0) {
                             // initial turn
                             this.drawCharacter();
                             for (int i = 0; i < this.character.getLives(); i++) {
@@ -253,22 +254,21 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             }
                             this.playerTimeout = 30000;
                             //this.giveTurn();
-                            this.turn ++;
-                        } else if (this.turn>1) {
+                            this.turn++;
+                        } else if (this.turn > 1) {
                             // standard turn
                             this.draw();
                             this.draw();
-                        }
-                        else {
-                            this.turn ++;
+                        } else {
+                            this.turn++;
                         }
                     } else {
                         this.turnOwner = next;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
+                    redraw();
                 }
             }
-
         }
     }
 
@@ -439,8 +439,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     findGun();
                     this.shotDistance = 1;
                     this.volcanic = true;
-                }
-                else{ //single-usage cards
+                } else { //single-usage cards
                     if (name.matches("Indiani")) {
                         for (int i = 0; i < players.size(); i++) {
                             if (i != this.pos && players.get(i) != null) {
@@ -460,6 +459,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 //attiva l'effetto su te stesso
             }
         }
+        redraw();
     }
 
     private void playCard(int index, int[] callerClock) {
@@ -491,6 +491,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
             this.allertPlayerMissing(pIndex);
         }
+        redraw();
     }
 
     private void panico(int cIndex, int pIndex, Boolean fromTable) {
@@ -516,6 +517,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
             this.allertPlayerMissing(pIndex);
         }
+        redraw();
     }
 
     public void indiani(int[] callerClock) {
@@ -532,6 +534,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.clock.clockIncreaseLocal();
             this.decreaseLifes(this.clock.getVec());
         }
+        redraw();
     }
 
     private static String findIp() {
@@ -669,6 +672,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             ;
         }
+    }
+
+    private void redraw() {
+        this.mustUpdateGUI = true;
+    }
+
+    public void redraw(Boolean shouldRedraw) {
+        this.mustUpdateGUI = shouldRedraw;
+    }
+
+    public Boolean shouldUpdateGUI() {
+        return this.mustUpdateGUI;
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
