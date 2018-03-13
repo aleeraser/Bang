@@ -673,12 +673,28 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void redraw() {
+    public void redraw() {
         this.mustUpdateGUI = true;
+        for (int i = 0; i < players.size(); i++) {
+            try {
+                this.players.get(i).redraw();
+            } catch (RemoteException e) {
+                UIUtils.print("Error while redrawing GUI for player " + i + ".");
+                e.printStackTrace();
+            }
+        }
     }
-
+    
     public void redraw(Boolean shouldRedraw) {
         this.mustUpdateGUI = shouldRedraw;
+        for (int i = 0; i < players.size(); i++) {
+            try {
+                this.players.get(i).redraw(shouldRedraw);
+            } catch (RemoteException e) {
+                UIUtils.print("Error while redrawing GUI for player " + i + ".");
+                e.printStackTrace();
+            }
+        }
     }
 
     public Boolean shouldUpdateGUI() {
