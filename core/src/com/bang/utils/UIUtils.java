@@ -4,8 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -33,6 +37,23 @@ public class UIUtils {
         b.addListener(cl);
 
         return b;
+    }
+
+    public static void enable(TextButton b) {
+        b.setTouchable(Touchable.enabled);
+
+        for (Actor c : b.getChildren()) {
+            c.remove();
+        }
+    }
+
+    public static void disable(TextButton b) {
+        b.setTouchable(Touchable.disabled);
+
+        Image btnBlock = new Image(new Texture(Gdx.files.internal("images/divieto.png")));
+        btnBlock.setSize(b.getHeight(), b.getHeight());
+        btnBlock.setPosition(b.getWidth() / 2 - btnBlock.getWidth() / 2, 0);
+        b.addActor(btnBlock);
     }
 
     public static void print(String s) {

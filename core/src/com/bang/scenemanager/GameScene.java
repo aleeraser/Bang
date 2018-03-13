@@ -96,7 +96,7 @@ public class GameScene extends Scene {
                     }
                 });
 
-        disable(playCardButton);
+        UIUtils.disable(playCardButton);
 
         endTurnButton = UIUtils.createBtn("Termina turno",
                 (float) (selectedCard.getX() + selectedCard.getWidth() + 250), (float) 4, stage,
@@ -115,8 +115,8 @@ public class GameScene extends Scene {
 
                                 me.giveTurn();
 
-                                disable(playCardButton);
-                                disable(endTurnButton);
+                                UIUtils.disable(playCardButton);
+                                UIUtils.disable(endTurnButton);
                                 inputEnabled = false;
                             } else {
                                 System.out.println("Too many cards in hand.");
@@ -129,7 +129,7 @@ public class GameScene extends Scene {
                         }
                     }
                 });
-        disable(endTurnButton);
+        UIUtils.disable(endTurnButton);
 
         playerBoard = new PlayerBoardGroup((float) (stage.getWidth() * 0.4), (float) (stage.getHeight() * 0.3),
                 sceneManager);
@@ -150,9 +150,9 @@ public class GameScene extends Scene {
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
 
                         if (isPlayableCardSelected && areUserInputEnabled())
-                            enable(playCardButton);
+                            UIUtils.enable(playCardButton);
                         else
-                            disable(playCardButton);
+                            UIUtils.disable(playCardButton);
                     }
                 }
 
@@ -245,9 +245,9 @@ public class GameScene extends Scene {
                             isPlayableCardSelected = false;
 
                             if (isPlayableCardSelected && areUserInputEnabled())
-                                enable(playCardButton);
+                                UIUtils.enable(playCardButton);
                             else
-                                disable(playCardButton);
+                                UIUtils.disable(playCardButton);
                         }
                     } else {
                         dismissAllHighlights();
@@ -272,11 +272,11 @@ public class GameScene extends Scene {
 
     public Boolean areUserInputEnabled(Boolean val) {
         if (val) {
-            enable(playCardButton);
-            enable(endTurnButton);
+            UIUtils.enable(playCardButton);
+            UIUtils.enable(endTurnButton);
         } else {
-            disable(playCardButton);
-            disable(endTurnButton);
+            UIUtils.disable(playCardButton);
+            UIUtils.disable(endTurnButton);
         }
         return this.inputEnabled = val;
     }
@@ -305,23 +305,6 @@ public class GameScene extends Scene {
             }
             playerBoard.dismissHighlight();
         }
-    }
-
-    private void enable(TextButton b) {
-        b.setTouchable(Touchable.enabled);
-        
-        for (Actor c : b.getChildren()) {
-        	c.remove();
-        }
-    }
-    
-    private void disable(TextButton b) {
-        b.setTouchable(Touchable.disabled);
-
-        Image btnBlock = new Image(new Texture(Gdx.files.internal("images/divieto.png")));
-		btnBlock.setSize(b.getHeight(), b.getHeight());
-		btnBlock.setPosition(b.getWidth()/2 - btnBlock.getWidth()/2, 0);
-		b.addActor(btnBlock);
     }
 
     public void update() {

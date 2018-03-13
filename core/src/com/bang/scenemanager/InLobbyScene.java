@@ -5,18 +5,15 @@ import org.json.JSONObject;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.bang.actors.Card;
 import com.bang.actors.IPlayer;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
@@ -99,9 +96,9 @@ public class InLobbyScene extends Scene {
                         int size = updatePlayerList().size();
                         if (isRoomMaster) {
                             if (size > 1) {
-                                btnStart.setTouchable(Touchable.enabled);
+                                UIUtils.enable(btnStart);
                             } else {
-                                btnStart.setTouchable(Touchable.disabled);
+                                UIUtils.disable(btnStart);
                             }
                         }
                     }
@@ -132,7 +129,7 @@ public class InLobbyScene extends Scene {
                             }
                         }
                     });
-            btnStart.setTouchable(Touchable.disabled);
+            UIUtils.disable(btnStart);
         }
 
         updatePlayerList();
