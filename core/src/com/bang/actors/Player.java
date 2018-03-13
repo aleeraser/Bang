@@ -102,7 +102,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.turn++;
             }
         }
-        redraw();
+        checkCrashes();
     }
 
     public void giveTurn() {
@@ -270,7 +270,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.turnOwner = next;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
-                    redraw();
+                    checkCrashes();
                 }
             }
         }
@@ -293,6 +293,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             //e.printStackTrace();
         }
 
+    }
+
+    private void checkCrashes(){
+        for (int i = 0; i< this.players.size(); i++){
+            if (i != this.pos && players.get(i) != null){
+                try{
+                    players.get(i).getPos(this.clock.getVec());
+                }
+                catch(RemoteException e){
+                    this.alertPlayerMissing(i);
+                }
+            }
+        }
+        this.redraw();
     }
 
     private int findDistance(int i, int j) {
@@ -336,9 +350,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (this.ips.get(index).matches(ip)) {
             this.players.set(index, null);
             this.ips.set(index, null);
-            /*if (index < this.pos) {
-                this.pos--;
-            }*/
+        
             if (this.checkVictory()){
                 System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
             }
@@ -439,7 +451,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (c.getType().matches("target")) {
             IPlayer target = players.get(index);
             if (target != null) {
-
+                this.checkCrashes();
                 if (name.matches("Bang"))
                     this.shot(target, targetIndex);
                 else if (name.matches("Catbalou"))
