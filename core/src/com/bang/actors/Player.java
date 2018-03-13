@@ -431,7 +431,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 else if (name.matches("Panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
 
-<<<<<<< HEAD
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
@@ -469,44 +468,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 System.out.println("AAAAAAAAAAAAAA non c'è " + i);
                                 this.allertPlayerMissing(i);
                                 //e.printStackTrace();
-=======
-                //attiva l'effetto sul target
-            } else if (c.getType().matches("table")) {
-                tableCards.add(c);
-                if (name.matches("Mirino"))
-                    this.view++;
-                else if (name.matches("Mustang")) {
-                    findGun();
-                    this.distance++;
-                } else if (name.matches("Carabine")) {
-                    findGun();
-                    this.shotDistance = 4;
-                } else if (name.matches("Remington")) {
-                    findGun();
-                    this.shotDistance = 3;
-                } else if (name.matches("Schofield")) {
-                    findGun();
-                    this.shotDistance = 2;
-                } else if (name.matches("Winchester")) {
-                    findGun();
-                    this.shotDistance = 5;
-                } else if (name.matches("Volcanic")) {
-                    findGun();
-                    this.shotDistance = 1;
-                    this.volcanic = true;
-                } else { //single-usage cards
-                    if (name.matches("Indiani")) {
-                        for (int i = 0; i < players.size(); i++) {
-                            if (i != this.pos && players.get(i) != null) {
-                                try {
-                                    this.clock.clockIncreaseLocal();
-                                    players.get(i).indiani(this.clock.getVec());
-                                } catch (RemoteException e) {
-                                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                    this.allertPlayerMissing(i);
-                                    //e.printStackTrace();
-                                }
->>>>>>> 63b1df65d14dbeef1507bf21383acf0a0ba39a00
                             }
                         }
                     }
