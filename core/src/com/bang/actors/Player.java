@@ -243,7 +243,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.startTimeoutTime = System.currentTimeMillis();
                     //this code is executed only if the player is still up
                 } catch (RemoteException e) { //the turn Holder is crashed
-                    this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
+                    //this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
+                    this.alertPlayerMissing(this.turnOwner);
                     System.out.println("the Player " + this.turnOwner + " crashed.");
                     int next = this.findNext(this.turnOwner);
                     if (next == this.pos) { //you are the next
