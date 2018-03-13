@@ -304,7 +304,7 @@ public class GameScene extends Scene {
         try {
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
-            me.redraw(false);
+            me.redrawSingle(false);
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");
