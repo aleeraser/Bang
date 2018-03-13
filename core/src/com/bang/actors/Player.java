@@ -345,7 +345,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private void allertPlayerMissing(int index) {
         this.clock.clockIncreaseLocal();
         this.removePlayer(index, ips.get(index), this.clock.getVec()); //first remove from own list.
-        
+
         if (this.turnOwner == index)
             this.turnOwner = this.findNext(index);
 
@@ -433,10 +433,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                 else if (name.matches("Panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
-<<<<<<< HEAD
-=======
-
->>>>>>> 4ed31accce1206748639279dfbb5e50c0cf3d1ab
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
