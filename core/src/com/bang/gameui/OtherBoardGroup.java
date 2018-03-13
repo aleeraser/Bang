@@ -206,12 +206,10 @@ public class OtherBoardGroup extends Group {
 	}
 	
 	public void setDisabledPlayer() {
-		if (xImage != null) {
 			xImage = new Image(new Texture(Gdx.files.internal("images/x.png")));
 			xImage.setPosition(0, 0);
 			xImage.setSize(width, height);
 			this.addActor(xImage);
-		}
 	}
 	
 	
