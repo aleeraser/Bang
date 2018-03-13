@@ -727,7 +727,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.players.get(i).redrawSingle();
                 }
             } catch (RemoteException e) {
-                this.allertPlayerMissing(i);
+                this.alertPlayerMissing(i);
             }
         }
     }
