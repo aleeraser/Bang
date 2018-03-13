@@ -3,13 +3,17 @@ package com.bang.scenemanager;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
 import com.bang.actors.IPlayer;
@@ -305,14 +309,19 @@ public class GameScene extends Scene {
 
     private void enable(TextButton b) {
         b.setTouchable(Touchable.enabled);
-
-        // TODO: rimuovi simbolo di divieto
+        
+        for (Actor c : b.getChildren()) {
+        	c.remove();
+        }
     }
     
     private void disable(TextButton b) {
         b.setTouchable(Touchable.disabled);
 
-        // TODO: aggiungi simbolo di divieto
+        Image btnBlock = new Image(new Texture(Gdx.files.internal("images/divieto.png")));
+		btnBlock.setSize(b.getHeight(), b.getHeight());
+		btnBlock.setPosition(b.getWidth()/2 - btnBlock.getWidth()/2, 0);
+		b.addActor(btnBlock);
     }
 
     public void update() {
