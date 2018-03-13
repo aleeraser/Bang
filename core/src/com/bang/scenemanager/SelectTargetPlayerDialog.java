@@ -46,6 +46,7 @@ public class SelectTargetPlayerDialog extends Dialog {
 				try {
 					this.button(players.get(index).getCharacter().getName() + "\n" + "(" + players.get(index).getIp() + ")", i);
 				} catch (RemoteException e) {
+					me.allertPlayerMissing(index);
 					e.printStackTrace();
 				}
 			}

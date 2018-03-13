@@ -342,7 +342,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("the ip does not match!");
     }
 
-    private void allertPlayerMissing(int index) {
+    public void allertPlayerMissing(int index) {
         this.clock.clockIncreaseLocal();
         this.removePlayer(index, ips.get(index), this.clock.getVec()); //first remove from own list.
 
