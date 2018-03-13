@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -271,6 +272,7 @@ public class GameScene extends Scene {
     }
 
     public void update() {
+    	/* Update my board */
         try {
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
@@ -278,6 +280,37 @@ public class GameScene extends Scene {
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");
+        }
+        
+        /* Update other players board */
+        /* Get player info */
+        IPlayer me = sceneManager.player;
+        int playerNum = 0;
+        int myPos = 0;
+        ArrayList<IPlayer> players;
+        
+        try {
+        	players = me.getPlayers();
+        	playerNum = players.size();
+        	myPos = me.getPos(new int [playerNum]);        	
+        } catch (RemoteException e1) {
+			e1.printStackTrace();
+			System.out.println("ERROR: not able to get other playes info.");
+			return;
+		}
+        
+        /* TODO check if null */
+        for (int i = 0; i < otherPlayerNumber; i++) {
+        	int index = (myPos + 1 + i) % (playerNum);
+        	OtherBoardGroup otherBoard = otherBoardList.get(i);
+        	
+        	try {
+        		otherBoard.updateBoardCards(players.get(index).getCards(new int [playerNum]));
+        		otherBoard.updateHandCards(players.get(index).getHandCards());
+        	} catch (RemoteException e) {
+        		e.printStackTrace();
+        		System.out.println("ERROR: not able to get other playes info.");
+        	}
         }
 
     }
