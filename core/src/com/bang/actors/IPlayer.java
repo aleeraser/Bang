@@ -39,7 +39,7 @@ public interface IPlayer extends Remote {
 
     void checkTimeout(long currentTime) throws RemoteException;
 
-    int getLifes(int[] callerClock) throws RemoteException;
+    int getLives(int[] callerClock) throws RemoteException;
 
     int getPos(int[] callerClock) throws RemoteException;
 
@@ -63,7 +63,7 @@ public interface IPlayer extends Remote {
 
     void setDeckOrder(ArrayList<Integer> order, int[] callerClock) throws RemoteException;
 
-    void decreaseLifes(int[] callerClock) throws RemoteException;
+    void decreaselives(int[] callerClock) throws RemoteException;
 
     void indiani(int[] callerClock) throws RemoteException;
 
@@ -73,7 +73,7 @@ public interface IPlayer extends Remote {
 
     void removePlayer(int index, String ip, int[] callerClock) throws RemoteException;
 
-    void increaseLifes(int[] callerClock) throws RemoteException;
+    void increaselives(int[] callerClock) throws RemoteException;
 
     void initPlayerList(ArrayList<String> ips) throws RemoteException;
 

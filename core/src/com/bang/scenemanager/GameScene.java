@@ -101,7 +101,7 @@ public class GameScene extends Scene {
                         //il turno può terminare solo se uno ha un numero di carte in mano <= al numero di vite
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
-                            int lives = sceneManager.player.getLifes(new int[otherPlayerNumber + 1]);
+                            int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
                             UIUtils.print("Currently the player has:\n\t- " + hand_cards + " in hand\n\t- " + lives + " lives.");
                             if (hand_cards <= lives) {
                                 System.out.println("End turn");
