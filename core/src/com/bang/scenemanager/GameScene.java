@@ -300,6 +300,7 @@ public class GameScene extends Scene {
     }
 
     public void update() {
+    	
         /* Update my board */
         try {
             playerBoard.updateHandCards(me.getHandCards());
@@ -334,11 +335,17 @@ public class GameScene extends Scene {
             IPlayer p = players.get(index);
             if (p != null) {
                 try {
-                    otherBoard.updateBoardCards(players.get(index).getCards(new int[playerNum]));
-                    otherBoard.updateHandCards(players.get(index).getHandCards());
+                    otherBoard.updateBoardCards(p.getCards(new int[playerNum]));
+                    otherBoard.updateHandCards(p.getHandCards());
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                    System.out.println("ERROR: not able to get other playes info.");
+                    System.out.println("ERROR: not able to get other playes info, calling alert.");
+                    try {
+						me.alertPlayerMissing(index);
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+                    
                 }
             }
             else {
