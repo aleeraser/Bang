@@ -433,6 +433,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                 else if (name.matches("Panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4ed31accce1206748639279dfbb5e50c0cf3d1ab
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
@@ -701,7 +705,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
     }
-    
+
     public void redraw(Boolean shouldRedraw) {
         this.mustUpdateGUI = shouldRedraw;
         for (int i = 0; i < players.size(); i++) {
