@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -79,8 +80,7 @@ public class GameScene extends Scene {
         		sceneManager.getTextButtonStyle(), 
         		new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-            	
+            public void changed(ChangeEvent event, Actor actor) {          	
             	logBox.addEvent("Carta giocata: " + clickedCard.getName());
             }
         });
@@ -121,7 +121,7 @@ public class GameScene extends Scene {
             	}
             	
             	else {
-            		dismissOldHighlights();
+            		dismissAllHighlights();
             		selectedCard.showCharacterCard(playerBoard.getCharacter());
             	}
             }
@@ -200,7 +200,7 @@ public class GameScene extends Scene {
 		            	}
 	            	}
 	            	else {
-	            		dismissOldHighlights();
+	            		dismissAllHighlights();
 	            		selectedCard.showCharacterCard(otherBoard.getCharacter());
 	            	}
 	            }
@@ -214,6 +214,14 @@ public class GameScene extends Scene {
 	        logBox.setSize(450, 300);
 	        stage.addActor(logBox.getPane());
         }
+	}
+	
+	/* Called on character select */
+	protected void dismissAllHighlights() {		
+		for (OtherBoardGroup b : otherBoardList) {
+			b.dismissHighlight();
+		}
+		playerBoard.dismissHighlight();
 	}
 	
 	/* Called by player board */
