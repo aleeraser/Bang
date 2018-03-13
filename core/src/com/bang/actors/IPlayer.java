@@ -91,5 +91,5 @@ public interface IPlayer extends Remote {
     
     void playCard(int index,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
     
-    public void allertPlayerMissing(int index);
+    public void allertPlayerMissing(int index) throws RemoteException;
 }
