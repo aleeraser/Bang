@@ -116,8 +116,8 @@ public class GameScene extends Scene {
                                 inputEnabled = false;
                             } else {
                                 System.out.println("Too many cards in hand");
-                                logBox.addEvent(
-                                        "Hai troppe carte in mano,\n  devi scartarne " + (hand_cards - lives) + "!");
+                                logBox.addEvent("Hai troppe carte in mano,");
+                                logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -143,17 +143,9 @@ public class GameScene extends Scene {
                         selectedCard.showCard(clickedCard);
 
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
-                        
-                        try {
-                            UIUtils.print("Card is playable: " + isPlayableCardSelected);
-                            UIUtils.print("User inputs enabled: " + areUserInputEnabled());
-                            UIUtils.print("It's my turn: " + me.isMyTurn());
-                        } catch (RemoteException e) {
-                            UIUtils.print("Error");
-                            e.printStackTrace();
-                        }
 
-                        playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled : Touchable.disabled);
+                        playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
+                                : Touchable.disabled);
                     }
                 }
 
@@ -245,16 +237,9 @@ public class GameScene extends Scene {
 
                             isPlayableCardSelected = false;
 
-                            // try {
-                                UIUtils.print("Card is playable: " + isPlayableCardSelected);
-                                UIUtils.print("User inputs enabled: " + areUserInputEnabled());
-                                // UIUtils.print("It's my turn: " + me.isMyTurn());
-                            // } catch (RemoteException e) {
-                            //     UIUtils.print("Error");
-                            //     e.printStackTrace();
-                            // }
-
-                            playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled : Touchable.disabled);
+                            playCardButton
+                                    .setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
+                                            : Touchable.disabled);
                         }
                     } else {
                         dismissAllHighlights();
@@ -287,7 +272,7 @@ public class GameScene extends Scene {
         }
         return this.inputEnabled = val;
     }
-    
+
     /* Called in character */
     protected void dismissAllHighlights() {
         for (OtherBoardGroup b : otherBoardList) {
