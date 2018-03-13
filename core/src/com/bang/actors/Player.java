@@ -339,8 +339,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             /*if (index < this.pos) {
                 this.pos--;
             }*/
+            if (this.checkVictory()){
+                System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
+            }
         } else
             System.out.println("the ip does not match!");
+    }
+
+    private Boolean checkVictory(){
+        for (int i = 0; i< this.players.size(); i++){
+            if ( i!=this.pos && players.get(i) != null){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void alertPlayerMissing(int index) {
