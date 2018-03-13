@@ -373,9 +373,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncreaseLocal();
         this.removePlayer(index, ips.get(index), this.clock.getVec()); //first remove from own list.
 
-        if (this.turnOwner == index)
-            this.turnOwner = this.findNext(index);
-
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
                 try {
