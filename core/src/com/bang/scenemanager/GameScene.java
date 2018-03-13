@@ -278,6 +278,7 @@ public class GameScene extends Scene {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
+        playerBoard.dismissHighlight();
     }
 
     /* Called by player board */
@@ -285,7 +286,6 @@ public class GameScene extends Scene {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
-        playerBoard.dismissHighlight();
     }
 
     /* Called by otherBoardGroup */
@@ -340,6 +340,9 @@ public class GameScene extends Scene {
                     e.printStackTrace();
                     System.out.println("ERROR: not able to get other playes info.");
                 }
+            }
+            else {
+            	otherBoard.setDisabledPlayer();
             }
         }
 
