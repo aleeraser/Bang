@@ -347,15 +347,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     //TODO forse prima di rimuvere un player bisognerebbe verificare di essere in un taglio consistente
     public void removePlayer(int index, String ip, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        if (this.ips.get(index).matches(ip)) {
+
             this.players.set(index, null);
             this.ips.set(index, null);
         
             if (this.checkVictory()){
                 System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
-            }
-        } else
-            System.out.println("the ip does not match!");
+        
     }
 
     private Boolean checkVictory(){
