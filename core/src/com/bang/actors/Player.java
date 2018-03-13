@@ -204,7 +204,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.handCards.size();
     }
 
-    public int getlives(int[] callerClock) {
+    public int getLives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.lives;
     }
@@ -283,7 +283,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 this.clock.clockIncreaseLocal();
                 target.decreaselives(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
-                //System.out.println(target.getlives());
+                //System.out.println(target.getLives());
             } else
                 System.out.println("Target out of range");
         } catch (RemoteException e) {
@@ -370,7 +370,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("nella beer");
                 this.clock.clockIncreaseLocal();
                 target.increaselives(this.clock.getVec());
-                //System.out.println(target.getlives());
+                //System.out.println(target.getLives());
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
@@ -738,7 +738,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             for (int i = 0; i < server.getPlayers().size(); i++) {
                 if (i != server.getPos()) {
                     server.shot((IPlayer) server.getPlayers().get(i), i);
-                    server.getPlayers().get(i).getlives();
+                    server.getPlayers().get(i).getLives();
                 }
             }
     

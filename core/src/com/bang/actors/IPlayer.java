@@ -39,7 +39,7 @@ public interface IPlayer extends Remote {
 
     void checkTimeout(long currentTime) throws RemoteException;
 
-    int getlives(int[] callerClock) throws RemoteException;
+    int getLives(int[] callerClock) throws RemoteException;
 
     int getPos(int[] callerClock) throws RemoteException;
 
