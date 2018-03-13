@@ -50,40 +50,49 @@ public class Bang extends ApplicationAdapter {
         super.render();
         s.draw();
 
-        /* To allow scrolling */
+        // Needed to allow scrolling
         s.act();
 
         try {
             if (sceneManager.isInGame()) {
+                // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
 
-                if (gs == null) gs = (GameScene)sceneManager.getCurrentScene();
-                if (me.shouldUpdateGUI()) {
+                if (gs == null)
+                    gs = (GameScene) sceneManager.getCurrentScene();
+                if (me.shouldUpdateGUI())
                     gs.update();
+                
+                if (me.isMyTurn() && !gs.areUserInputEnabled())
+                    gs.areUserInputEnabled(true);
+                else if (!me.isMyTurn() && gs.areUserInputEnabled())
+                    gs.areUserInputEnabled(false);
+
+            } else {
+                if (me.isMyTurn()) {
+                    if (me.getTurn() == 1) {
+                        // During the first turn cards are drawn and the game is set up. The GUI can't
+                        // start yet, since not every player has drawn the cards, the character, etc...
+                        me.giveTurn();
+                    } else if (me.getTurn() == 2) {
+                        // During the second turn the GUI starts. After all the GUI started, the game starts.
+                        sceneManager.setScene(new GameScene(sceneManager));
+                        me.giveTurn();
+                    }
                 }
             }
-            
-            if (me.isMyTurn() && !sceneManager.isInGame()) {
-                if (me.getTurn() == 1) {
-                    me.giveTurn();
-                } else if (me.getTurn() == 2) {
-                    sceneManager.setScene(new GameScene(sceneManager));
-                    me.giveTurn();
-                }
-            }
+
         } catch (RemoteException e) {
-            UIUtils.print("Error while polling player");
+            UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
         }
     }
 
     @Override
     public void dispose() {
-        /*if (sceneManager.getCurrentStage() != null) {
-        	sceneManager.getCurrentStage().dispose();
-        }*/
-
-        // If the user is currently in a lobby, attempt to remove it from the lobby's players list
+        // If the user is currently in a lobby and the windows is closed
+        // attempt to remove it from the lobby's players list.
+        // This will not work if the game crashes.
         try {
             if (sceneManager.getCurrentLobby() != null) {
                 String[] params = new String[2];
