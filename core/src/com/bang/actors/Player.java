@@ -705,6 +705,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } catch (RemoteException e) {
                 UIUtils.print("Error while redrawing GUI for player " + i + ".");
                 e.printStackTrace();
+                this.allertPlayerMissing(i);
             }
         }
     }
