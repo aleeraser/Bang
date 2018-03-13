@@ -41,7 +41,7 @@ public class SelectTargetPlayerDialog extends Dialog {
 		}
 		
 		for(int i = 0; i < players.size(); i++) {
-			int index = myPos + i % players.size();
+			int index = (myPos + i) % players.size();
 			if (players.get(index) != me) {
 				try {
 					this.button(players.get(index).getIp(), i);
