@@ -102,6 +102,7 @@ public class GameScene extends Scene {
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
                             int lives = sceneManager.player.getLifes(new int[otherPlayerNumber + 1]);
+                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " in hand\n\t- " + lives + " lives.");
                             if (hand_cards <= lives) {
                                 System.out.println("End turn");
                                 logBox.addEvent("Turno terminato");
@@ -113,7 +114,7 @@ public class GameScene extends Scene {
                                 inputEnabled = false;
                             } else {
                                 System.out.println("Too many cards in hand");
-                                logBox.addEvent("Hai troppe carte in mano, devi scartarne " + (hand_cards - lives) + "!");
+                                logBox.addEvent("Hai troppe carte in mano,\n  devi scartarne " + (hand_cards - lives) + "!");
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -229,7 +230,7 @@ public class GameScene extends Scene {
                             selectedCard.showCard(otherClickedCard);
 
                             isPlayableCardSelected = false;
-                            playCardButton.setTouchable(isPlayableCardSelected ? Touchable.enabled : Touchable.disabled);
+                            playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled : Touchable.disabled);
                         }
                     } else {
                         dismissOldHighlights();
