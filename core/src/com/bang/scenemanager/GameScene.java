@@ -338,7 +338,7 @@ public class GameScene extends Scene {
                     otherBoard.updateBoardCards(p.getCards(new int[playerNum]));
                     otherBoard.updateHandCards(p.getHandCards());
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                   // e.printStackTrace();
                     System.out.println("ERROR: not able to get other playes info, calling alert.");
                     try {
 						me.alertPlayerMissing(index);
