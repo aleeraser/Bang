@@ -13,6 +13,8 @@ public interface IPlayer extends Remote {
 
     void redraw() throws RemoteException;
     
+    void redrawSingle() throws RemoteException;
+    
     void redraw(Boolean shouldRedraw) throws RemoteException;
 
     int getTurn() throws RemoteException;
