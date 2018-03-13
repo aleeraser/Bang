@@ -16,8 +16,8 @@ public class SelectTargetPlayerDialog extends Dialog {
 	protected IPlayer me;
 	protected ArrayList<IPlayer> players;
 	
-	public SelectTargetPlayerDialog(Card card, Skin skin, SceneManager sceneManager) {
-		super("Bersaglio", skin, "dialog");
+	public SelectTargetPlayerDialog(Card card, SceneManager sceneManager) {
+		super("Bersaglio", sceneManager.getSkin(), "dialog");
 		this.card = card;
 		this.sceneManager = sceneManager;
 		try {

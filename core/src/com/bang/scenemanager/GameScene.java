@@ -34,6 +34,7 @@ public class GameScene extends Scene {
 
     /* Gameplay info */
     boolean isPlayableCardSelected;
+    Card clickedCard;
 
     /* Other Boards size */
     float obHeight;
@@ -79,6 +80,13 @@ public class GameScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         System.out.println("Should play card");
+                        
+                        SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
+                        	public void result(Object obj) {
+                                System.out.println("result " + obj);
+                            }
+                        };
+                        
                         logBox.addEvent("Carta giocata");
                     }
                 });
@@ -121,7 +129,7 @@ public class GameScene extends Scene {
             public void clicked(InputEvent event, float x, float y) {
 
                 if (!playerBoard.isLastClickedCharacter()) {
-                    Card clickedCard = playerBoard.getLastClickedCard();
+                    clickedCard = playerBoard.getLastClickedCard();
                     dismissOldHighlights();
                     if (clickedCard != null) {
                         System.out.println(clickedCard.getName());
@@ -212,11 +220,11 @@ public class GameScene extends Scene {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (otherBoard.isLastClickedCharacter() == false) {
-                        Card clickedCard = otherBoard.getLastClickedCard();
+                        Card otherClickedCard = otherBoard.getLastClickedCard();
                         dismissOldHighlights(otherBoard);
-                        if (clickedCard != null) {
-                            System.out.println(clickedCard.getName());
-                            selectedCard.showCard(clickedCard);
+                        if (otherClickedCard != null) {
+                            System.out.println(otherClickedCard.getName());
+                            selectedCard.showCard(otherClickedCard);
 
                             isPlayableCardSelected = false;
                             playCardButton.setTouchable(isPlayableCardSelected ? Touchable.enabled : Touchable.disabled);
