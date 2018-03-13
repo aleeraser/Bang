@@ -353,6 +353,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         
             if (this.checkVictory()){
                 System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
+            }
         
     }
 
