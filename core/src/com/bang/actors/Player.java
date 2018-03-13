@@ -199,7 +199,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.handCards;
     }
 
-    public int getHandCardsSize(){
+    public int getHandCardsSize() {
         return this.handCards.size();
     }
 
@@ -346,6 +346,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncreaseLocal();
         this.removePlayer(index, ips.get(index), this.clock.getVec()); //first remove from own list.
 
+        if (this.turnOwner == index)
+            this.turnOwner = this.findNext(index);
+
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
                 try {
@@ -407,7 +410,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public void playCard(int index){
+    public void playCard(int index) {
         this.playCard(index, -1, -1, false);
     }
 
@@ -416,7 +419,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
-    public void playCard(int index, int targetIndex, int targetCardIndex, boolean fromTable ) {
+    public void playCard(int index, int targetIndex, int targetCardIndex, boolean fromTable) {
         Card c = handCards.get(index);
         handCards.remove(index);
         String name = c.getShortName();
@@ -430,7 +433,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                 else if (name.matches("Panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
-
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
@@ -456,8 +458,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
-            }
-            else{ //single-usage cards
+            } else { //single-usage cards
                 if (name.matches("Indiani")) {
                     for (int i = 0; i < players.size(); i++) {
                         if (i != this.pos && players.get(i) != null) {
@@ -479,8 +480,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    
-
     public void removeTableCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.tableCards.remove(index);
@@ -491,9 +490,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.handCards.remove(index);
     }
 
-    private void catBalou( int pIndex, int cIndex, Boolean fromTable) {
+    private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
-        if (target != null){
+        if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
                 if (fromTable) {
@@ -509,9 +508,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    private void panico( int pIndex, int cIndex, Boolean fromTable) {
+    private void panico(int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
-        if (target != null){
+        if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
                 if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
@@ -702,7 +701,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
     }
-    
+
     public void redraw(Boolean shouldRedraw) {
         this.mustUpdateGUI = shouldRedraw;
         for (int i = 0; i < players.size(); i++) {
