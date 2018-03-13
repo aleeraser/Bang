@@ -27,10 +27,12 @@ public class GameScene extends Scene {
 	SelectedCardGroup selectedCard;
 	Character selectedCharacter;
 	TextButton playCardButton, endTurnButton;
-	LogBox logBox;
+    LogBox logBox;
+    IPlayer me;
 	
 	/* Gameplay info */
 	boolean isPlayableCardSelected;
+	Card clickedCard;
 	
 	/* Other Boards size */
 	float obHeight;
@@ -47,6 +49,7 @@ public class GameScene extends Scene {
 		stage = new Stage();
         batch = stage.getBatch();
         backgroundImage = null;
+        me = sceneManager.getPlayer();
         
         /* TEST */
         /*try {
@@ -55,7 +58,7 @@ public class GameScene extends Scene {
 			e1.printStackTrace();
 		};
         try {
-			sceneManager.getPlayer().setCharacter(new Character("slabthekiller", 4));
+			me.setCharacter(new Character("slabthekiller", 4));
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}*/
@@ -77,8 +80,8 @@ public class GameScene extends Scene {
         		new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	System.out.println("Should play card");
-            	logBox.addEvent("Carta giocata");
+            	
+            	logBox.addEvent("Carta giocata: " + clickedCard.getName());
             }
         });
         
@@ -106,7 +109,7 @@ public class GameScene extends Scene {
             public void clicked(InputEvent event, float x, float y) {
             	
             	if (!playerBoard.isLastClickedCharacter()) {
-	            	Card clickedCard = playerBoard.getLastClickedCard();
+	            	clickedCard = playerBoard.getLastClickedCard();
 	            	dismissOldHighlights();
 	            	if (clickedCard != null) {
 	            		System.out.println(clickedCard.getName());
@@ -126,25 +129,13 @@ public class GameScene extends Scene {
         
         stage.addActor(playerBoard);
         
-        /*ArrayList<Card> cards = new ArrayList<Card>();
-        cards.add(new Card(CardsUtils.CARD_BANG, CardsUtils.CARD_ACE, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_MISSED, CardsUtils.CARD_THREE, CardsUtils.SUIT_CLUBS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        */
-        
         ArrayList<Card> cards = new ArrayList<Card>();
 		try {
-			cards = sceneManager.getPlayer().getHandCards();
+			cards = me.getHandCards();
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
-
-		// playerBoard.updateHandCards(cards);
-        // playerBoard.updateBoardCards(new ArrayList<Card>()); 
         
         update();
         
@@ -198,11 +189,11 @@ public class GameScene extends Scene {
 	            @Override
 	            public void clicked(InputEvent event, float x, float y) {
 	            	if (otherBoard.isLastClickedCharacter() == false){
-		            	Card clickedCard = otherBoard.getLastClickedCard();
+		            	Card otherClickedCard = otherBoard.getLastClickedCard();
 		            	dismissOldHighlights(otherBoard);
-		            	if (clickedCard != null) {
-		            		System.out.println(clickedCard.getName());
-		            		selectedCard.showCard(clickedCard);
+		            	if (otherClickedCard != null) {
+		            		System.out.println(otherClickedCard.getName());
+		            		selectedCard.showCard(otherClickedCard);
 		            		
 		            		isPlayableCardSelected = false;
 		            		playCardButton.setVisible(isPlayableCardSelected);
@@ -243,12 +234,45 @@ public class GameScene extends Scene {
     }
     
     public void update() {
+    	/* Update my board */
         try {
-            playerBoard.updateHandCards(sceneManager.getPlayer().getHandCards());
-            playerBoard.updateBoardCards(sceneManager.getPlayer().getCards(new int[sceneManager.getPlayer().getPlayers().size()]));
+            playerBoard.updateHandCards(me.getHandCards());
+            playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
+            me.redraw(false);
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");
+        }
+        
+        /* Update other players board */
+        /* Get player info */
+        IPlayer me = sceneManager.player;
+        int playerNum = 0;
+        int myPos = 0;
+        ArrayList<IPlayer> players;
+        
+        try {
+        	players = me.getPlayers();
+        	playerNum = players.size();
+        	myPos = me.getPos(new int [playerNum]);        	
+        } catch (RemoteException e1) {
+			e1.printStackTrace();
+			System.out.println("ERROR: not able to get other playes info.");
+			return;
+		}
+        
+        /* TODO check if null */
+        for (int i = 0; i < otherPlayerNumber; i++) {
+        	int index = (myPos + 1 + i) % (playerNum);
+        	OtherBoardGroup otherBoard = otherBoardList.get(i);
+        	
+        	try {
+        		otherBoard.updateBoardCards(players.get(index).getCards(new int [playerNum]));
+        		otherBoard.updateHandCards(players.get(index).getHandCards());
+        	} catch (RemoteException e) {
+        		e.printStackTrace();
+        		System.out.println("ERROR: not able to get other playes info.");
+        	}
         }
 
     }

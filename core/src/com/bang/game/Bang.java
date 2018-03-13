@@ -39,6 +39,7 @@ public class Bang extends ApplicationAdapter {
         Texture bg = sceneManager.getCurrentBackgroundImage();
         Batch batch = s.getBatch();
         IPlayer me = sceneManager.getPlayer();
+        GameScene gs = null;
 
         if (bg != null) {
             batch.begin();
@@ -56,8 +57,10 @@ public class Bang extends ApplicationAdapter {
             if (sceneManager.isInGame()) {
                 me.checkTimeout(System.currentTimeMillis());
 
-                GameScene gs = (GameScene)sceneManager.getCurrentScene();
-                gs.update();
+                if (gs == null) gs = (GameScene)sceneManager.getCurrentScene();
+                if (me.shouldUpdateGUI()) {
+                    gs.update();
+                }
             }
             
             if (me.isMyTurn() && !sceneManager.isInGame()) {
