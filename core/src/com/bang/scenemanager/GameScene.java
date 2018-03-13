@@ -341,6 +341,9 @@ public class GameScene extends Scene {
                     System.out.println("ERROR: not able to get other playes info.");
                 }
             }
+            else {
+            	otherBoard.setDisabledPlayer();
+            }
         }
 
     }
