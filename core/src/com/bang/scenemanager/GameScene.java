@@ -349,6 +349,7 @@ public class GameScene extends Scene {
                 }
             }
             else {
+            	System.out.println("Found null player, draw the X");
             	otherBoard.setDisabledPlayer();
             }
         }
