@@ -293,6 +293,7 @@ public class GameScene extends Scene {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
+        playerBoard.dismissHighlight();
     }
 
     /* Called by player board */
@@ -300,7 +301,6 @@ public class GameScene extends Scene {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
-        playerBoard.dismissHighlight();
     }
 
     /* Called by otherBoardGroup */
