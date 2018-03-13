@@ -17,7 +17,7 @@ import java.net.SocketException;
 import java.net.MalformedURLException;
 
 public class Player extends UnicastRemoteObject implements IPlayer {
-    private int lifes;
+    private int lives;
     private String ip;
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
@@ -41,7 +41,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
-        this.lifes = CharacterPower.lifes; */
+        this.lives = CharacterPower.lives; */
 
         this.ip = findIp();
         System.setProperty("java.rmi.server.hostname", this.ip);
@@ -142,6 +142,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void drawCharacter() {
         this.character = characterDeck.drawCharacter();
+        this.lives = this.character.getLives();
     }
 
     public void refreshPList() {
@@ -203,9 +204,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.handCards.size();
     }
 
-    public int getLifes(int[] callerClock) {
+    public int getlives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        return this.lifes;
+        return this.lives;
     }
 
     public Clock getClock(int[] callerClock) {
@@ -281,8 +282,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.clock.clockIncreaseLocal();
             if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 this.clock.clockIncreaseLocal();
-                target.decreaseLifes(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
-                //System.out.println(target.getLifes());
+                target.decreaselives(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
+                //System.out.println(target.getlives());
             } else
                 System.out.println("Target out of range");
         } catch (RemoteException e) {
@@ -368,8 +369,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             try {
                 System.out.println("nella beer");
                 this.clock.clockIncreaseLocal();
-                target.increaseLifes(this.clock.getVec());
-                //System.out.println(target.getLifes());
+                target.increaselives(this.clock.getVec());
+                //System.out.println(target.getlives());
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
@@ -380,19 +381,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public void decreaseLifes(int[] callerClock) {
+    public void decreaselives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        this.lifes--;
-        if (this.lifes <= 0) {
+        this.lives--;
+        if (this.lives <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.allertPlayerMissing(this.pos); //when a player dies it ack the others.
         }
     }
 
-    public void increaseLifes(int[] callerClock) {
+    public void increaselives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        if (this.lifes < 5) {
-            this.lifes++;
+        if (this.lives < 5) {
+            this.lives++;
         }
     }
 
@@ -548,7 +549,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         if (!found) {
             this.clock.clockIncreaseLocal();
-            this.decreaseLifes(this.clock.getVec());
+            this.decreaselives(this.clock.getVec());
         }
         redraw();
     }
@@ -735,7 +736,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             for (int i = 0; i < server.getPlayers().size(); i++) {
                 if (i != server.getPos()) {
                     server.shot((IPlayer) server.getPlayers().get(i), i);
-                    server.getPlayers().get(i).getLifes();
+                    server.getPlayers().get(i).getlives();
                 }
             }
     
