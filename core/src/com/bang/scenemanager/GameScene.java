@@ -92,7 +92,7 @@ public class GameScene extends Scene {
                     }
                 });
 
-        playCardButton.setTouchable(Touchable.disabled);
+        disable(playCardButton);
 
         endTurnButton = UIUtils.createBtn("Termina turno",
                 (float) (selectedCard.getX() + selectedCard.getWidth() + 250), (float) 4, stage,
@@ -103,19 +103,20 @@ public class GameScene extends Scene {
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
                             int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
-                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " in hand\n\t- " + lives
-                                    + " lives.");
+                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " cards in hand\n\t- "
+                                    + lives + " lives");
                             if (hand_cards <= lives) {
                                 System.out.println("End turn");
                                 logBox.addEvent("Turno terminato");
 
                                 me.giveTurn();
 
-                                playCardButton.setTouchable(Touchable.disabled);
-                                endTurnButton.setTouchable(Touchable.disabled);
+                                disable(playCardButton);
+                                disable(endTurnButton);
                                 inputEnabled = false;
                             } else {
-                                System.out.println("Too many cards in hand");
+                                System.out.println("Too many cards in hand.");
+                                System.out.println("  you must discard " + (hand_cards - lives) + "!");
                                 logBox.addEvent("Hai troppe carte in mano,");
                                 logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
                             }
@@ -124,7 +125,7 @@ public class GameScene extends Scene {
                         }
                     }
                 });
-        endTurnButton.setTouchable(Touchable.disabled);
+        disable(endTurnButton);
 
         playerBoard = new PlayerBoardGroup((float) (stage.getWidth() * 0.4), (float) (stage.getHeight() * 0.3),
                 sceneManager);
@@ -144,8 +145,10 @@ public class GameScene extends Scene {
 
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
 
-                        playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
-                                : Touchable.disabled);
+                        if (isPlayableCardSelected && areUserInputEnabled())
+                            enable(playCardButton);
+                        else
+                            disable(playCardButton);
                     }
                 }
 
@@ -237,9 +240,10 @@ public class GameScene extends Scene {
 
                             isPlayableCardSelected = false;
 
-                            playCardButton
-                                    .setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
-                                            : Touchable.disabled);
+                            if (isPlayableCardSelected && areUserInputEnabled())
+                                enable(playCardButton);
+                            else
+                                disable(playCardButton);
                         }
                     } else {
                         dismissAllHighlights();
@@ -264,11 +268,11 @@ public class GameScene extends Scene {
 
     public Boolean areUserInputEnabled(Boolean val) {
         if (val) {
-            playCardButton.setTouchable(Touchable.enabled);
-            endTurnButton.setTouchable(Touchable.enabled);
+            enable(playCardButton);
+            enable(endTurnButton);
         } else {
-            playCardButton.setTouchable(Touchable.disabled);
-            endTurnButton.setTouchable(Touchable.disabled);
+            disable(playCardButton);
+            disable(endTurnButton);
         }
         return this.inputEnabled = val;
     }
@@ -297,6 +301,18 @@ public class GameScene extends Scene {
             }
             playerBoard.dismissHighlight();
         }
+    }
+
+    private void enable(TextButton b) {
+        b.setTouchable(Touchable.enabled);
+
+        // TODO: rimuovi simbolo di divieto
+    }
+    
+    private void disable(TextButton b) {
+        b.setTouchable(Touchable.disabled);
+
+        // TODO: aggiungi simbolo di divieto
     }
 
     public void update() {
