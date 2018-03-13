@@ -176,7 +176,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public ArrayList<IPlayer> getPlayers() {
-        UIUtils.print(this.players.size() + "");
         return this.getPlayers(new int[this.players.size()]);
     }
 
