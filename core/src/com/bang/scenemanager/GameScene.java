@@ -158,7 +158,7 @@ public class GameScene extends Scene {
                 }
 
                 else {
-                    dismissOldHighlights();
+                    dismissAllHighlights();
                     selectedCard.showCharacterCard(playerBoard.getCharacter());
                 }
             }
@@ -257,7 +257,7 @@ public class GameScene extends Scene {
                             playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled : Touchable.disabled);
                         }
                     } else {
-                        dismissOldHighlights();
+                        dismissAllHighlights();
                         selectedCard.showCharacterCard(otherBoard.getCharacter());
                     }
                 }
@@ -287,12 +287,20 @@ public class GameScene extends Scene {
         }
         return this.inputEnabled = val;
     }
+    
+    /* Called in character */
+    protected void dismissAllHighlights() {
+        for (OtherBoardGroup b : otherBoardList) {
+            b.dismissHighlight();
+        }
+    }
 
     /* Called by player board */
     protected void dismissOldHighlights() {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
+        playerBoard.dismissHighlight();
     }
 
     /* Called by otherBoardGroup */
