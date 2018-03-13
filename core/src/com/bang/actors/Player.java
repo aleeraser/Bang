@@ -199,6 +199,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.handCards;
     }
 
+    public int getHandCardsSize(){
+        return this.handCards.size();
+    }
+
     public int getLifes(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.lifes;
@@ -402,70 +406,80 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 break;
             }
         }
-
     }
 
-    private void playCard(int index, int targetIndex) {
-        IPlayer target = players.get(index);
-        if (target != null) {
-            Card c = handCards.get(index);
-            handCards.remove(index);
-            String name = c.getShortName();
-            if (c.getType().matches("target")) {
+    public void playCard(int index){
+        this.playCard(index, -1, -1, false);
+    }
+
+    public void playCard(int index, int targetIndex) {
+        this.playCard(index, targetIndex, -1, false);
+    }
+
+    //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
+    public void playCard(int index, int targetIndex, int targetCardIndex, boolean fromTable ) {
+        Card c = handCards.get(index);
+        handCards.remove(index);
+        String name = c.getShortName();
+        if (c.getType().matches("target")) {
+            IPlayer target = players.get(index);
+            if (target != null) {
+
                 if (name.matches("Bang"))
                     this.shot(target, targetIndex);
+                else if (name.matches("Catbalou"))
+                    this.catBalou(targetIndex, targetCardIndex, fromTable);
+                else if (name.matches("Panico"))
+                    this.panico(targetIndex, targetCardIndex, fromTable);
 
-                //attiva l'effetto sul target
-            } else if (c.getType().matches("table")) {
-                tableCards.add(c);
-                if (name.matches("Mirino"))
-                    this.view++;
-                else if (name.matches("Mustang")) {
-                    findGun();
-                    this.distance++;
-                } else if (name.matches("Carabine")) {
-                    findGun();
-                    this.shotDistance = 4;
-                } else if (name.matches("Remington")) {
-                    findGun();
-                    this.shotDistance = 3;
-                } else if (name.matches("Schofield")) {
-                    findGun();
-                    this.shotDistance = 2;
-                } else if (name.matches("Winchester")) {
-                    findGun();
-                    this.shotDistance = 5;
-                } else if (name.matches("Volcanic")) {
-                    findGun();
-                    this.shotDistance = 1;
-                    this.volcanic = true;
-                }
-                else{ //single-usage cards
-                    if (name.matches("Indiani")) {
-                        for (int i = 0; i < players.size(); i++) {
-                            if (i != this.pos && players.get(i) != null) {
-                                try {
-                                    this.clock.clockIncreaseLocal();
-                                    players.get(i).indiani(this.clock.getVec());
-                                } catch (RemoteException e) {
-                                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                    this.allertPlayerMissing(i);
-                                    //e.printStackTrace();
-                                }
+            }
+            //attiva l'effetto sul target
+        } else if (c.getType().matches("table")) {
+            tableCards.add(c);
+            if (name.matches("Mirino"))
+                this.view++;
+            else if (name.matches("Mustang")) {
+                findGun();
+                this.distance++;
+            } else if (name.matches("Carabine")) {
+                findGun();
+                this.shotDistance = 4;
+            } else if (name.matches("Remington")) {
+                findGun();
+                this.shotDistance = 3;
+            } else if (name.matches("Schofield")) {
+                findGun();
+                this.shotDistance = 2;
+            } else if (name.matches("Winchester")) {
+                findGun();
+                this.shotDistance = 5;
+            } else if (name.matches("Volcanic")) {
+                findGun();
+                this.shotDistance = 1;
+                this.volcanic = true;
+            }
+            else{ //single-usage cards
+                if (name.matches("Indiani")) {
+                    for (int i = 0; i < players.size(); i++) {
+                        if (i != this.pos && players.get(i) != null) {
+                            try {
+                                this.clock.clockIncreaseLocal();
+                                players.get(i).indiani(this.clock.getVec());
+                            } catch (RemoteException e) {
+                                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                                this.allertPlayerMissing(i);
+                                //e.printStackTrace();
                             }
                         }
                     }
                 }
-                //TODO valutare se gestire la volcanic;
-                //attiva l'effetto su te stesso
             }
+            //TODO valutare se gestire la volcanic;
+            //attiva l'effetto su te stesso
         }
     }
 
-    private void playCard(int index, int[] callerClock) {
-        this.clock.clockIncrease(callerClock);
-        this.playCard(index, this.pos);
-    }
+    
 
     public void removeTableCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
@@ -477,44 +491,47 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.handCards.remove(index);
     }
 
-    private void catBalou(int cIndex, int pIndex, Boolean fromTable) {
+    private void catBalou( int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
-        try {
-            if (fromTable) {
+        if (target != null){
+            try {
                 this.clock.clockIncreaseLocal();
-                target.removeTableCard(cIndex, this.clock.getVec());
-            } else {
-                this.clock.clockIncreaseLocal();
-                target.removeHandCard(cIndex, this.clock.getVec());
+                if (fromTable) {
+                    target.removeTableCard(cIndex, this.clock.getVec());
+                } else {
+                    target.removeHandCard(cIndex, this.clock.getVec());
+                }
+            } catch (RemoteException e) {
+                System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+                this.allertPlayerMissing(pIndex);
             }
-        } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
-            this.allertPlayerMissing(pIndex);
         }
     }
 
-    private void panico(int cIndex, int pIndex, Boolean fromTable) {
+    private void panico( int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
-        try {
-            this.clock.clockIncreaseLocal();
-            if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
-                Card c;
-                if (fromTable) {
-                    this.clock.clockIncreaseLocal();
-                    c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
-                    this.clock.clockIncreaseLocal();
-                    target.removeTableCard(cIndex, this.clock.getVec());
-                } else {
-                    this.clock.clockIncreaseLocal();
-                    c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
-                    this.clock.clockIncreaseLocal();
-                    target.removeHandCard(cIndex, this.clock.getVec());
+        if (target != null){
+            try {
+                this.clock.clockIncreaseLocal();
+                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                    Card c;
+                    if (fromTable) {
+                        this.clock.clockIncreaseLocal();
+                        c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
+                        this.clock.clockIncreaseLocal();
+                        target.removeTableCard(cIndex, this.clock.getVec());
+                    } else {
+                        this.clock.clockIncreaseLocal();
+                        c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
+                        this.clock.clockIncreaseLocal();
+                        target.removeHandCard(cIndex, this.clock.getVec());
+                    }
+                    this.handCards.add(c);
                 }
-                this.handCards.add(c);
+            } catch (RemoteException e) {
+                System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+                this.allertPlayerMissing(pIndex);
             }
-        } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
-            this.allertPlayerMissing(pIndex);
         }
     }
 
