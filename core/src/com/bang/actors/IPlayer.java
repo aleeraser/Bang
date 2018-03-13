@@ -15,7 +15,7 @@ public interface IPlayer extends Remote {
     
     void redrawSingle() throws RemoteException;
     
-    void redraw(Boolean shouldRedraw) throws RemoteException;
+    void redrawSingle(Boolean shouldRedraw) throws RemoteException;
 
     int getTurn() throws RemoteException;
     
@@ -91,5 +91,5 @@ public interface IPlayer extends Remote {
     
     void playCard(int index,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
     
-    public void allertPlayerMissing(int index) throws RemoteException;
+    public void alertPlayerMissing(int index) throws RemoteException;
 }

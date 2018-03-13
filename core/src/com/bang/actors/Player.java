@@ -102,7 +102,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.turn++;
             }
         }
-        redraw();
+        checkCrashes();
     }
 
     public void giveTurn() {
@@ -118,7 +118,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
-                    this.allertPlayerMissing(i);
+                    this.alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
             }
@@ -130,7 +130,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
         } catch (RemoteException e) {
             UIUtils.print("Error while passing token to player " + nextPlayer + ".");
-            this.allertPlayerMissing(nextPlayer);
+            this.alertPlayerMissing(nextPlayer);
             //e.printStackTrace();
         }
 
@@ -270,7 +270,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.turnOwner = next;
                         this.startTimeoutTime = System.currentTimeMillis();
                     }
-                    redraw();
+                    checkCrashes();
                 }
             }
         }
@@ -289,10 +289,24 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
-            this.allertPlayerMissing(i);
+            this.alertPlayerMissing(i);
             //e.printStackTrace();
         }
 
+    }
+
+    private void checkCrashes(){
+        for (int i = 0; i< this.players.size(); i++){
+            if (i != this.pos && players.get(i) != null){
+                try{
+                    players.get(i).getPos(this.clock.getVec());
+                }
+                catch(RemoteException e){
+                    this.alertPlayerMissing(i);
+                }
+            }
+        }
+        this.redraw();
     }
 
     private int findDistance(int i, int j) {
@@ -336,14 +350,24 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (this.ips.get(index).matches(ip)) {
             this.players.set(index, null);
             this.ips.set(index, null);
-            /*if (index < this.pos) {
-                this.pos--;
-            }*/
+        
+            if (this.checkVictory()){
+                System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
+            }
         } else
             System.out.println("the ip does not match!");
     }
 
-    public void allertPlayerMissing(int index) {
+    private Boolean checkVictory(){
+        for (int i = 0; i< this.players.size(); i++){
+            if ( i!=this.pos && players.get(i) != null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void alertPlayerMissing(int index) {
         this.clock.clockIncreaseLocal();
         this.removePlayer(index, ips.get(index), this.clock.getVec()); //first remove from own list.
 
@@ -357,7 +381,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     players.get(i).removePlayer(index, ips.get(index), this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                    this.allertPlayerMissing(i);
+                    this.alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
             }
@@ -374,7 +398,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
-                this.allertPlayerMissing(i);
+                this.alertPlayerMissing(i);
 
                 //e.printStackTrace();
             }
@@ -386,7 +410,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.lives--;
         if (this.lives <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
-            this.allertPlayerMissing(this.pos); //when a player dies it ack the others.
+            this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
         }
     }
 
@@ -427,7 +451,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (c.getType().matches("target")) {
             IPlayer target = players.get(index);
             if (target != null) {
-
+                this.checkCrashes();
                 if (name.matches("Bang"))
                     this.shot(target, targetIndex);
                 else if (name.matches("Catbalou"))
@@ -468,7 +492,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 players.get(i).indiani(this.clock.getVec());
                             } catch (RemoteException e) {
                                 System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                this.allertPlayerMissing(i);
+                                this.alertPlayerMissing(i);
                                 //e.printStackTrace();
                             }
                         }
@@ -503,7 +527,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
-                this.allertPlayerMissing(pIndex);
+                this.alertPlayerMissing(pIndex);
             }
         }
         redraw();
@@ -531,7 +555,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
-                this.allertPlayerMissing(pIndex);
+                this.alertPlayerMissing(pIndex);
             }
         }
         redraw();
@@ -633,7 +657,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     players.get(i).setDeckOrder(this.deck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                    allertPlayerMissing(i);
+                    alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
             }
@@ -664,7 +688,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     players.get(i).setCharacterDeckOrder(this.characterDeck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                    allertPlayerMissing(i);
+                    alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
             }
@@ -680,7 +704,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         clockList.add(this.players.get(i).getClock(this.clock.getVec()));
                     } catch (RemoteException e) {
                         System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                        allertPlayerMissing(i);
+                        alertPlayerMissing(i);
                     }
                 }
             }
@@ -703,14 +727,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.players.get(i).redrawSingle();
                 }
             } catch (RemoteException e) {
-                UIUtils.print("Error while redrawing GUI for player " + i + ".");
-                e.printStackTrace();
                 this.allertPlayerMissing(i);
             }
         }
     }
 
-    public void redraw(Boolean shouldRedraw) {
+    public void redrawSingle(Boolean shouldRedraw) {
         this.mustUpdateGUI = shouldRedraw;
     }
 
