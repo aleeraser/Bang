@@ -7,14 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
 import com.bang.actors.IPlayer;
+import com.bang.actors.Player;
 import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
@@ -52,7 +51,7 @@ public class GameScene extends Scene {
         batch = stage.getBatch();
         backgroundImage = null;
         me = sceneManager.getPlayer();
-        
+
         this.inputEnabled = false;
 
         /* TEST */
@@ -80,18 +79,20 @@ public class GameScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         System.out.println("Should play card");
-                        
+
                         SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
-                        	public void result(Object obj) {
+                            public void result(Object obj) {
                                 System.out.println("result " + obj);
                             }
                         };
-                        
+
                         d.show(stage);
-                        
+
                         logBox.addEvent("Carta giocata");
                     }
                 });
+
+        playCardButton.setTouchable(Touchable.disabled);
 
         endTurnButton = UIUtils.createBtn("Termina turno",
                 (float) (selectedCard.getX() + selectedCard.getWidth() + 250), (float) 4, stage,
@@ -102,7 +103,8 @@ public class GameScene extends Scene {
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
                             int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
-                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " in hand\n\t- " + lives + " lives.");
+                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " in hand\n\t- " + lives
+                                    + " lives.");
                             if (hand_cards <= lives) {
                                 System.out.println("End turn");
                                 logBox.addEvent("Turno terminato");
@@ -114,13 +116,15 @@ public class GameScene extends Scene {
                                 inputEnabled = false;
                             } else {
                                 System.out.println("Too many cards in hand");
-                                logBox.addEvent("Hai troppe carte in mano,\n  devi scartarne " + (hand_cards - lives) + "!");
+                                logBox.addEvent("Hai troppe carte in mano,");
+                                logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     }
                 });
+        endTurnButton.setTouchable(Touchable.disabled);
 
         playerBoard = new PlayerBoardGroup((float) (stage.getWidth() * 0.4), (float) (stage.getHeight() * 0.3),
                 sceneManager);
@@ -139,12 +143,14 @@ public class GameScene extends Scene {
                         selectedCard.showCard(clickedCard);
 
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
-                        playCardButton.setTouchable(isPlayableCardSelected ? Touchable.enabled : Touchable.disabled);
+
+                        playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
+                                : Touchable.disabled);
                     }
                 }
 
                 else {
-                    dismissOldHighlights();
+                    dismissAllHighlights();
                     selectedCard.showCharacterCard(playerBoard.getCharacter());
                 }
             }
@@ -230,10 +236,13 @@ public class GameScene extends Scene {
                             selectedCard.showCard(otherClickedCard);
 
                             isPlayableCardSelected = false;
-                            playCardButton.setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled : Touchable.disabled);
+
+                            playCardButton
+                                    .setTouchable(isPlayableCardSelected && areUserInputEnabled() ? Touchable.enabled
+                                            : Touchable.disabled);
                         }
                     } else {
-                        dismissOldHighlights();
+                        dismissAllHighlights();
                         selectedCard.showCharacterCard(otherBoard.getCharacter());
                     }
                 }
@@ -264,11 +273,19 @@ public class GameScene extends Scene {
         return this.inputEnabled = val;
     }
 
+    /* Called in character */
+    protected void dismissAllHighlights() {
+        for (OtherBoardGroup b : otherBoardList) {
+            b.dismissHighlight();
+        }
+    }
+
     /* Called by player board */
     protected void dismissOldHighlights() {
         for (OtherBoardGroup b : otherBoardList) {
             b.dismissHighlight();
         }
+        playerBoard.dismissHighlight();
     }
 
     /* Called by otherBoardGroup */
@@ -283,45 +300,47 @@ public class GameScene extends Scene {
     }
 
     public void update() {
-    	/* Update my board */
+        /* Update my board */
         try {
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
-            me.redraw(false);
+            me.redrawSingle(false);
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");
         }
-        
+
         /* Update other players board */
         /* Get player info */
         IPlayer me = sceneManager.player;
         int playerNum = 0;
         int myPos = 0;
         ArrayList<IPlayer> players;
-        
+
         try {
-        	players = me.getPlayers();
-        	playerNum = players.size();
-        	myPos = me.getPos(new int [playerNum]);        	
+            players = me.getPlayers();
+            playerNum = players.size();
+            myPos = me.getPos(new int[playerNum]);
         } catch (RemoteException e1) {
-			e1.printStackTrace();
-			System.out.println("ERROR: not able to get other playes info.");
-			return;
-		}
-        
-        /* TODO check if null */
+            e1.printStackTrace();
+            System.out.println("ERROR: not able to get other playes info.");
+            return;
+        }
+
         for (int i = 0; i < otherPlayerNumber; i++) {
-        	int index = (myPos + 1 + i) % (playerNum);
-        	OtherBoardGroup otherBoard = otherBoardList.get(i);
-        	
-        	try {
-        		otherBoard.updateBoardCards(players.get(index).getCards(new int [playerNum]));
-        		otherBoard.updateHandCards(players.get(index).getHandCards());
-        	} catch (RemoteException e) {
-        		e.printStackTrace();
-        		System.out.println("ERROR: not able to get other playes info.");
-        	}
+            int index = (myPos + 1 + i) % (playerNum);
+            OtherBoardGroup otherBoard = otherBoardList.get(i);
+
+            IPlayer p = players.get(index);
+            if (p != null) {
+                try {
+                    otherBoard.updateBoardCards(players.get(index).getCards(new int[playerNum]));
+                    otherBoard.updateHandCards(players.get(index).getHandCards());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    System.out.println("ERROR: not able to get other playes info.");
+                }
+            }
         }
 
     }
