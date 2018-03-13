@@ -3,21 +3,15 @@ package com.bang.scenemanager;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
 import com.bang.actors.IPlayer;
-import com.bang.actors.Player;
 import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
@@ -308,7 +302,7 @@ public class GameScene extends Scene {
     }
 
     public void update() {
-    	
+
         /* Update my board */
         try {
             playerBoard.updateHandCards(me.getHandCards());
@@ -346,19 +340,18 @@ public class GameScene extends Scene {
                     otherBoard.updateBoardCards(p.getCards(new int[playerNum]));
                     otherBoard.updateHandCards(p.getHandCards());
                 } catch (RemoteException e) {
-                   // e.printStackTrace();
+                    // e.printStackTrace();
                     System.out.println("ERROR: not able to get other playes info, calling alert.");
                     try {
-						me.alertPlayerMissing(index);
-					} catch (RemoteException e1) {
-						e1.printStackTrace();
-					}
-                    
+                        me.alertPlayerMissing(index);
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
-            }
-            else {
-            	System.out.println("Found null player, draw the X");
-            	otherBoard.setDisabledPlayer();
+            } else {
+                System.out.println("Found null player, draw the X");
+                otherBoard.setDisabledPlayer();
             }
         }
 

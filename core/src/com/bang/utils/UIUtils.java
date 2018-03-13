@@ -5,7 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -43,16 +45,17 @@ public class UIUtils {
         b.setTouchable(Touchable.enabled);
 
         for (Actor c : b.getChildren()) {
-            c.remove();
+            if (c instanceof Image) {
+                c.remove();
+            }
         }
     }
 
     public static void disable(TextButton b) {
         b.setTouchable(Touchable.disabled);
 
-        Image btnBlock = new Image(new Texture(Gdx.files.internal("images/divieto.png")));
-        btnBlock.setSize(b.getHeight(), b.getHeight());
-        btnBlock.setPosition(b.getWidth() / 2 - btnBlock.getWidth() / 2, 0);
+        Image btnBlock = new Image(new Texture(Gdx.files.internal("images/divieto2.png")));
+        btnBlock.setPosition(b.getWidth() / 2 - btnBlock.getWidth() / 4, b.getHeight() / 2 - btnBlock.getWidth() / 2);
         b.addActor(btnBlock);
     }
 
@@ -77,5 +80,16 @@ public class UIUtils {
         t.setAlignment(Align.center);
 
         s.addActor(t);
+    }
+
+    public static void setCursor(String cursorImagePath) {
+        Pixmap pm = new Pixmap(Gdx.files.internal(cursorImagePath));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 1, 1));
+        pm.dispose();
+    }
+
+    public static void restoreDefaultCursor() {
+        SystemCursor sc = SystemCursor.Arrow;
+        Gdx.graphics.setSystemCursor(sc);
     }
 }
