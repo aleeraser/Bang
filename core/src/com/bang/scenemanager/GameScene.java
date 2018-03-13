@@ -87,6 +87,8 @@ public class GameScene extends Scene {
                             }
                         };
                         
+                        d.show(stage);
+                        
                         logBox.addEvent("Carta giocata");
                     }
                 });
