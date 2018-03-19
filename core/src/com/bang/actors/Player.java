@@ -33,6 +33,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
     private Boolean alreadyShot;
     private Boolean volcanic;
+    private Boolean jail;
     private int barrel;
     private Clock clock;
     private long startTimeoutTime;
@@ -52,6 +53,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.pos = -1;
         this.volcanic = false;
         this.barrel = 0;
+        this.jail = false;
 
         this.deck = new Deck();
 
@@ -95,10 +97,21 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.turn++;
             } else if (turn > 1) {
                 // standard turn
-                System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
+                //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.draw();
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
+                if (this.jail){
+                    Card c = this.deck.draw();
+                    this.removeTableCard(this.tableCards.indexOf(c), this.clock.getVec());
+                    if (c.getSuit() == 2 ){
+                        System.out.println("è cuori, sono scagionato!");
+                    }
+                    else{
+                        this.giveTurn();
+                    }
+
+                }
             } else {
                 this.turn++;
             }
@@ -268,6 +281,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             // standard turn
                             this.draw();
                             this.draw();
+
+                            if (this.jail) {
+                                Card c = this.deck.draw();
+                                this.removeTableCard(this.tableCards.indexOf(c), this.clock.getVec());
+                                if (c.getSuit() == 2) {
+                                    System.out.println("è cuori, sono scagionato!");
+                                } else {
+                                    this.giveTurn();
+                                }
+                            }
+
                         } else {
                             this.turn++;
                         }
@@ -444,6 +468,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
+    public void jail(Card jail, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        Card j = jail.copyCard();
+        this.tableCards.add(j);
+        this.jail=true;
+    }
+
     public void playCard(Card c) {
         this.playCard(c, -1, -1, false);
     }
@@ -469,6 +500,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                 else if (name.matches("panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
+                else if (name.matches("prigione")){
+                    try{
+                        this.players.get(targetIndex).jail( c, this.clock.getVec());
+                    }
+                    catch(RemoteException e){
+                        System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+                        this.alertPlayerMissing(targetIndex); 
+                    }
+                }
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
@@ -518,6 +558,27 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.increaselives(this.clock.getVec());
                 else return;
             }
+            else if (name.matches("diligenza")){
+                this.draw();
+                this.draw();
+            }
+            else if (name.matches("wellsfargo")){
+                this.draw();
+                this.draw();
+                this.draw();
+            }
+            else if (name.matches("gatling")){
+                for (int i = 0; i<this.players.size(); i++){
+                    if (i != this.pos && this.players.get(i)!= null){
+                        try{
+                            this.players.get(i).decreaselives(this.clock.getVec());
+                        }catch(RemoteException e){
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.alertPlayerMissing(i); 
+                        }
+                    }
+                }
+            }
 
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
@@ -536,6 +597,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else if (name.matches("volcanic")) this.volcanic = false;
         else if (name.matches("mirino")) this.view --;
         else if (name.matches("mustang")) this.distance--;
+        else if (name.matches("prigione")) this.jail = false;
         //TODO: aggiungere dinamite;
         else this.shotDistance = 1;
     }

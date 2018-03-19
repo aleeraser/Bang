@@ -17,6 +17,7 @@ import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
 import com.bang.gameui.SelectedCardGroup;
 import com.bang.utils.UIUtils;
+//TODO: errore quando si clicca un punto vuoto nel tabellone e poi scarta.
 
 public class GameScene extends Scene {
 
