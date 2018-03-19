@@ -14,13 +14,13 @@ public class Deck {
     protected ArrayList<Card> orderedDeck;
     protected ArrayList<Integer> deckIndices;
     protected int nextCardIndex;
-    private ArrayList<Integer> discardedCards;
+    private ArrayList<Integer> discardPile;
     private int currentDeckSize;
 
     public Deck() {
         this.orderedDeck = this.buildOrderedDeck();
         this.nextCardIndex = 0;
-        this.discardedCards = new ArrayList<Integer>();
+        this.discardPile = new ArrayList<Integer>();
         this.currentDeckSize = orderedDeck.size();
     }
 
@@ -59,11 +59,11 @@ public class Deck {
     }
 
     private void shuffleDeck() {
-        this.currentDeckSize = this.discardedCards.size();
+        this.currentDeckSize = this.discardPile.size();
         this.nextCardIndex = 0;
-        Collections.shuffle(this.discardedCards);
-        this.deckIndices = this.discardedCards;
-        this.discardedCards = new ArrayList<Integer>();
+        Collections.shuffle(this.discardPile);
+        this.deckIndices = this.discardPile;
+        this.discardPile = new ArrayList<Integer>();
     }
 
     public Card getCard(int cardIndex) {
@@ -97,6 +97,14 @@ public class Deck {
     }
     
     public void discard(int cardIndex) {
-        this.discardedCards.add(cardIndex);
+        this.discardPile.add(cardIndex);
+    }
+
+    public void setDiscardPile(ArrayList<Integer> pile) {
+        this.discardPile = pile;
+    }
+
+    public ArrayList<Integer> getDiscardPile() {
+        return this.discardPile;
     }
 }
