@@ -77,14 +77,23 @@ public class GameScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         System.out.println("Should play card");
+                        String type = clickedCard.getType();
+                        if (type.matches("target")){
+                            SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
+                                public void result(Object obj) {
+                                    System.out.println("result " + obj);
+                                }
+                            };
 
-                        SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
-                            public void result(Object obj) {
-                                System.out.println("result " + obj);
+                            d.show(stage);
+                        }
+                        else {
+                            try{
+                                sceneManager.player.playCard(sceneManager.player.getHandCards().indexOf(clickedCard));
+                            }catch(RemoteException e){
+                                e.printStackTrace();
                             }
-                        };
-
-                        d.show(stage);
+                        }
 
                         logBox.addEvent("Carta giocata");
                     }
