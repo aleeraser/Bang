@@ -77,12 +77,22 @@ public class GameScene extends Scene {
                 (float) 4, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
+                    	if (clickedCard == null) {
+                    		logBox.addEvent("Nessuna carta selezionata.");
+                    		return;
+                    	}
+                    	
                         System.out.println("Should play card");
                         String type = clickedCard.getType();
                         if (type.matches("target")){
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
-                                    System.out.println("result " + obj);
+                                    //System.out.println("result " + obj);
+                                	try {
+										sceneManager.player.playCard(clickedCard, (Integer) obj);
+									} catch (RemoteException e) {
+										e.printStackTrace();
+									}
                                 }
                             };
 
@@ -96,6 +106,7 @@ public class GameScene extends Scene {
                             }
                         }
 
+                        UIUtils.disable(playCardButton);
                         logBox.addEvent("Carta giocata");
                     }
                 });
@@ -142,6 +153,11 @@ public class GameScene extends Scene {
                 (float) 4, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
+                    	if (clickedCard == null) {
+                    		logBox.addEvent("Nessuna carta selezionata.");
+                    		return;
+                    	}
+                    	
                         System.out.println("Should discard card " + clickedCard.getName());
                         logBox.addEvent("Carta scartata " + clickedCard.getName());
                         
@@ -170,6 +186,9 @@ public class GameScene extends Scene {
                                 UIUtils.disable(playCardButton);
                                 UIUtils.disable(endTurnButton);
                                 inputEnabled = false;
+	                        }
+	                        else {
+	                        	UIUtils.disable(discardButton);
 	                        }
                         } catch (RemoteException e) {
                         	e.printStackTrace();
