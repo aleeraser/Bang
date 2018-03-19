@@ -31,8 +31,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private ArrayList<IPlayer> players;
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
     private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
+    private Boolean alreadyShot;
     private Boolean volcanic;
-    private Boolean barrel;
+    private int barrel;
     private Clock clock;
     private long startTimeoutTime;
     private long playerTimeout;
@@ -50,7 +51,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.distance = 0;
         this.pos = -1;
         this.volcanic = false;
-        this.barrel = false;
+        this.barrel = 0;
 
         this.deck = new Deck();
 
@@ -108,7 +109,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void giveTurn() {
         Integer nextPlayer = findNext(this.pos);
         this.turnOwner = nextPlayer;
-
+        this.alreadyShot = false; 
         for (int i = 0; i < players.size(); i++) {
             if (i != this.pos && players.get(i) != null && i != nextPlayer) {
                 System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
@@ -282,11 +283,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     private void shot(IPlayer target, int i) { //i is the target index
 
-        try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
+        try { 
             this.clock.clockIncreaseLocal();
             if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 this.clock.clockIncreaseLocal();
-                target.decreaselives(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
+                target.bang(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
+                this.alreadyShot = true;
                 //System.out.println(target.getLives());
             } else
                 System.out.println("Target out of range");
@@ -296,6 +298,29 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.alertPlayerMissing(i);
             //e.printStackTrace();
         }
+
+    }
+
+    public void bang( int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        for(int i = 0; i < barrel; i++){
+            Card c = this.deck.draw();
+            if (c.getSuit() == 2){
+                System.out.println("mancato, è uscito cuori");
+                this.deck.discard(this.deck.getNextCardIndex()-1);
+                return;
+            }
+        }
+        
+        for (Card c : this.handCards){
+            if( c.getName().matches("mancato") ){
+                System.out.println("haha ho un mancato!");
+                this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+                return;
+            }
+        }
+
+        this.decreaselives(this.clock.getVec());
 
     }
 
@@ -387,23 +412,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void beer(IPlayer target, int i) {
-        if (target != null) {
-            try {
-                System.out.println("nella beer");
-                this.clock.clockIncreaseLocal();
-                target.increaselives(this.clock.getVec());
-                //System.out.println(target.getLives());
-            } catch (RemoteException e) {
-                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-
-                this.alertPlayerMissing(i);
-
-                //e.printStackTrace();
-            }
-        }
-    }
-
     public void decreaselives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.lives--;
@@ -452,7 +460,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             IPlayer target = players.get(targetIndex);
             if (target != null) {
                 this.checkCrashes();
-                if (name.matches("bang"))
+                if (name.matches("bang") && (! alreadyShot || volcanic))
                     this.shot(target, targetIndex);
                 else if (name.matches("catbalou"))
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
@@ -483,6 +491,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.volcanic = true;
 
             }
+            else if (name.matches("barile")){
+                this.barrel ++;
+            }
             tableCards.add(c);
         } else { //single-usage cards
             if (name.matches("indiani")) {
@@ -499,6 +510,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
                 }
             }
+            else if (name.matches("birra")) {
+                this.increaselives(this.clock.getVec());
+            }
 
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
@@ -508,9 +522,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void removeTableCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
+        String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
         this.deck.discard(index);
         this.syncDiscards();
+        if(name.matches("barile")) this.barrel --;
+        else if (name.matches("volcanic")) this.volcanic = false;
+        else if (name.matches("mirino")) this.view --;
+        else if (name.matches("mustang")) this.distance--;
+        //TODO: aggiungere dinamite;
+        else this.shotDistance = 1;
     }
 
     public void removeHandCard(int index, int[] callerClock) {

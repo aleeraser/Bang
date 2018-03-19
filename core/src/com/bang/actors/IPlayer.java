@@ -95,4 +95,5 @@ public interface IPlayer extends Remote {
 
     void setDiscards(ArrayList<Integer> discards, int[] callerClock) throws RemoteException;
 
+    void bang(int[] callerClock) throws RemoteException;
 }
