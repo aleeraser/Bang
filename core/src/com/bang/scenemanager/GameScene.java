@@ -150,6 +150,8 @@ public class GameScene extends Scene {
 							sceneManager.player.removeHandCard(
 									sceneManager.player.getHandCards().indexOf(clickedCard),
 									new int[otherPlayerNumber + 1]);
+							
+							sceneManager.player.redrawSingle();
 						} catch (RemoteException e1) {
 							e1.printStackTrace();
 						}

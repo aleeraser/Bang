@@ -107,6 +107,14 @@ public class OtherBoardGroup extends Group {
 	
 	public void updateBoardCards(ArrayList<Card> boardCards) {
 		this.boardCards = boardCards;
+		
+		/* Remove if already present */
+		if (this.boardCardImages != null) {
+			for (Group g : this.boardCardImages) {
+				g.remove();
+			}
+		}
+		
 		this.boardCardImages = new ArrayList<Group>();
 		
 		float spacing = (cardListWidth - cardWidth - charPosX) / (boardCards.size());
@@ -137,6 +145,14 @@ public class OtherBoardGroup extends Group {
 	
 	public void updateHandCards(ArrayList<Card> handCards) {
 		this.handCards = handCards;
+		
+		/* Remove if already present */
+		if (this.handCardImages != null) {
+			for (Group g : this.handCardImages) {
+				g.remove();
+			}
+		}
+		
 		this.handCardImages = new ArrayList<Group>();
 		
 		float spacing = (cardListWidth - cardWidth - charPosX) / (handCards.size());
