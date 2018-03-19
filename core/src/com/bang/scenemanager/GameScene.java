@@ -106,7 +106,8 @@ public class GameScene extends Scene {
                             }
                         }
 
-                        UIUtils.disable(playCardButton);
+                        //UIUtils.disable(playCardButton);
+                        clickedCard = null;
                         logBox.addEvent("Carta giocata");
                     }
                 });
@@ -188,11 +189,13 @@ public class GameScene extends Scene {
                                 inputEnabled = false;
 	                        }
 	                        else {
-	                        	UIUtils.disable(discardButton);
+	                        	//UIUtils.disable(discardButton);
 	                        }
                         } catch (RemoteException e) {
                         	e.printStackTrace();
                         }
+                        
+                        clickedCard = null;
                     }
                 });
         /* Initially not visible */
