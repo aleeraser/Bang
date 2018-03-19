@@ -67,11 +67,11 @@ public class Bang extends ApplicationAdapter {
                     gs.update();
                 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
-                    UIUtils.print("It's my turn and user input were NOT enabled. Enabling user inputs");
+                    // UIUtils.print("It's my turn and user input were NOT enabled. Enabling user inputs");
                     gs.areUserInputEnabled(true);
                 }
                 else if (!me.isMyTurn() && gs.areUserInputEnabled()) {
-                    UIUtils.print("It's NOT my turn and user input were enabled. Disabling user inputs");
+                    // UIUtils.print("It's NOT my turn and user input were enabled. Disabling user inputs");
                     gs.areUserInputEnabled(false);
                 }
 
