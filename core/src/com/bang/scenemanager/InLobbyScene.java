@@ -36,8 +36,6 @@ public class InLobbyScene extends Scene {
         this.isRoomMaster = isRoomMaster;
         this.lobbyName = lobbyName;
 
-        this.sceneManager.setInLobbyScene(true);
-
         this.setup();
 
         try {

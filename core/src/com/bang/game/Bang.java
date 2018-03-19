@@ -13,7 +13,6 @@ import com.bang.actors.IPlayer;
 import com.bang.scenemanager.GameScene;
 import com.bang.scenemanager.InLobbyScene;
 import com.bang.scenemanager.MainMenuScene;
-import com.bang.scenemanager.RoomListScene;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
@@ -76,10 +75,6 @@ public class Bang extends ApplicationAdapter {
                 }
 
             } else {
-                if (sceneManager.isInLobbyScene()) {
-                    inLobbyScene = (InLobbyScene) sceneManager.getCurrentScene();
-                    inLobbyScene.updatePlayerList();
-                }
                 if (me.isMyTurn()) {
                     if (me.getTurn() == 1) {
                         // During the first turn cards are drawn and the game is set up. The GUI can't

@@ -32,7 +32,6 @@ public class SceneManager {
     protected IPlayer player;
     protected String currentLobby;
     protected boolean inGame;
-    protected boolean inLobbyScene;
 
     public SceneManager() {
         gameScene = null;
@@ -74,9 +73,6 @@ public class SceneManager {
     public void setScene(Scene scene) {
         if (this.gameScene != null) {
             this.gameScene.getStage().dispose();
-            if (this.isInLobbyScene()) {
-                this.setInLobbyScene(false);
-            }
         }
         this.gameScene = scene;
         //scene.setGameManager(this);
@@ -129,13 +125,5 @@ public class SceneManager {
 
     public void setInGame(boolean value) {
         this.inGame = value;
-    }
-
-    public boolean isInLobbyScene() {
-        return inLobbyScene;
-    }
-
-    public void setInLobbyScene(boolean value) {
-        this.inLobbyScene = value;
     }
 }
