@@ -514,7 +514,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
             else if (name.matches("birra")) {
-                this.increaselives(this.clock.getVec());
+                if (this.lives < this.character.getLives())
+                    this.increaselives(this.clock.getVec());
+                else return;
             }
 
             //TODO valutare se gestire la volcanic;
