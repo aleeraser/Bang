@@ -454,14 +454,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
     public void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) {
-        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+        
         String name = c.getName();
         if (c.getType().matches("target")) {
             IPlayer target = players.get(targetIndex);
             if (target != null) {
                 this.checkCrashes();
-                if (name.matches("bang") && (! alreadyShot || volcanic))
-                    this.shot(target, targetIndex);
+                if (name.matches("bang")){ 
+                    if(! alreadyShot || volcanic)
+                        this.shot(target, targetIndex);
+                    else return;
+                }
                 else if (name.matches("catbalou"))
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                 else if (name.matches("panico"))
@@ -517,6 +520,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
+        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
         redraw();
     }
 
