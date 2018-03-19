@@ -425,11 +425,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         for (int i = 0; i < this.tableCards.size(); i++) {
             String name = this.tableCards.get(i).getName();
             System.out.println("--->" + name);
-            if (name.matches("Volcanic") || name.matches("Carabine") || name.matches("Remington")
-                    || name.matches("Schofield") || name.matches("Winchester")) {
+            if (name.matches("volcanic") || name.matches("carabine") || name.matches("remington")
+                    || name.matches("schofield") || name.matches("winchester")) {
                 this.clock.clockIncreaseLocal();
                 this.removeTableCard(i, this.clock.getVec());
-                if (name.matches("Volcanic"))
+                if (name.matches("volcanic"))
                     this.volcanic = false;
                 break;
             }
@@ -447,44 +447,44 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
     public void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) {
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
-        String name = c.getShortName();
+        String name = c.getName();
         if (c.getType().matches("target")) {
             IPlayer target = players.get(targetIndex);
             if (target != null) {
                 this.checkCrashes();
-                if (name.matches("Bang"))
+                if (name.matches("bang"))
                     this.shot(target, targetIndex);
-                else if (name.matches("Catbalou"))
+                else if (name.matches("catbalou"))
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
-                else if (name.matches("Panico"))
+                else if (name.matches("panico"))
                     this.panico(targetIndex, targetCardIndex, fromTable);
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
             tableCards.add(c);
-            if (name.matches("Mirino"))
+            if (name.matches("mirino"))
                 this.view++;
-            else if (name.matches("Mustang")) {
+            else if (name.matches("mustang")) {
                 findGun();
                 this.distance++;
-            } else if (name.matches("Carabine")) {
+            } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
-            } else if (name.matches("Remington")) {
+            } else if (name.matches("remington")) {
                 findGun();
                 this.shotDistance = 3;
-            } else if (name.matches("Schofield")) {
+            } else if (name.matches("schofield")) {
                 findGun();
                 this.shotDistance = 2;
-            } else if (name.matches("Winchester")) {
+            } else if (name.matches("winchester")) {
                 findGun();
                 this.shotDistance = 5;
-            } else if (name.matches("Volcanic")) {
+            } else if (name.matches("volcanic")) {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
             } else { //single-usage cards
-                if (name.matches("Indiani")) {
+                if (name.matches("indiani")) {
                     for (int i = 0; i < players.size(); i++) {
                         if (i != this.pos && players.get(i) != null) {
                             try {
@@ -567,7 +567,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         Boolean found = false;
         for (int i = 0; i < handCards.size(); i++) {
-            if (handCards.get(i).getShortName().matches("Bang")) {
+            if (handCards.get(i).getName().matches("bang")) {
                 this.handCards.remove(i);
                 found = true;
                 break;
