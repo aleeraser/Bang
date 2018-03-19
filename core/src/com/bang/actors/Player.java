@@ -424,7 +424,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     protected void findGun() { //searches for a gun between tableCards and removes it if present.
         for (int i = 0; i < this.tableCards.size(); i++) {
             String name = this.tableCards.get(i).getName();
-            System.out.println("--->" + name);
+           // System.out.println("--->" + name);
             if (name.matches("volcanic") || name.matches("carabine") || name.matches("remington")
                     || name.matches("schofield") || name.matches("winchester")) {
                 this.clock.clockIncreaseLocal();
@@ -464,7 +464,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (name.matches("mirino"))
                 this.view++;
             else if (name.matches("mustang")) {
-                findGun();
                 this.distance++;
             } else if (name.matches("carabine")) {
                 findGun();
