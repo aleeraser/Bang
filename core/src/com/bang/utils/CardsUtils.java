@@ -172,7 +172,7 @@ public class CardsUtils {
 		
 		for (int i = 0; i < xNumber; i++) {
 			xImage = new Image(new Texture(Gdx.files.internal("images/x.png")));
-			xImage.setPosition((float)(width - xWidth * 1.05), (float)((height * 3 / 4) - i * (xHeight * 1.05)));
+			xImage.setPosition((float)(width - xWidth * 1.05), (float)((height * 3 / 4) - (xHeight * 1.05) - i * (xHeight * 1.05)));
 			xImage.setSize(xWidth, xHeight);
 			g.addActor(xImage);
 		}

@@ -524,7 +524,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
-        this.deck.discard(index);
+        this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
         if(name.matches("barile")) this.barrel --;
         else if (name.matches("volcanic")) this.volcanic = false;
@@ -537,7 +537,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removeHandCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
-        this.deck.discard(index);
+        this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
     }
 
