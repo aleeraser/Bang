@@ -192,6 +192,7 @@ public class OtherBoardGroup extends Group {
 		try {
 			int playerNum = player.getPlayers().size();
 			int remaningLives = player.getLives(new int[playerNum]);
+			if (charImage != null) charImage.remove();
 			charImage = character.getCharacterCard(charHeight, remaningLives);
 		} catch (RemoteException e) {
 			e.printStackTrace();

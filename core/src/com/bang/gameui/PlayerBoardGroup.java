@@ -91,26 +91,7 @@ public class PlayerBoardGroup extends Group {
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
 		charPosY = height/2 - charHeight/2;
 		
-		try {
-			IPlayer me = sceneManager.getPlayer();
-			int playerNum = me.getPlayers().size();
-			Character myChar = me.getCharacter();
-			int remaningLives = me.getLives(new int[playerNum]);
-			charImage = myChar.getCharacterCard(charHeight, remaningLives);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		
-		charImage.setSize(charWidth, charHeight);
-		charImage.setPosition(charPosX, charPosY);
-		
-		charImage.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-            	isLastClickedChar = true;
-            	// System.out.println("Inside handler");
-            }
-        });
+		setCharacter();
 		
 		this.addActor(charImage);
 		
@@ -207,6 +188,18 @@ public class PlayerBoardGroup extends Group {
 			int remaningLives = me.getLives(new int[playerNum]);
 			if (charImage != null) charImage.remove();
 			charImage = myChar.getCharacterCard(charHeight, remaningLives);
+			
+			charImage.setSize(charWidth, charHeight);
+			charImage.setPosition(charPosX, charPosY);
+			
+			charImage.addListener(new ClickListener() {
+	            @Override
+	            public void clicked(InputEvent event, float x, float y) {
+	            	isLastClickedChar = true;
+	            	// System.out.println("Inside handler");
+	            }
+	        });
+			
 			this.addActor(charImage);
 		} catch (RemoteException e) {
 			e.printStackTrace();
