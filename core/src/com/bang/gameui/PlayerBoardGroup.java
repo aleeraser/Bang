@@ -103,7 +103,7 @@ public class PlayerBoardGroup extends Group {
             @Override
             public void clicked(InputEvent event, float x, float y) {
             	isLastClickedChar = true;
-            	System.out.println("Inside handler");
+            	// System.out.println("Inside handler");
             }
         });
 		

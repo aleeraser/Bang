@@ -82,7 +82,7 @@ public class GameScene extends Scene {
                     		return;
                     	}
                     	
-                        System.out.println("Should play card");
+                        // System.out.println("Should play card");
                         String type = clickedCard.getType();
                         if (type.matches("target")){
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
@@ -127,10 +127,10 @@ public class GameScene extends Scene {
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
                             int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
-                            UIUtils.print("Currently the player has:\n\t- " + hand_cards + " cards in hand\n\t- "
-                                    + lives + " lives");
+                            // UIUtils.print("Currently the player has:\n\t- " + hand_cards + " cards in hand\n\t- "
+                            //         + lives + " lives");
                             if (hand_cards <= lives) {
-                                System.out.println("End turn");
+                                // System.out.println("End turn");
                                 logBox.addEvent("Turno terminato");
 
                                 me.giveTurn();
@@ -139,8 +139,8 @@ public class GameScene extends Scene {
                                 UIUtils.disable(endTurnButton);
                                 inputEnabled = false;
                             } else {
-                                System.out.println("Too many cards in hand.");
-                                System.out.println("  you must discard " + (hand_cards - lives) + "!");
+                                // System.out.println("Too many cards in hand.");
+                                // System.out.println("  you must discard " + (hand_cards - lives) + "!");
                                 logBox.addEvent("Hai troppe carte in mano,");
                                 logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
                                 isDiscarding = true;
@@ -163,7 +163,7 @@ public class GameScene extends Scene {
                     		return;
                     	}
                     	
-                        System.out.println("Should discard card " + clickedCard.getName());
+                        // System.out.println("Should discard card " + clickedCard.getName());
                         logBox.addEvent("Carta scartata " + clickedCard.getName());
                         
                         // Discarding
@@ -218,7 +218,7 @@ public class GameScene extends Scene {
                     clickedCard = playerBoard.getLastClickedCard();
                     dismissOldHighlights();
                     if (clickedCard != null) {
-                        System.out.println(clickedCard.getName());
+                        // System.out.println(clickedCard.getName());
                         selectedCard.showCard(clickedCard);
 
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
@@ -317,7 +317,7 @@ public class GameScene extends Scene {
                         Card otherClickedCard = otherBoard.getLastClickedCard();
                         dismissOldHighlights(otherBoard);
                         if (otherClickedCard != null) {
-                            System.out.println(otherClickedCard.getName());
+                            // System.out.println(otherClickedCard.getName());
                             selectedCard.showCard(otherClickedCard);
 
                             isPlayableCardSelected = false;
