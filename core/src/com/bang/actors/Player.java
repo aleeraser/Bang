@@ -284,7 +284,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
             this.clock.clockIncreaseLocal();
-            if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 this.clock.clockIncreaseLocal();
                 target.decreaselives(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
                 //System.out.println(target.getLives());
@@ -543,7 +543,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                     Card c;
                     if (fromTable) {
                         this.clock.clockIncreaseLocal();
