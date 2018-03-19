@@ -509,14 +509,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removeTableCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.tableCards.remove(index);
-        this.deck.discard(index);
+        this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
     }
 
     public void removeHandCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
-        this.deck.discard(index);
+        this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
     }
 
