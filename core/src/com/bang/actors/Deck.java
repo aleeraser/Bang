@@ -88,6 +88,7 @@ public class Deck {
 
     public Card draw() {
         if (this.nextCardIndex == this.currentDeckSize) {
+            UIUtils.print("Reshuffling deck");
             shuffleDeck();
         }
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
