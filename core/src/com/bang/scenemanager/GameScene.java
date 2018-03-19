@@ -88,6 +88,11 @@ public class GameScene extends Scene {
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
                                     //System.out.println("result " + obj);
+                                	try {
+										sceneManager.player.playCard(clickedCard, (Integer) obj);
+									} catch (RemoteException e) {
+										e.printStackTrace();
+									}
                                 }
                             };
 
