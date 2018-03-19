@@ -168,11 +168,11 @@ public class CardsUtils {
 		g.addActor(card);
 		
 		float xWidth = (float) (width * 0.2);
-		float xHeight = (float) (height * 0.06);
+		float xHeight = (float) (height * 0.04);
 		
 		for (int i = 0; i < xNumber; i++) {
 			xImage = new Image(new Texture(Gdx.files.internal("images/x.png")));
-			xImage.setPosition((float)(width - xWidth * 1.05), (float)((height / 4) + i * (xHeight * 1.05)));
+			xImage.setPosition((float)(width - xWidth * 1.05), (float)((height * 3 / 4) - i * (xHeight * 1.05)));
 			xImage.setSize(xWidth, xHeight);
 			g.addActor(xImage);
 		}

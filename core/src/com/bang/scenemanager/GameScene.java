@@ -396,6 +396,7 @@ public class GameScene extends Scene {
         try {
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
+            playerBoard.setCharacter();
             me.redrawSingle(false);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -428,6 +429,7 @@ public class GameScene extends Scene {
                 try {
                     otherBoard.updateBoardCards(p.getCards(new int[playerNum]));
                     otherBoard.updateHandCards(p.getHandCards());
+                    otherBoard.setCharacter();
                 } catch (RemoteException e) {
                     // e.printStackTrace();
                     System.out.println("ERROR: not able to get other playes info, calling alert.");

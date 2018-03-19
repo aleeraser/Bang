@@ -199,6 +199,18 @@ public class PlayerBoardGroup extends Group {
 		}
 	}
 	
+	public void setCharacter() {
+		try {
+			IPlayer me = sceneManager.getPlayer();
+			int playerNum = me.getPlayers().size();
+			Character myChar = me.getCharacter();
+			int remaningLives = me.getLives(new int[playerNum]);
+			charImage = myChar.getCharacterCard(charHeight, remaningLives);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Card getLastClickedCard() {
 		return lastClickedCard;
 	}

@@ -176,6 +176,11 @@ public class OtherBoardGroup extends Group {
 		}
 	}
 	
+	public void setCharacter() {
+		if (character != null)
+			setCharacter(character);
+	}
+	
 	public void setCharacter(Character character) {
 		this.character = character;
 		
