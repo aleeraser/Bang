@@ -205,6 +205,7 @@ public class PlayerBoardGroup extends Group {
 			int playerNum = me.getPlayers().size();
 			Character myChar = me.getCharacter();
 			int remaningLives = me.getLives(new int[playerNum]);
+			if (charImage != null) charImage.remove();
 			charImage = myChar.getCharacterCard(charHeight, remaningLives);
 		} catch (RemoteException e) {
 			e.printStackTrace();
