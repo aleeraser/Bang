@@ -36,6 +36,8 @@ public class InLobbyScene extends Scene {
         this.isRoomMaster = isRoomMaster;
         this.lobbyName = lobbyName;
 
+        this.sceneManager.setInLobbyScene(true);
+
         this.setup();
 
         try {
@@ -93,14 +95,7 @@ public class InLobbyScene extends Scene {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        int size = updatePlayerList().size();
-                        if (isRoomMaster) {
-                            if (size > 1) {
-                                UIUtils.enable(btnStart);
-                            } else {
-                                UIUtils.disable(btnStart);
-                            }
-                        }
+                        updatePlayerList();
                     }
                 });
 
@@ -136,7 +131,7 @@ public class InLobbyScene extends Scene {
 
     }
 
-    protected ArrayList<String> updatePlayerList() {
+    public ArrayList<String> updatePlayerList() {
         ArrayList<String> players = new ArrayList<String>();
         playerNames = new String[0];
 
@@ -162,6 +157,14 @@ public class InLobbyScene extends Scene {
 
         } catch (Exception e) {
             UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text, removeOnError);
+        }
+
+        if (isRoomMaster) {
+            if (players.size() > 1) {
+                UIUtils.enable(btnStart);
+            } else {
+                UIUtils.disable(btnStart);
+            }
         }
 
         return players;
