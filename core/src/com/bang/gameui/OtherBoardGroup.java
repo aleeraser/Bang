@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
+import com.bang.actors.IPlayer;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -64,11 +65,13 @@ public class OtherBoardGroup extends Group {
 	// Character
 	protected Character character;
 	protected boolean isLastClickedChar;
+	protected IPlayer player;
 	
-	public OtherBoardGroup(float width, float height, SceneManager sceneManager) {
+	public OtherBoardGroup(float width, float height, SceneManager sceneManager, IPlayer player) {
 		this.width = width;
 		this.height = height;
 		this.sceneManager = sceneManager;
+		this.player = player;
 		this.setSize(width, height);
 		setupLayout();
 	}
@@ -173,6 +176,11 @@ public class OtherBoardGroup extends Group {
 		}
 	}
 	
+	public void setCharacter() {
+		if (character != null)
+			setCharacter(character);
+	}
+	
 	public void setCharacter(Character character) {
 		this.character = character;
 		
@@ -181,7 +189,14 @@ public class OtherBoardGroup extends Group {
 		charPosX = width * CHAR_POS_WIDTH_PERCENTAGE;
 		charPosY = height/2 - charHeight/2;
 		
-		charImage = character.getCharacterCard(charHeight);
+		try {
+			int playerNum = player.getPlayers().size();
+			int remaningLives = player.getLives(new int[playerNum]);
+			if (charImage != null) charImage.remove();
+			charImage = character.getCharacterCard(charHeight, remaningLives);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		
 		charImage.setSize(charWidth, charHeight);
 		charImage.setPosition(charPosX, charPosY);

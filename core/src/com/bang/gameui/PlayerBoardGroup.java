@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
+import com.bang.actors.IPlayer;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -91,7 +92,11 @@ public class PlayerBoardGroup extends Group {
 		charPosY = height/2 - charHeight/2;
 		
 		try {
-			charImage = sceneManager.getPlayer().getCharacter().getCharacterCard(charHeight);
+			IPlayer me = sceneManager.getPlayer();
+			int playerNum = me.getPlayers().size();
+			Character myChar = me.getCharacter();
+			int remaningLives = me.getLives(new int[playerNum]);
+			charImage = myChar.getCharacterCard(charHeight, remaningLives);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -191,6 +196,20 @@ public class PlayerBoardGroup extends Group {
 	        		isPlayableCardSelected = true;
 	            }
 			});			
+		}
+	}
+	
+	public void setCharacter() {
+		try {
+			IPlayer me = sceneManager.getPlayer();
+			int playerNum = me.getPlayers().size();
+			Character myChar = me.getCharacter();
+			int remaningLives = me.getLives(new int[playerNum]);
+			if (charImage != null) charImage.remove();
+			charImage = myChar.getCharacterCard(charHeight, remaningLives);
+			this.addActor(charImage);
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 	
