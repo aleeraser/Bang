@@ -121,8 +121,8 @@ public class InLobbyScene extends Scene {
                                         player.setIpList(playerIPs);
                                     }
                                 }
-                                me.syncCharacterDeck(me.getCharacterDeck().shuffleDeck());
-                                me.syncDeck(me.getDeck().shuffleDeck());
+                                me.syncCharacterDeck(me.getCharacterDeck().initialShuffle());
+                                me.syncDeck(me.getDeck().initialShuffle());
                                 me.setTurn(0, 0, 0, new int[me.getPlayers().size()]);
                             } catch (RemoteException e) {
                                 UIUtils.showError("Failed to set ip list", e, stage, sceneManager, text, removeOnError);

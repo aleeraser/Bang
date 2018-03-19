@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.bang.utils.UIUtils;
 
 import org.json.*;
 
@@ -13,10 +14,14 @@ public class Deck {
     protected ArrayList<Card> orderedDeck;
     protected ArrayList<Integer> deckIndices;
     protected int nextCardIndex;
+    private ArrayList<Integer> discardedCards;
+    private int currentDeckSize;
 
     public Deck() {
-        this.orderedDeck = buildOrderedDeck();
+        this.orderedDeck = this.buildOrderedDeck();
         this.nextCardIndex = 0;
+        this.discardedCards = new ArrayList<Integer>();
+        this.currentDeckSize = orderedDeck.size();
     }
 
     protected ArrayList<Integer> randomArrayList(int n) {
@@ -48,13 +53,21 @@ public class Deck {
         return orderedDeck;
     }
 
-    public ArrayList<Integer> shuffleDeck() {
-        this.deckIndices = randomArrayList(this.orderedDeck.size());
+    public ArrayList<Integer> initialShuffle() {
+        this.deckIndices = this.randomArrayList(this.orderedDeck.size());
         return this.deckIndices;
     }
 
+    private void shuffleDeck() {
+        this.currentDeckSize = this.discardedCards.size();
+        this.nextCardIndex = 0;
+        Collections.shuffle(this.discardedCards);
+        this.deckIndices = this.discardedCards;
+        this.discardedCards = new ArrayList<Integer>();
+    }
+
     public Card getCard(int cardIndex) {
-        return this.orderedDeck.get(deckIndices.get(cardIndex));
+        return this.orderedDeck.get(this.deckIndices.get(cardIndex));
     }
 
     public void setIndices(ArrayList<Integer> indices) {
@@ -66,14 +79,22 @@ public class Deck {
     }
 
     public void setNextCardIndex(int i) {
-        nextCardIndex = i;
+        this.nextCardIndex = i;
     }
 
     public int getNextCardIndex() {
-        return nextCardIndex;
+        return this.nextCardIndex;
     }
 
     public Card draw() {
-        return getCard(nextCardIndex++);
+        if (this.nextCardIndex == this.currentDeckSize) {
+            shuffleDeck();
+        }
+        UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
+        return this.getCard(this.nextCardIndex);
+    }
+    
+    public void discard(int cardIndex) {
+        this.discardedCards.add(cardIndex);
     }
 }

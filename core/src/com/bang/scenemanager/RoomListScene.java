@@ -59,7 +59,7 @@ public class RoomListScene extends Scene {
         });
 
         // Join room
-        btnJoin = UIUtils.createBtn("Entra", 210, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnJoin = UIUtils.createBtn("Entra", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
@@ -90,7 +90,7 @@ public class RoomListScene extends Scene {
 
         // New room
         final String[] lobs = updateLobbyList();
-        btnNewLobby = UIUtils.createBtn("Nuova stanza", Gdx.graphics.getWidth() - 230, 10, stage,
+        btnNewLobby = UIUtils.createBtn("Nuova stanza", Gdx.graphics.getWidth() / 2 - btnJoin.getWidth() / 2 - 10, 10, stage,
                 sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

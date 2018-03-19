@@ -239,11 +239,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 try {
                     System.out.println("checking if the turn holder is alive");
-                    if (this.players.get(this.turnOwner) != null){
+                    if (this.players.get(this.turnOwner) != null) {
                         players.get(this.turnOwner).getPos(this.clock.getVec());
                         this.startTimeoutTime = System.currentTimeMillis();
-                    //this code is executed only if the player is still up
-                    }else throw new RemoteException();
+                        //this code is executed only if the player is still up
+                    } else
+                        throw new RemoteException();
                 } catch (RemoteException e) { //the turn Holder is crashed
                     //this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
                     this.alertPlayerMissing(this.turnOwner);
@@ -298,13 +299,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     }
 
-    private void checkCrashes(){
-        for (int i = 0; i< this.players.size(); i++){
-            if (i != this.pos && players.get(i) != null){
-                try{
+    private void checkCrashes() {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
+                try {
                     players.get(i).getPos(this.clock.getVec());
-                }
-                catch(RemoteException e){
+                } catch (RemoteException e) {
                     this.alertPlayerMissing(i);
                 }
             }
@@ -351,18 +351,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removePlayer(int index, String ip, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
 
-            this.players.set(index, null);
-            this.ips.set(index, null);
-        
-            if (this.checkVictory()){
-                System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
-            }
-        
+        this.players.set(index, null);
+        this.ips.set(index, null);
+
+        if (this.checkVictory()) {
+            System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
+        }
+
     }
 
-    private Boolean checkVictory(){
-        for (int i = 0; i< this.players.size(); i++){
-            if ( i!=this.pos && players.get(i) != null){
+    private Boolean checkVictory() {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
                 return false;
             }
         }
@@ -505,11 +505,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void removeTableCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.tableCards.remove(index);
+        this.deck.discard(index);
     }
 
     public void removeHandCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
+        this.deck.discard(index);
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
