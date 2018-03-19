@@ -91,8 +91,9 @@ public class Deck {
             UIUtils.print("Reshuffling deck");
             shuffleDeck();
         }
+        Card nextCard = this.getCard(this.nextCardIndex);
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
-        return this.getCard(this.nextCardIndex);
+        return nextCard;
     }
     
     public void discard(int cardIndex) {
