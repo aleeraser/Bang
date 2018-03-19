@@ -89,7 +89,10 @@ public class GameScene extends Scene {
                                 public void result(Object obj) {
                                     //System.out.println("result " + obj);
                                 	try {
-										sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                        sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                        clickedCard = null;
+                                        logBox.addEvent("Carta giocata");
+
 									} catch (RemoteException e) {
 										e.printStackTrace();
 									}
@@ -101,15 +104,16 @@ public class GameScene extends Scene {
                         else {
                             try{
                                 sceneManager.player.playCard(clickedCard);
+                                clickedCard = null;
+                                logBox.addEvent("Carta giocata");
+
                             }catch(RemoteException e){
                                 e.printStackTrace();
                             }
                         }
 
                         //UIUtils.disable(playCardButton);
-                        clickedCard = null;
-                        logBox.addEvent("Carta giocata");
-                    }
+                       }
                 });
 
         UIUtils.disable(playCardButton);
