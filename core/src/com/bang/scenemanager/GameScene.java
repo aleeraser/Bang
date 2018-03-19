@@ -236,7 +236,7 @@ public class GameScene extends Scene {
 
                 else {
                     dismissAllHighlights();
-                    selectedCard.showCharacterCard(playerBoard.getCharacter());
+                    selectedCard.showCharacterCard(playerBoard.getCharacter(), sceneManager.player, otherPlayerNumber+1);
                 }
             }
         });
@@ -281,7 +281,7 @@ public class GameScene extends Scene {
         IPlayer me = sceneManager.player;
         int playerNum = 0;
         int myPos = 0;
-        ArrayList<IPlayer> players;
+        final ArrayList<IPlayer> players;
 
         try {
             players = me.getPlayers();
@@ -294,11 +294,12 @@ public class GameScene extends Scene {
         }
 
         for (int i = 0; i < otherPlayerNumber; i++) {
-            final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager);
+        	final int index = (myPos + 1 + i) % (playerNum);
+        	
+            final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager, players.get(index));
             otherBoardList.add(otherBoard);
             otherBoard.setPosition(50 + 10 * i + obWidth * i, 500);
-
-            int index = (myPos + 1 + i) % (playerNum);
+            
 
             try {
                 otherBoard.setCharacter(players.get(index).getCharacter());
@@ -333,7 +334,7 @@ public class GameScene extends Scene {
                         }
                     } else {
                         dismissAllHighlights();
-                        selectedCard.showCharacterCard(otherBoard.getCharacter());
+                        selectedCard.showCharacterCard(otherBoard.getCharacter(), players.get(index), otherPlayerNumber + 1);
                     }
                 }
             });

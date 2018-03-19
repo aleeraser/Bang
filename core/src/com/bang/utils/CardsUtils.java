@@ -147,11 +147,13 @@ public class CardsUtils {
 		
 	}
 	
-	public static Group createCharacterCardImageGroup(String charName, double cardImageHeight) {
+	public static Group createCharacterCardImageGroup(String charName, double cardImageHeight, int lives, int remainingLives) {
 		
 		Group g;
 		Image card;
 		double width, height;
+		int xNumber = lives - remainingLives;
+		Image xImage;
 		
 		g = new Group();
 		height = cardImageHeight;
@@ -164,6 +166,16 @@ public class CardsUtils {
 		card.setPosition(0, 0);
 				
 		g.addActor(card);
+		
+		float xWidth = (float) (width * 0.1);
+		float xHeight = (float) (height * 0.06);
+		
+		for (int i = 0; i < xNumber; i++) {
+			xImage = new Image(new Texture(Gdx.files.internal("images/x.png")));
+			xImage.setPosition((float)(width - xWidth * 1.05), (float)((height / 2) + i * (height * 0.05)));
+			xImage.setSize(xWidth, xHeight);
+			g.addActor(xImage);
+		}
 		
 		return g;		
 	}

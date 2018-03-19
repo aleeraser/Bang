@@ -28,8 +28,8 @@ public class Character implements Serializable {
 		return name;
 	}
 	
-	public Group getCharacterCard(double cardImageHeight) {
-		return CardsUtils.createCharacterCardImageGroup(name + ".png", cardImageHeight);
+	public Group getCharacterCard(double cardImageHeight, int remainingLives) {
+		return CardsUtils.createCharacterCardImageGroup(name + ".png", cardImageHeight, lives, remainingLives);
 	}
 	
 }
