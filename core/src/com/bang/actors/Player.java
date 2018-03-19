@@ -407,6 +407,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void decreaselives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.lives--;
+        System.out.println("mi hanno sparato, ho " + this.getLives(this.clock.getVec()) + " vite");
         if (this.lives <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
