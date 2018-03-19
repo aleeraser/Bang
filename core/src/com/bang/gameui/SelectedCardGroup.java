@@ -1,9 +1,12 @@
 package com.bang.gameui;
 
+import java.rmi.RemoteException;
+
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
+import com.bang.actors.IPlayer;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.CardsUtils;
 
@@ -36,9 +39,13 @@ public class SelectedCardGroup extends Group {
 		this.addActor(cardImage);
 	}
 	
-	public void  showCharacterCard(Character character) {
+	public void  showCharacterCard(Character character, IPlayer player, int playerNum) {
 		//removeShownCard();
-		cardImage = character.getCharacterCard(height * BOARD_RATIO);
+		try {
+			cardImage = character.getCharacterCard(height * BOARD_RATIO, player.getLives(new int[playerNum]));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		cardImage.setPosition((float)(width * (1-BOARD_RATIO) * 0.5), (float)(height * (1-BOARD_RATIO) * 0.5));
 		this.addActor(cardImage);		
 	}
