@@ -24,7 +24,7 @@ public class GameScene extends Scene {
     ArrayList<OtherBoardGroup> otherBoardList;
     SelectedCardGroup selectedCard;
     Character selectedCharacter;
-    TextButton playCardButton, endTurnButton;
+    TextButton playCardButton, endTurnButton, discardButton;
     LogBox logBox;
     IPlayer me;
     Boolean inputEnabled;
@@ -32,6 +32,7 @@ public class GameScene extends Scene {
     /* Gameplay info */
     boolean isPlayableCardSelected;
     Card clickedCard;
+    boolean isDiscarding = false;
 
     /* Other Boards size */
     float obHeight;
@@ -117,6 +118,9 @@ public class GameScene extends Scene {
                                 System.out.println("  you must discard " + (hand_cards - lives) + "!");
                                 logBox.addEvent("Hai troppe carte in mano,");
                                 logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
+                                isDiscarding = true;
+                                playCardButton.setVisible(false);
+                                discardButton.setVisible(true);
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -124,6 +128,45 @@ public class GameScene extends Scene {
                     }
                 });
         UIUtils.disable(endTurnButton);
+        
+        discardButton = UIUtils.createBtn("Scarta", (float) (selectedCard.getX() + selectedCard.getWidth() + 20),
+                (float) 4, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        System.out.println("Should discard card " + clickedCard.getName());
+                        logBox.addEvent("Carta scartata " + clickedCard.getName());
+                        
+                        // Discarding
+                        try {
+							sceneManager.player.removeHandCard(
+									sceneManager.player.getHandCards().indexOf(clickedCard),
+									new int[otherPlayerNumber + 1]);
+						} catch (RemoteException e1) {
+							e1.printStackTrace();
+						}
+                        
+                        // Check if needs to discard again
+                        try {
+	                        int hand_cards = sceneManager.player.getHandCardsSize();
+	                        int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
+	                        if (hand_cards <= lives) {
+	                        	isDiscarding = false;
+	                        	playCardButton.setVisible(true);
+	                        	discardButton.setVisible(false);
+	                        	logBox.addEvent("Turno terminato.");
+	                        	me.giveTurn();
+
+                                UIUtils.disable(playCardButton);
+                                UIUtils.disable(endTurnButton);
+                                inputEnabled = false;
+	                        }
+                        } catch (RemoteException e) {
+                        	e.printStackTrace();
+                        }
+                    }
+                });
+        /* Initially not visible */
+        discardButton.setVisible(false);
 
         playerBoard = new PlayerBoardGroup((float) (stage.getWidth() * 0.4), (float) (stage.getHeight() * 0.3),
                 sceneManager);
@@ -143,10 +186,14 @@ public class GameScene extends Scene {
 
                         isPlayableCardSelected = playerBoard.isSelectedCardPlayable();
 
-                        if (isPlayableCardSelected && areUserInputEnabled())
+                        if (isPlayableCardSelected && areUserInputEnabled()) {
                             UIUtils.enable(playCardButton);
-                        else
+                        	UIUtils.enable(discardButton);
+                        }
+                        else {
                             UIUtils.disable(playCardButton);
+                            UIUtils.disable(discardButton);
+                        }
                     }
                 }
 
@@ -238,10 +285,14 @@ public class GameScene extends Scene {
 
                             isPlayableCardSelected = false;
 
-                            if (isPlayableCardSelected && areUserInputEnabled())
+                            if (isPlayableCardSelected && areUserInputEnabled()) {
                                 UIUtils.enable(playCardButton);
-                            else
+                                UIUtils.enable(discardButton);
+                            }
+                            else {
                                 UIUtils.disable(playCardButton);
+                                UIUtils.disable(discardButton);
+                            }
                         }
                     } else {
                         dismissAllHighlights();
