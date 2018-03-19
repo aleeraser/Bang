@@ -284,7 +284,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         try { //TODO assicurarsi che quì il taglio sia coerente, se lo la distanza potrebbe essere sbagliata
             this.clock.clockIncreaseLocal();
-            if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            if (findDistance(i, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                 this.clock.clockIncreaseLocal();
                 target.decreaselives(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
                 //System.out.println(target.getLives());
@@ -424,7 +424,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     protected void findGun() { //searches for a gun between tableCards and removes it if present.
         for (int i = 0; i < this.tableCards.size(); i++) {
             String name = this.tableCards.get(i).getName();
-            System.out.println("--->" + name);
+           // System.out.println("--->" + name);
             if (name.matches("volcanic") || name.matches("carabine") || name.matches("remington")
                     || name.matches("schofield") || name.matches("winchester")) {
                 this.clock.clockIncreaseLocal();
@@ -461,11 +461,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
-            tableCards.add(c);
             if (name.matches("mirino"))
                 this.view++;
             else if (name.matches("mustang")) {
-                findGun();
                 this.distance++;
             } else if (name.matches("carabine")) {
                 findGun();
@@ -483,22 +481,25 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
-            } else { //single-usage cards
-                if (name.matches("indiani")) {
-                    for (int i = 0; i < players.size(); i++) {
-                        if (i != this.pos && players.get(i) != null) {
-                            try {
-                                this.clock.clockIncreaseLocal();
-                                players.get(i).indiani(this.clock.getVec());
-                            } catch (RemoteException e) {
-                                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                this.alertPlayerMissing(i);
-                                //e.printStackTrace();
-                            }
+
+            }
+            tableCards.add(c);
+        } else { //single-usage cards
+            if (name.matches("indiani")) {
+                for (int i = 0; i < players.size(); i++) {
+                    if (i != this.pos && players.get(i) != null) {
+                        try {
+                            this.clock.clockIncreaseLocal();
+                            players.get(i).indiani(this.clock.getVec());
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.alertPlayerMissing(i);
+                            //e.printStackTrace();
                         }
                     }
                 }
             }
+
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
@@ -509,12 +510,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.tableCards.remove(index);
         this.deck.discard(index);
+        this.syncDiscards();
     }
 
     public void removeHandCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         this.deck.discard(index);
+        this.syncDiscards();
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
@@ -540,7 +543,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) < (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                     Card c;
                     if (fromTable) {
                         this.clock.clockIncreaseLocal();
@@ -740,6 +743,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public Boolean shouldUpdateGUI() {
         return this.mustUpdateGUI;
+    }
+
+    public void setDiscards(ArrayList<Integer> discards, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.deck.setDiscardPile(discards);
+    }
+
+    protected void syncDiscards(){
+        for (int i = 0; i < players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
+                try {
+                    this.clock.clockIncreaseLocal();
+                    players.get(i).setDiscards(this.deck.getDiscardPile(), this.clock.getVec());
+                } catch (RemoteException e) {
+                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    alertPlayerMissing(i);
+                    //e.printStackTrace();
+                }
+            }
+        }
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
