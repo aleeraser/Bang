@@ -74,6 +74,9 @@ public class SceneManager {
     public void setScene(Scene scene) {
         if (this.gameScene != null) {
             this.gameScene.getStage().dispose();
+            if (this.isInLobbyScene()) {
+                this.setInLobbyScene(false);
+            }
         }
         this.gameScene = scene;
         //scene.setGameManager(this);
