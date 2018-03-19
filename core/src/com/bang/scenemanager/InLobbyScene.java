@@ -89,7 +89,7 @@ public class InLobbyScene extends Scene {
         });
 
         // Update
-        btnUpdate = UIUtils.createBtn("Aggiorna", 210, 10, stage, sceneManager.getTextButtonStyle(),
+        btnUpdate = UIUtils.createBtn("Aggiorna", Gdx.graphics.getWidth() / 2 - btnBack.getWidth() / 2 - 10, 10, stage, sceneManager.getTextButtonStyle(),
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
