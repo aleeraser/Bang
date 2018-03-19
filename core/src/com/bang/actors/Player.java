@@ -461,7 +461,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
-            tableCards.add(c);
             if (name.matches("mirino"))
                 this.view++;
             else if (name.matches("mustang")) {
@@ -483,22 +482,25 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
-            } else { //single-usage cards
-                if (name.matches("indiani")) {
-                    for (int i = 0; i < players.size(); i++) {
-                        if (i != this.pos && players.get(i) != null) {
-                            try {
-                                this.clock.clockIncreaseLocal();
-                                players.get(i).indiani(this.clock.getVec());
-                            } catch (RemoteException e) {
-                                System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-                                this.alertPlayerMissing(i);
-                                //e.printStackTrace();
-                            }
+
+            }
+            tableCards.add(c);
+        } else { //single-usage cards
+            if (name.matches("indiani")) {
+                for (int i = 0; i < players.size(); i++) {
+                    if (i != this.pos && players.get(i) != null) {
+                        try {
+                            this.clock.clockIncreaseLocal();
+                            players.get(i).indiani(this.clock.getVec());
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.alertPlayerMissing(i);
+                            //e.printStackTrace();
                         }
                     }
                 }
             }
+
             //TODO valutare se gestire la volcanic;
             //attiva l'effetto su te stesso
         }
@@ -509,12 +511,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.tableCards.remove(index);
         this.deck.discard(index);
+        this.syncDiscards();
     }
 
     public void removeHandCard(int index, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         this.deck.discard(index);
+        this.syncDiscards();
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
@@ -740,6 +744,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public Boolean shouldUpdateGUI() {
         return this.mustUpdateGUI;
+    }
+
+    public void setDiscards(ArrayList<Integer> discards, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.deck.setDiscardPile(discards);
+    }
+
+    protected void syncDiscards(){
+        for (int i = 0; i < players.size(); i++) {
+            if (i != this.pos && players.get(i) != null) {
+                try {
+                    this.clock.clockIncreaseLocal();
+                    players.get(i).setDiscards(this.deck.getDiscardPile(), this.clock.getVec());
+                } catch (RemoteException e) {
+                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    alertPlayerMissing(i);
+                    //e.printStackTrace();
+                }
+            }
+        }
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
