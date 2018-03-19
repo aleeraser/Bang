@@ -434,21 +434,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public void playCard(int index) {
-        this.playCard(index, -1, -1, false);
+    public void playCard(Card c) {
+        this.playCard(c, -1, -1, false);
     }
 
-    public void playCard(int index, int targetIndex) {
-        this.playCard(index, targetIndex, -1, false);
+    public void playCard(Card c, int targetIndex) {
+        this.playCard(c, targetIndex, -1, false);
     }
 
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
-    public void playCard(int index, int targetIndex, int targetCardIndex, boolean fromTable) {
-        Card c = handCards.get(index);
-        handCards.remove(index);
+    public void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) {
         String name = c.getShortName();
         if (c.getType().matches("target")) {
-            IPlayer target = players.get(index);
+            IPlayer target = players.get(targetIndex);
             if (target != null) {
                 this.checkCrashes();
                 if (name.matches("Bang"))

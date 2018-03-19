@@ -90,7 +90,7 @@ public class GameScene extends Scene {
                         }
                         else {
                             try{
-                                sceneManager.player.playCard(sceneManager.player.getHandCards().indexOf(clickedCard));
+                                sceneManager.player.playCard(clickedCard);
                             }catch(RemoteException e){
                                 e.printStackTrace();
                             }

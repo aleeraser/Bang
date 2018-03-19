@@ -85,11 +85,11 @@ public interface IPlayer extends Remote {
 
     void syncCharacterDeck(ArrayList<Integer> indices) throws RemoteException;
 
-    void playCard(int index) throws RemoteException;
+    void playCard(Card c) throws RemoteException;
 
-    void playCard(int index,int targetIndex) throws RemoteException; 
+    void playCard(Card c,int targetIndex) throws RemoteException; 
     
-    void playCard(int index,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
+    void playCard(Card c,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
     
     public void alertPlayerMissing(int index) throws RemoteException;
 }
