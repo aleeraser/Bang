@@ -486,11 +486,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         String name = c.getName();
         if (c.getType().matches("target")) {
             IPlayer target = players.get(targetIndex);
+            String targetName = "";
+            try{
+                 targetName = target.getCharacter().getName(); }
+            catch(RemoteException e){
+                this.alertPlayerMissing(targetIndex);
+            }
             if (target != null) {
                 this.checkCrashes();
                 if (name.matches("bang")){ 
-                    if(! alreadyShot || volcanic)
+                    if(! alreadyShot || volcanic){
+                        this.logOthers(this.getCharacter().getName() + "ha sparato a " + targetName);
                         this.shot(target, targetIndex);
+                    }
                     else return;
                 }
                 else if (name.matches("catbalou"))
