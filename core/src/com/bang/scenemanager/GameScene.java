@@ -95,6 +95,8 @@ public class GameScene extends Scene {
                                                 || clickedCard.getName().matches("panico"))) {
                                             logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
                                             sceneManager.player.playCard(clickedCard, playerIndex);
+                                        clickedCard = null;
+                                        selectedCard.removeShownCard();
                                         } else {
                                             SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager, (Integer)obj){
                                                 public void result(Object cardIndex){
@@ -104,6 +106,8 @@ public class GameScene extends Scene {
                                                             sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex - len, false);
                                                         else 
                                                             sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex, true);
+                                                        clickedCard = null;
+                                                        selectedCard.removeShownCard();
                                                     }
                                                     catch(RemoteException e){
                                                         e.printStackTrace();
@@ -113,8 +117,6 @@ public class GameScene extends Scene {
                                             };
                                             d1.show(stage);
                                         }
-                                        clickedCard = null;
-                                        selectedCard.removeShownCard();
                                     } catch (RemoteException e) {
                                         e.printStackTrace();
                                     }
