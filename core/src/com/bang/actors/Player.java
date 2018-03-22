@@ -100,7 +100,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else if (turn > 1) {
                 // standard turn
                 //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
-                this.logOthers("è il turno di " + this.getCharacter().getName() );
+                this.logOthers("E' il turno di " + this.getCharacter().getName() );
             	log("E' il mio turno!");
                 this.draw();
                 this.draw();
@@ -325,13 +325,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             log("Barile:");
             if (c.getSuit() == 2){
                 System.out.println("mancato, è uscito cuori");
-                this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non è stato colpito");
+                this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("pescato cuori, mancato!");
                 this.deck.discard(this.deck.getNextCardIndex()-1);
                 return;
             }
             else {
-                this.logOthers(this.getCharacter().getName() + " è stato colpito");
+                this.logOthers("il barile di "this.getCharacter().getName() + "non ha avuto effetto");
             	log("\tnon cuori, colpito.");
             }
         }
@@ -446,6 +446,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (this.lives <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
+            this.logOthers(this.getCharacter().getName() + " e' MORTO!!!");
+
         }
     }
 
@@ -534,32 +536,32 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             else if (name.matches("mustang")) {
                 this.distance++;
-                this.logOthers(this.getCharacter().getName() + " è su un mustang, sarà più difficile sparargli");
+                this.logOthers(this.getCharacter().getName() + " e' su un mustang, saraì piu' difficile sparargli");
             } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
-                this.logOthers(this.getCharacter().getName() + " ha sparato ha una carrabina");
+                this.logOthers(this.getCharacter().getName() + " ha una carabina");
 
             } else if (name.matches("remington")) {
                 findGun();
                 this.shotDistance = 3;
-                this.logOthers(this.getCharacter().getName() + " ha sparato ha un remington");
+                this.logOthers(this.getCharacter().getName() + " ha un remington");
 
             } else if (name.matches("schofield")) {
                 findGun();
                 this.shotDistance = 2;
-                this.logOthers(this.getCharacter().getName() + " ha sparato ha una schofield");
+                this.logOthers(this.getCharacter().getName() + " ha una schofield");
 
             } else if (name.matches("winchester")) {
                 findGun();
                 this.shotDistance = 5;
-                this.logOthers(this.getCharacter().getName() + " ha sparato ha un winchester");
+                this.logOthers(this.getCharacter().getName() + " ha un winchester");
 
             } else if (name.matches("volcanic")) {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
-                this.logOthers(this.getCharacter().getName() + " ha sparato ha una volcanic");
+                this.logOthers(this.getCharacter().getName() + " ha una volcanic");
             }
             else if (name.matches("barile")){
                 this.barrel ++;
