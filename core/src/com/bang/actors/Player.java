@@ -108,7 +108,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 	log("\tPrigione:");
                     Card c = this.deck.draw();
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
-                    this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
+                    this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
                     if (c.getSuit() == 2 ){
                         log("\tE' cuori, sono scagionato!");
                     }
@@ -281,41 +281,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     int next = this.findNext(this.turnOwner);
                     if (next == this.pos) { //you are the next
                         System.out.println("I'm taking the turn");
-                        this.turnOwner = this.pos;
-
-                        if (this.turn == 0) {
-                            // initial turn
-                            this.drawCharacter();
-                            for (int i = 0; i < this.character.getLives(); i++) {
-                                this.draw();
-                            }
-                            this.playerTimeout = 15000;
-                            //this.giveTurn();
-                            this.turn++;
-                        } else if (this.turn > 1) {
-                            // standard turn
-                            this.draw();
-                            this.draw();
-
-                            if (this.jail) {
-                                Card c = this.deck.draw();
-                                this.deck.discard(this.deck.getNextCardIndex() - 1);
-                                this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
-                                if (c.getSuit() == 2) {
-                                    System.out.println("è cuori, sono scagionato!");
-                                } else {
-                                    this.giveTurn();
-                                }
-                            }
-
-                        } else {
-                            this.turn++;
-                        }
+                        this.setTurn(deck.getNextCardIndex(),characterDeck.getNextCardIndex(), next, this.clock.getVec());
                     } else {
                         this.turnOwner = next;
                         this.startTimeoutTime = System.currentTimeMillis();
+                        checkCrashes();
                     }
-                    checkCrashes();
                 }
             }
         }
