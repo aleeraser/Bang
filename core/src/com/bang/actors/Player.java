@@ -860,7 +860,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     
     private void logOthers(String event) {
     	for (IPlayer p : players) {
-    		if (p != null) {
+    		if (p != null && p != this) {
     			try {
 					p.log(event);
 				} catch (RemoteException e) {
