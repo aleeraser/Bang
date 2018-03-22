@@ -91,9 +91,9 @@ public class GameScene extends Scene {
                                     //System.out.println("result " + obj);
                                 	try {
                                         sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                        logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get((Integer)obj).getCharacter().getName());
                                         clickedCard = null;
-                                        logBox.addEvent("Carta giocata");
-
+                                        selectedCard.removeShownCard();
 									} catch (RemoteException e) {
 										e.printStackTrace();
 									}
@@ -105,9 +105,9 @@ public class GameScene extends Scene {
                         else {
                             try{
                                 sceneManager.player.playCard(clickedCard);
+                                logBox.addEvent("Carta giocata: " + clickedCard.getName());
                                 clickedCard = null;
-                                logBox.addEvent("Carta giocata");
-
+                                selectedCard.removeShownCard();
                             }catch(RemoteException e){
                                 e.printStackTrace();
                             }
@@ -243,25 +243,6 @@ public class GameScene extends Scene {
         });
 
         stage.addActor(playerBoard);
-
-        /*ArrayList<Card> cards = new ArrayList<Card>();
-        cards.add(new Card(CardsUtils.CARD_BANG, CardsUtils.CARD_ACE, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_MISSED, CardsUtils.CARD_THREE, CardsUtils.SUIT_CLUBS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        cards.add(new Card(CardsUtils.CARD_INDIANS, CardsUtils.CARD_QUEEN, CardsUtils.SUIT_DIAMONDS));
-        */
-
-        // ArrayList<Card> cards = new ArrayList<Card>();
-        // try {
-        //     cards = me.getHandCards();
-        // } catch (RemoteException e) {
-        //     UIUtils.print("Remote Exception in GameScene.java while getting the cards in my hand.");
-        //     e.printStackTrace();
-        // }
-
-        // playerBoard.updateHandCards(cards);
-        // playerBoard.updateBoardCards(new ArrayList<Card>()); 
 
         update();
 

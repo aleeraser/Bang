@@ -213,7 +213,9 @@ public class OtherBoardGroup extends Group {
 	}
 	
 	public Card getLastClickedCard() {
-		return lastClickedCard;
+		Card c = lastClickedCard;
+		lastClickedCard = null;
+		return c;
 	}
 	
 	public float getWidth() {
