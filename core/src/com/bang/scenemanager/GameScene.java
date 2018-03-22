@@ -88,21 +88,22 @@ public class GameScene extends Scene {
                         if (type.matches("target")) {
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
+                                    final int playerIndex = (Integer)obj;
                                     //System.out.println("result " + obj);
                                     try {
                                         if (!(clickedCard.getName().matches("catbalou")
                                                 || clickedCard.getName().matches("panico"))) {
-                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get((Integer) obj).getCharacter().getName());
-                                            sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
+                                            sceneManager.player.playCard(clickedCard, playerIndex);
                                         } else {
-                                            SelectCardDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager, (Integer)obj){
+                                            SelectCardDialog d = new SelectCardDialog(clickedCard, sceneManager, (Integer)obj){
                                                 public void result(Object cardIndex){
                                                     try{
-                                                        int len = players.get((Integer)obj).getHandCardsSize();
-                                                        if (cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
-                                                            sceneManager.player.playCard(clickedCard, (Integer) obj, (Integer)cardIndex - len, false);
+                                                        int len = players.get(playerIndex).getHandCardsSize();
+                                                        if ((Integer)cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
+                                                            sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex - len, false);
                                                         else 
-                                                            sceneManager.player.playCard(clickedCard, (Integer) obj, (Integer)cardIndex, true);
+                                                            sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex, true);
                                                     }
                                                     catch(RemoteException e){
                                                         e.printStackTrace();
