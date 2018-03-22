@@ -43,7 +43,7 @@ public class SelectedCardGroup extends Group {
 		//removeShownCard();
 		try {
 			cardImage = character.getCharacterCard(height * BOARD_RATIO, player.getLives(new int[playerNum]));
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			try {
 				player.alertPlayerMissing(playerNum);
 				return;
