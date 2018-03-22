@@ -78,43 +78,60 @@ public class GameScene extends Scene {
                 (float) 4, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                    	if (clickedCard == null) {
-                    		logBox.addEvent("Nessuna carta selezionata.");
-                    		return;
-                    	}
-                    	
+                        if (clickedCard == null) {
+                            logBox.addEvent("Nessuna carta selezionata.");
+                            return;
+                        }
+
                         // System.out.println("Should play card");
                         String type = clickedCard.getType();
-                        if (type.matches("target")){
+                        if (type.matches("target")) {
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
                                     //System.out.println("result " + obj);
-                                	try {                                        
-                                        logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get((Integer)obj).getCharacter().getName());
-                                        sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                    try {
+                                        if (!(clickedCard.getName().matches("catbalou")
+                                                || clickedCard.getName().matches("panico"))) {
+                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get((Integer) obj).getCharacter().getName());
+                                            sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                        } else {
+                                            SelectCardDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager, (Integer)obj){
+                                                public void result(Object cardIndex){
+                                                    try{
+                                                        int len = players.get((Integer)obj).getHandCardsSize();
+                                                        if (cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
+                                                            sceneManager.player.playCard(clickedCard, (Integer) obj, (Integer)cardIndex - len, false);
+                                                        else 
+                                                            sceneManager.player.playCard(clickedCard, (Integer) obj, (Integer)cardIndex, true);
+                                                    }
+                                                    catch(RemoteException e){
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                        }
                                         clickedCard = null;
                                         selectedCard.removeShownCard();
-									} catch (RemoteException e) {
-										e.printStackTrace();
-									}
+                                    } catch (RemoteException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             };
 
                             d.show(stage);
-                        }
-                        else {
-                            try{
+                        } else {
+                            try {
                                 sceneManager.player.playCard(clickedCard);
                                 logBox.addEvent("Carta giocata: " + clickedCard.getName());
                                 clickedCard = null;
                                 selectedCard.removeShownCard();
-                            }catch(RemoteException e){
+                            } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         //UIUtils.disable(playCardButton);
-                       }
+                    }
                 });
 
         UIUtils.disable(playCardButton);
@@ -154,54 +171,52 @@ public class GameScene extends Scene {
                     }
                 });
         UIUtils.disable(endTurnButton);
-        
+
         discardButton = UIUtils.createBtn("Scarta", (float) (selectedCard.getX() + selectedCard.getWidth() + 20),
                 (float) 4, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                    	if (clickedCard == null) {
-                    		logBox.addEvent("Nessuna carta selezionata.");
-                    		return;
-                    	}                       
-                        
+                        if (clickedCard == null) {
+                            logBox.addEvent("Nessuna carta selezionata.");
+                            return;
+                        }
+
                         // Discarding
                         try {
-							sceneManager.player.removeHandCard(
-									sceneManager.player.getHandCards().indexOf(clickedCard),
-									new int[otherPlayerNumber + 1]);
-							
-							logBox.addEvent("Carta scartata " + clickedCard.getName());
-							
-							clickedCard = null;
-							selectedCard.removeShownCard();
-							
-							sceneManager.player.redrawSingle();
-						} catch (RemoteException e1) {
-							e1.printStackTrace();
-						}
-                        
+                            sceneManager.player.removeHandCard(sceneManager.player.getHandCards().indexOf(clickedCard),
+                                    new int[otherPlayerNumber + 1]);
+
+                            logBox.addEvent("Carta scartata " + clickedCard.getName());
+
+                            clickedCard = null;
+                            selectedCard.removeShownCard();
+
+                            sceneManager.player.redrawSingle();
+                        } catch (RemoteException e1) {
+                            e1.printStackTrace();
+                        }
+
                         // Check if needs to discard again
                         try {
-	                        int hand_cards = sceneManager.player.getHandCardsSize();
-	                        int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
-	                        if (hand_cards <= lives) {
-	                        	isDiscarding = false;
-	                        	playCardButton.setVisible(true);
-	                        	discardButton.setVisible(false);
-	                        	logBox.addEvent("Turno terminato.");
-	                        	me.giveTurn();
+                            int hand_cards = sceneManager.player.getHandCardsSize();
+                            int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
+                            if (hand_cards <= lives) {
+                                isDiscarding = false;
+                                playCardButton.setVisible(true);
+                                discardButton.setVisible(false);
+                                logBox.addEvent("Turno terminato.");
+                                me.giveTurn();
 
                                 UIUtils.disable(playCardButton);
                                 UIUtils.disable(endTurnButton);
                                 inputEnabled = false;
-	                        }
-	                        else {
-	                        	//UIUtils.disable(discardButton);
-	                        }
+                            } else {
+                                //UIUtils.disable(discardButton);
+                            }
                         } catch (RemoteException e) {
-                        	e.printStackTrace();
+                            e.printStackTrace();
                         }
-                        
+
                         clickedCard = null;
                     }
                 });
@@ -228,9 +243,8 @@ public class GameScene extends Scene {
 
                         if (isPlayableCardSelected && areUserInputEnabled()) {
                             UIUtils.enable(playCardButton);
-                        	UIUtils.enable(discardButton);
-                        }
-                        else {
+                            UIUtils.enable(discardButton);
+                        } else {
                             UIUtils.disable(playCardButton);
                             UIUtils.disable(discardButton);
                         }
@@ -239,7 +253,8 @@ public class GameScene extends Scene {
 
                 else {
                     dismissAllHighlights();
-                    selectedCard.showCharacterCard(playerBoard.getCharacter(), sceneManager.player, otherPlayerNumber+1);
+                    selectedCard.showCharacterCard(playerBoard.getCharacter(), sceneManager.player,
+                            otherPlayerNumber + 1);
                 }
             }
         });
@@ -278,12 +293,11 @@ public class GameScene extends Scene {
         }
 
         for (int i = 0; i < otherPlayerNumber; i++) {
-        	final int index = (myPos + 1 + i) % (playerNum);
-        	
+            final int index = (myPos + 1 + i) % (playerNum);
+
             final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager, players.get(index));
             otherBoardList.add(otherBoard);
             otherBoard.setPosition(50 + 10 * i + obWidth * i, 500);
-            
 
             try {
                 otherBoard.setCharacter(players.get(index).getCharacter());
@@ -310,15 +324,15 @@ public class GameScene extends Scene {
                             if (isPlayableCardSelected && areUserInputEnabled()) {
                                 UIUtils.enable(playCardButton);
                                 UIUtils.enable(discardButton);
-                            }
-                            else {
+                            } else {
                                 UIUtils.disable(playCardButton);
                                 UIUtils.disable(discardButton);
                             }
                         }
                     } else {
                         dismissAllHighlights();
-                        selectedCard.showCharacterCard(otherBoard.getCharacter(), players.get(index), otherPlayerNumber + 1);
+                        selectedCard.showCharacterCard(otherBoard.getCharacter(), players.get(index),
+                                otherPlayerNumber + 1);
                     }
                 }
             });
@@ -330,12 +344,12 @@ public class GameScene extends Scene {
             logBox.setPosition(playerBoard.getWidth() + playerBoard.getX(), 50);
             logBox.setSize(450, 300);
             stage.addActor(logBox.getPane());
-            
+
             try {
-				sceneManager.player.setLogBox(logBox);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+                sceneManager.player.setLogBox(logBox);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
