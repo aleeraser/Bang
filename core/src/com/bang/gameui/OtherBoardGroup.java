@@ -243,6 +243,7 @@ public class OtherBoardGroup extends Group {
 			xImage.setPosition(0, 0);
 			xImage.setSize(width, height);
 			this.addActor(xImage);
+			this.clearListeners();;
 	}
 	
 	
