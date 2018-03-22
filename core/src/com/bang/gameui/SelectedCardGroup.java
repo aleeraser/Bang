@@ -45,7 +45,7 @@ public class SelectedCardGroup extends Group {
 			cardImage = character.getCharacterCard(height * BOARD_RATIO, player.getLives(new int[playerNum]));
 		} catch (Exception e) {
 			try {
-				sceneManager.getPlayer().alertPlayerMissing(playerNum);
+				sceneManager.getPlayer().alertPlayerMissing(sceneManager.getPlayer().getPlayers().indexOf(player));
 				return;
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
