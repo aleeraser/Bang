@@ -670,7 +670,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                     Card c;
                     if (fromTable) {
                         this.clock.clockIncreaseLocal();
