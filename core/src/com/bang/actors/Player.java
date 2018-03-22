@@ -103,7 +103,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                 if (this.jail){
                     Card c = this.deck.draw();
-                    this.removeTableCard(this.tableCards.indexOf(c), this.clock.getVec());
+                    this.deck.discard(this.deck.getNextCardIndex() - 1);
+                    this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
                     if (c.getSuit() == 2 ){
                         System.out.println("è cuori, sono scagionato!");
                     }
@@ -148,6 +149,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             //e.printStackTrace();
         }
 
+    }
+
+    private int findCard( ArrayList<Card> cards, String name){
+        for (int i = 0; i < cards.size(); i++){
+            if (cards.get(i).getName().matches(name))
+                return i;
+        }
+        return -1;
     }
 
     public void draw() {
@@ -284,7 +293,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
                             if (this.jail) {
                                 Card c = this.deck.draw();
-                                this.removeTableCard(this.tableCards.indexOf(c), this.clock.getVec());
+                                this.deck.discard(this.deck.getNextCardIndex() - 1);
+                                this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
                                 if (c.getSuit() == 2) {
                                     System.out.println("è cuori, sono scagionato!");
                                 } else {
@@ -335,14 +345,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 return;
             }
         }
-        
-        for (Card c : this.handCards){
-            if( c.getName().matches("mancato") ){
-                System.out.println("haha ho un mancato!");
-                this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
-                return;
-            }
+
+        int i = this.findCard(handCards, "mancato");
+        if (i != -1 ){
+            System.out.println("haha ho un mancato!");
+            this.removeHandCard(i, this.clock.getVec());
+            return;
         }
+        
 
         this.decreaselives(this.clock.getVec());
 
@@ -657,15 +667,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void indiani(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        Boolean found = false;
-        for (int i = 0; i < handCards.size(); i++) {
-            if (handCards.get(i).getName().matches("bang")) {
-                this.handCards.remove(i);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
+
+        int i = this.findCard(handCards, "bang");
+        if (i != -1){
+            this.handCards.remove(i);
+        }else{
             this.clock.clockIncreaseLocal();
             this.decreaselives(this.clock.getVec());
         }
