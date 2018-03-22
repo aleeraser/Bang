@@ -50,7 +50,7 @@ public class SelectedCardGroup extends Group {
 		this.addActor(cardImage);		
 	}
 	
-	protected void removeShownCard() {
+	public void removeShownCard() {
 		if (cardImage != null) cardImage.remove();
 	}
 	
