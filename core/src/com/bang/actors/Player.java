@@ -105,7 +105,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                 if (this.jail){
-                	log("\tPrigione:");
+                	log("Prigione:");
                     Card c = this.deck.draw();
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                     this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
@@ -327,7 +327,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 return;
             }
             else {
-            	log("non cuori, colpito.");
+            	log("\tnon cuori, colpito.");
             }
         }
 
@@ -856,6 +856,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     		logBox.addEvent(event);
     	
     	System.out.println(event);
+    }
+    
+    public void logOthers(String event) {
+    	for (IPlayer p : players) {
+    		if (p != null) {
+    			try {
+					p.log(event);
+				} catch (RemoteException e) {
+					alertPlayerMissing(players.indexOf(p));
+					e.printStackTrace();
+				}
+    		}
+    	}
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
