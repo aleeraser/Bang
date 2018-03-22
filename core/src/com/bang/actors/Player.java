@@ -436,6 +436,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
         }
+        
+        this.redraw();
     }
 
     public void decreaselives(int[] callerClock) {
