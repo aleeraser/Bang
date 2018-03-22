@@ -104,7 +104,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 if (this.jail){
                     Card c = this.deck.draw();
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
-                    this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
+                    this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
                     if (c.getSuit() == 2 ){
                         System.out.println("è cuori, sono scagionato!");
                     }
@@ -294,7 +294,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             if (this.jail) {
                                 Card c = this.deck.draw();
                                 this.deck.discard(this.deck.getNextCardIndex() - 1);
-                                this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
+                                this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
                                 if (c.getSuit() == 2) {
                                     System.out.println("è cuori, sono scagionato!");
                                 } else {
