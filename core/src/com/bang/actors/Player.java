@@ -513,11 +513,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 else if (name.matches("catbalou")){
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
-                    this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
+                    this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
                 }
                 else if (name.matches("panico")){
                     this.panico(targetIndex, targetCardIndex, fromTable);
-                    this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
+                    this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
                 }
                 else if (name.matches("prigione")){
                     try{
