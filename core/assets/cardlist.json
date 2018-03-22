@@ -452,19 +452,19 @@
 		"name": "prigione",
 		"value": "10",
 		"suit": 1,
-		"type": "trget"
+		"type": "target"
 	},
 	{
 		"name": "prigione",
 		"value": "J",
 		"suit": 1,
-		"type": "trget"
+		"type": "target"
 	},
 	{
 		"name": "prigione",
 		"value": "4",
 		"suit": 2,
-		"type": "trget"
+		"type": "target"
 	},
 
 	{
