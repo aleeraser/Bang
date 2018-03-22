@@ -331,7 +331,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 return;
             }
             else {
-                this.logOthers("il barile di "this.getCharacter().getName() + "non ha avuto effetto");
+                this.logOthers("il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
             	log("\tnon cuori, colpito.");
             }
         }
