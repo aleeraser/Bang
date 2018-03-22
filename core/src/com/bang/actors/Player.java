@@ -100,6 +100,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else if (turn > 1) {
                 // standard turn
                 //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
+                this.logOthers("è il turno di " + this.getCharacter().getName() );
             	log("E' il mio turno!");
                 this.draw();
                 this.draw();
@@ -110,9 +111,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                     this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
                     if (c.getSuit() == 2 ){
+                        this.logOthers(this.getCharacter().getName() + " ha pescato cuori, ora è libero");
                         log("\tE' cuori, sono scagionato!");
                     }
                     else{
+                        this.logOthers(this.getCharacter().getName() + " non ha pescato cuori, ha perso il turno");
                     	log("\tNon cuori, salto!");
                         this.giveTurn();
                     }
@@ -322,17 +325,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             log("Barile:");
             if (c.getSuit() == 2){
                 System.out.println("mancato, è uscito cuori");
+                this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non è stato colpito");
                 log("pescato cuori, mancato!");
                 this.deck.discard(this.deck.getNextCardIndex()-1);
                 return;
             }
             else {
+                this.logOthers(this.getCharacter().getName() + " è stato colpito");
             	log("\tnon cuori, colpito.");
             }
         }
 
         int i = this.findCard(handCards, "mancato");
         if (i != -1 ){
+            this.logOthers(this.getCharacter().getName() + " ha un mancato");
             System.out.println("haha ho un mancato!");
             log("Usato il mancato!");
             this.removeHandCard(i, this.clock.getVec());
@@ -496,17 +502,22 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.checkCrashes();
                 if (name.matches("bang")){ 
                     if(! alreadyShot || volcanic){
-                        this.logOthers(this.getCharacter().getName() + "ha sparato a " + targetName);
+                        this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
                         this.shot(target, targetIndex);
                     }
                     else return;
                 }
-                else if (name.matches("catbalou"))
+                else if (name.matches("catbalou")){
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
-                else if (name.matches("panico"))
+                    this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
+                }
+                else if (name.matches("panico")){
                     this.panico(targetIndex, targetCardIndex, fromTable);
+                    this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
+                }
                 else if (name.matches("prigione")){
                     try{
+                        this.logOthers(this.getCharacter().getName() + " ha messo in prigione " + targetName);
                         this.players.get(targetIndex).jail( c, this.clock.getVec());
                     }
                     catch(RemoteException e){
@@ -517,27 +528,38 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             //attiva l'effetto sul target
         } else if (c.getType().matches("table")) {
-            if (name.matches("mirino"))
+            if (name.matches("mirino")){
                 this.view++;
+                this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedrà a distanza +1" );
+            }
             else if (name.matches("mustang")) {
                 this.distance++;
+                this.logOthers(this.getCharacter().getName() + " è su un mustang, sarà più difficile sparargli");
             } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
+                this.logOthers(this.getCharacter().getName() + " ha sparato ha una carrabina");
+
             } else if (name.matches("remington")) {
                 findGun();
                 this.shotDistance = 3;
+                this.logOthers(this.getCharacter().getName() + " ha sparato ha un remington");
+
             } else if (name.matches("schofield")) {
                 findGun();
                 this.shotDistance = 2;
+                this.logOthers(this.getCharacter().getName() + " ha sparato ha una schofield");
+
             } else if (name.matches("winchester")) {
                 findGun();
                 this.shotDistance = 5;
+                this.logOthers(this.getCharacter().getName() + " ha sparato ha un winchester");
+
             } else if (name.matches("volcanic")) {
                 findGun();
                 this.shotDistance = 1;
                 this.volcanic = true;
-
+                this.logOthers(this.getCharacter().getName() + " ha sparato ha una volcanic");
             }
             else if (name.matches("barile")){
                 this.barrel ++;
@@ -545,6 +567,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             tableCards.add(c);
         } else { //single-usage cards
             if (name.matches("indiani")) {
+                this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
                 for (int i = 0; i < players.size(); i++) {
                     if (i != this.pos && players.get(i) != null) {
                         try {
@@ -559,20 +582,26 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
             else if (name.matches("birra")) {
-                if (this.lives < this.character.getLives())
+                if (this.lives < this.character.getLives()){
                     this.increaselives(this.clock.getVec());
+                    this.logOthers(this.getCharacter().getName() + " ha recuperato una vita bevendo una birra!");
+                }
                 else return;
             }
             else if (name.matches("diligenza")){
                 this.draw();
                 this.draw();
+                this.logOthers(this.getCharacter().getName() + " ha pescato 2 carte");
             }
             else if (name.matches("wellsfargo")){
                 this.draw();
                 this.draw();
                 this.draw();
+                this.logOthers(this.getCharacter().getName() + " ha pescato 3 carte");
+
             }
             else if (name.matches("gatling")){
+                this.logOthers(this.getCharacter().getName() + " ha usato un gatling!");
                 for (int i = 0; i<this.players.size(); i++){
                     if (i != this.pos && this.players.get(i)!= null){
                         try{
