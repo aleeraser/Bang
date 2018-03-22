@@ -96,7 +96,7 @@ public class GameScene extends Scene {
                                             logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
                                             sceneManager.player.playCard(clickedCard, playerIndex);
                                         } else {
-                                            SelectCardDialog d = new SelectCardDialog(clickedCard, sceneManager, (Integer)obj){
+                                            SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager, (Integer)obj){
                                                 public void result(Object cardIndex){
                                                     try{
                                                         int len = players.get(playerIndex).getHandCardsSize();
@@ -109,7 +109,9 @@ public class GameScene extends Scene {
                                                         e.printStackTrace();
                                                     }
                                                 }
+                                                
                                             };
+                                            d1.show(stage);
                                         }
                                         clickedCard = null;
                                         selectedCard.removeShownCard();
