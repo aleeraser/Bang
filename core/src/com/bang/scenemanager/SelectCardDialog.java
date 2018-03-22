@@ -41,7 +41,7 @@ public class SelectCardDialog extends Dialog {
 		
 		for(int i = 0; i < handCards.size(); i++) {
 			/* Carte in mano hanno indice <i + numero di carte in tavolo> */
-			this.button("Mano " + i + 1, tableCards.size() + i);		
+			this.button("Mano " + (i + 1), tableCards.size() + i);		
 		}
 		
 		for(int i = 0; i < tableCards.size(); i++) {
