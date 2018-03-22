@@ -162,16 +162,18 @@ public class GameScene extends Scene {
                     	if (clickedCard == null) {
                     		logBox.addEvent("Nessuna carta selezionata.");
                     		return;
-                    	}
-                    	
-                        // System.out.println("Should discard card " + clickedCard.getName());
-                        logBox.addEvent("Carta scartata " + clickedCard.getName());
+                    	}                       
                         
                         // Discarding
                         try {
 							sceneManager.player.removeHandCard(
 									sceneManager.player.getHandCards().indexOf(clickedCard),
 									new int[otherPlayerNumber + 1]);
+							
+							logBox.addEvent("Carta scartata " + clickedCard.getName());
+							
+							clickedCard = null;
+							selectedCard.removeShownCard();
 							
 							sceneManager.player.redrawSingle();
 						} catch (RemoteException e1) {
@@ -328,6 +330,12 @@ public class GameScene extends Scene {
             logBox.setPosition(playerBoard.getWidth() + playerBoard.getX(), 50);
             logBox.setSize(450, 300);
             stage.addActor(logBox.getPane());
+            
+            try {
+				sceneManager.player.setLogBox(logBox);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
         }
     }
 

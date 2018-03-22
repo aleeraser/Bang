@@ -3,6 +3,7 @@ package com.bang.actors;
 import java.util.Enumeration;
 
 import com.badlogic.gdx.utils.Array;
+import com.bang.gameui.LogBox;
 import com.bang.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private long playerTimeout;
     private int turn;
     private Boolean mustUpdateGUI;
+    private LogBox logBox;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -98,17 +100,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else if (turn > 1) {
                 // standard turn
                 //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
+            	log("E' il mio turno!");
                 this.draw();
                 this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                 if (this.jail){
+                	log("\tPrigione:");
                     Card c = this.deck.draw();
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                     this.removeTableCard(this.findCard(tableCards, "jail"), this.clock.getVec());
                     if (c.getSuit() == 2 ){
-                        System.out.println("è cuori, sono scagionato!");
+                        log("\tE' cuori, sono scagionato!");
                     }
                     else{
+                    	log("\tNon cuori, salto!");
                         this.giveTurn();
                     }
 
@@ -272,6 +277,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     //this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
                     this.alertPlayerMissing(this.turnOwner);
                     System.out.println("the Player " + this.turnOwner + " crashed.");
+                    log("Il giocatore " + this.turnOwner + " e' crashato.");
                     int next = this.findNext(this.turnOwner);
                     if (next == this.pos) { //you are the next
                         System.out.println("I'm taking the turn");
@@ -324,8 +330,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 target.bang(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
                 this.alreadyShot = true;
                 //System.out.println(target.getLives());
-            } else
+            } else {
                 System.out.println("Target out of range");
+                log("Il bersaglio e' troppo lontano.");
+            }
+            	
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è " + i);
 
@@ -339,16 +348,22 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         for(int i = 0; i < barrel; i++){
             Card c = this.deck.draw();
+            log("Barile:");
             if (c.getSuit() == 2){
                 System.out.println("mancato, è uscito cuori");
+                log("pescato cuori, mancato!");
                 this.deck.discard(this.deck.getNextCardIndex()-1);
                 return;
+            }
+            else {
+            	log("non cuori, colpito.");
             }
         }
 
         int i = this.findCard(handCards, "mancato");
         if (i != -1 ){
             System.out.println("haha ho un mancato!");
+            log("Usato il mancato!");
             this.removeHandCard(i, this.clock.getVec());
             return;
         }
@@ -450,6 +465,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.lives--;
         System.out.println("mi hanno sparato, ho " + this.getLives(this.clock.getVec()) + " vite");
+        log("Mi hanno sparato, vite rimaste: " + this.getLives(this.clock.getVec()) + ".");
         if (this.lives <= 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
@@ -858,6 +874,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
         }
+    }
+    
+    public void setLogBox(LogBox logBox) {
+    	this.logBox = logBox; 
+    }
+    
+    public void log (String event) {
+    	if (logBox != null) 
+    		logBox.addEvent(event);
+    	
+    	System.out.println(event);
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti

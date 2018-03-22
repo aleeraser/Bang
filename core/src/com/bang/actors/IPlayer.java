@@ -1,8 +1,10 @@
 package com.bang.actors;
 
-import java.util.ArrayList;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+
+import com.bang.gameui.LogBox;
 
 public interface IPlayer extends Remote {
 
@@ -98,4 +100,8 @@ public interface IPlayer extends Remote {
     void bang(int[] callerClock) throws RemoteException;
 
     void jail(Card jail, int[] callerClock) throws RemoteException;
+    
+    void setLogBox(LogBox logBox) throws RemoteException;
+    
+    void log (String event) throws RemoteException;
 }
