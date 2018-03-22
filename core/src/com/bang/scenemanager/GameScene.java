@@ -89,9 +89,9 @@ public class GameScene extends Scene {
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
                                     //System.out.println("result " + obj);
-                                	try {
-                                        sceneManager.player.playCard(clickedCard, (Integer) obj);
+                                	try {                                        
                                         logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get((Integer)obj).getCharacter().getName());
+                                        sceneManager.player.playCard(clickedCard, (Integer) obj);
                                         clickedCard = null;
                                         selectedCard.removeShownCard();
 									} catch (RemoteException e) {
