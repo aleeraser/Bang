@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.bang.actors.Card;
 
 public class CardsUtils {
 	
@@ -123,6 +123,11 @@ public class CardsUtils {
 		g.addActor(suit);
 		return g;
 		
+	}
+	
+	public static Texture getCardTexture(Card card) {
+		Texture t = new Texture(Gdx.files.internal(CARD_PATH + "/" + card.getName() + ".png"));
+		return t;
 	}
 	
 	public static Group createBackCardImageGroup(double cardImageHeight) {
