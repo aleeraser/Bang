@@ -49,7 +49,7 @@ public class GeneralStoreCardDialog extends Dialog {
 			ImageButton b = new ImageButton(drawable);
 			b.setTransform(true);
 			b.setSize(cardWidth, cardHeight);
-			this.button(b, storeCards.size() + i);
+			this.button(b, i);
 		}
 	}
 	
