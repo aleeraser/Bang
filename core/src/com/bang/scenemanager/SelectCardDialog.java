@@ -53,6 +53,8 @@ public class SelectCardDialog extends Dialog {
 		for(int i = 0; i < handCards.size(); i++) {
 			/* Carte in mano hanno indice <i + numero di carte in tavolo> */
 			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardBackTexture()));
+			drawable.setMinHeight(cardHeight);
+			drawable.setMinWidth(cardWidth);
 			ImageButton b = new ImageButton(drawable);
 			b.setTransform(true);
 			b.setSize(cardWidth, cardHeight);
@@ -62,6 +64,8 @@ public class SelectCardDialog extends Dialog {
 		for(int i = 0; i < tableCards.size(); i++) {
 			//this.button(tableCards.get(i).getName(), i);
 			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardTexture(tableCards.get(i))));
+			drawable.setMinHeight(cardHeight);
+			drawable.setMinWidth(cardWidth);
 			ImageButton b = new ImageButton(drawable);
 			b.setTransform(true);
 			b.setSize(cardWidth, cardHeight);
