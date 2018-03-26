@@ -609,6 +609,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 for (int i = 0; i<this.players.size(); i++){
                     if (i != this.pos && this.players.get(i)!= null){
                         try{
+                            this.clock.clockIncreaseLocal();
                             this.players.get(i).decreaselives(this.clock.getVec());
                         }catch(RemoteException e){
                             System.out.println("AAAAAAAAAAAAAA non c'è " + i);
@@ -617,9 +618,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
                 }
             }
-
-            //TODO valutare se gestire la volcanic;
-            //attiva l'effetto su te stesso
+            else if (name.matches("saloon")){
+                this.logOthers(this.getCharacter().getName() + " ha usato un gatling!");
+                for (int i = 0; i < this.players.size(); i++) {
+                    if (this.players.get(i) != null) {
+                        try {
+                            this.clock.clockIncreaseLocal();
+                            if( this.players.get(i).getLives(this.clock.getVec()) < this.players.get(i).getCharacter().getLives() ){
+                                this.clock.clockIncreaseLocal();
+                                this.players.get(i).increaselives(this.clock.getVec());
+                            } 
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.alertPlayerMissing(i);
+                        }
+                    }
+                }
+            }
         }
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
         redraw();
