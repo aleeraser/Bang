@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import com.bang.gameui.LogBox;
 
@@ -115,4 +116,6 @@ public interface IPlayer extends Remote {
     ArrayList<Card> getMarketCards( int [] callerClock) throws RemoteException;
 
     void addMarketCardToHand(int i) throws RemoteException;
+    
+    Semaphore getCardsSemaphore() throws RemoteException;
 }

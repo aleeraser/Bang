@@ -2,6 +2,8 @@ package com.bang.game;
 
 import java.rmi.RemoteException;
 
+import java.util.concurrent.Semaphore;
+
 // libgdx libs
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

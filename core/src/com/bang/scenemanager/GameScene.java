@@ -404,10 +404,16 @@ public class GameScene extends Scene {
 
         /* Update my board */
         try {
+        	try {
+				me.getCardsSemaphore().acquire(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
             playerBoard.setCharacter();
             me.redrawSingle(false);
+            me.getCardsSemaphore().release(1);
         } catch (RemoteException e) {
             e.printStackTrace();
             UIUtils.print("ERROR");

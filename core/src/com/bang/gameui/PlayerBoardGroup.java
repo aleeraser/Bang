@@ -154,9 +154,10 @@ public class PlayerBoardGroup extends Group {
 		
 		float spacing = (cardListWidth - cardWidth - charPosX) / (handCards.size());
 		
+		
+		
 		int index = 0;
-		int cardNum = handCards.size();
-		for (index = 0; index < cardNum; index++) {
+		for (index = 0; index < handCards.size(); index++) {
 			try {
 				final Group img = handCards.get(index).generateImage(cardHeight);
 				final Card c = handCards.get(index);

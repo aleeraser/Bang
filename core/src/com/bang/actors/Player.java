@@ -1,23 +1,20 @@
 package com.bang.actors;
 
-import java.util.Enumeration;
-
-import com.badlogic.gdx.utils.Array;
-import com.bang.gameui.LogBox;
-import com.bang.scenemanager.GeneralStoreCardDialog;
-import com.bang.scenemanager.SceneManager;
-import com.bang.utils.UIUtils;
-
-import java.util.ArrayList;
-import java.rmi.server.UnicastRemoteObject;
+//import java.rmi.registry.LocateRegistry;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-//import java.rmi.registry.LocateRegistry;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.MalformedURLException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.concurrent.Semaphore;
+
+import com.bang.gameui.LogBox;
+import com.bang.utils.UIUtils;
 
 public class Player extends UnicastRemoteObject implements IPlayer {
     private int lives;
@@ -48,6 +45,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int turn;
     private Boolean mustUpdateGUI;
     private LogBox logBox;
+    
+    public Semaphore cardsSemaphore;
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -75,6 +74,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.startTimeoutTime = 0;
         this.turn = 0;
         this.mustUpdateGUI = false;
+        
+        this.cardsSemaphore = new Semaphore(1);
     }
 
     public boolean isMyTurn() {
@@ -227,7 +228,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void draw() {
-        this.handCards.add(deck.draw());
+        this.addHandCard(deck.draw());
     }
 
     public void drawCharacter() {
@@ -549,19 +550,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void jail(Card jail, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         Card j = jail.copyCard();
-        this.tableCards.add(j);
+        this.addTableCard(j);
         this.jail = true;
     }
 
     public void dynamite(Card dinamite, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         Card d = dinamite.copyCard();
-        this.tableCards.add(d);
+        this.addTableCard(d);
         this.dinamite = true;
     }
 
     public void addMarketCardToHand(int i) {
-        this.handCards.add(this.marketCards.get(i));
+        this.addHandCard(this.marketCards.get(i));
         log("Ho pescato " + this.marketCards.get(i).getName());
         this.logOthers(this.getCharacter().getName() + " ha pescato " + this.marketCards.get(i).getName());
         this.marketCards.remove(i);
@@ -653,7 +654,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else if (name.matches("dinamite")) {
                 this.dinamite = true;
             }
-            tableCards.add(c);
+            addTableCard(c);
         } else { //single-usage cards
             if (name.matches("indiani")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
@@ -752,10 +753,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeTableCard(int index, int[] callerClock) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
         this.deck.discard(this.deck.getIndices().indexOf(index));
+        cardsSemaphore.release(1);
         this.syncDiscards();
         if (name.matches("barile"))
             this.barrel--;
@@ -772,13 +779,39 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else
             this.shotDistance = 1;
     }
+    
+    public void addTableCard(Card c) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	this.addTableCard(c);
+    	cardsSemaphore.release(1);
+    }
 
     public void removeHandCard(int index, int[] callerClock) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
+        cardsSemaphore.release(1);
         redraw();
+    }
+    
+    public void addHandCard(Card c) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	this.handCards.add(c);
+    	cardsSemaphore.release(1);
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
@@ -817,7 +850,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.clock.clockIncreaseLocal();
                         target.removeHandCard(cIndex, this.clock.getVec());
                     }
-                    this.handCards.add(c);
+                    this.addHandCard(c);
                 }
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
@@ -1045,6 +1078,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
     }
+
+	@Override
+	public Semaphore getCardsSemaphore() {
+		return cardsSemaphore;
+	}
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
     /* public static void main(String[] args) {
