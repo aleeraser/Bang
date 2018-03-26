@@ -617,6 +617,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             else if (name.matches("barile")){
                 this.barrel ++;
             }
+            else if ( name.matches("dinamite")){
+                this.dinamite = true;
+            }
             tableCards.add(c);
         } else { //single-usage cards
             if (name.matches("indiani")) {
