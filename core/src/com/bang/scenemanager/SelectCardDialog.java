@@ -44,7 +44,7 @@ public class SelectCardDialog extends Dialog {
 		this.text("Scegli la carta bersaglio");
 		
 		int cardsNum = handCards.size() + tableCards.size();
-		int widthTot = 800;
+		int widthTot = 600;
 		float cardWidth = (float) ((widthTot / cardsNum) * 0.9);
 		float cardHeight = (float) (cardWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		
@@ -54,6 +54,7 @@ public class SelectCardDialog extends Dialog {
 			/* Carte in mano hanno indice <i + numero di carte in tavolo> */
 			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardBackTexture()));
 			ImageButton b = new ImageButton(drawable);
+			b.setTransform(true);
 			b.setSize(cardWidth, cardHeight);
 			this.button(b, tableCards.size() + i);
 		}
@@ -62,6 +63,7 @@ public class SelectCardDialog extends Dialog {
 			//this.button(tableCards.get(i).getName(), i);
 			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardTexture(tableCards.get(i))));
 			ImageButton b = new ImageButton(drawable);
+			b.setTransform(true);
 			b.setSize(cardWidth, cardHeight);
 			this.button(b, i);
 		}
