@@ -159,8 +159,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
 
                 }
-                this.draw();
-                this.draw();
             } else {
                 this.turn++;
             }
