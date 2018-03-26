@@ -155,28 +155,36 @@ public class PlayerBoardGroup extends Group {
 		float spacing = (cardListWidth - cardWidth - charPosX) / (handCards.size());
 		
 		int index = 0;
-		for (index = 0; index < handCards.size(); index++) {
-			final Group img = handCards.get(index).generateImage(cardHeight);
-			final Card c = handCards.get(index);
-			handCardImages.add(img);
-			img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
-			this.addActor(img);
-			img.addListener(new ClickListener() {
-				@Override
-	            public void clicked(InputEvent event, float x, float y) {
-	            	lastClickedCard = c;
-	            	isLastClickedChar = false;
-	                	        		
-	        		// Card border
-	            	if (border != null) {
-	            		border.remove();
-	            	}
-	        		border = new CardHighlight(img, 8);
-	        		img.addActorAt(0, border);
-	        		
-	        		isPlayableCardSelected = true;
-	            }
-			});			
+		int cardNum = handCards.size();
+		for (index = 0; index < cardNum; index++) {
+			try {
+				final Group img = handCards.get(index).generateImage(cardHeight);
+				final Card c = handCards.get(index);
+			
+				handCardImages.add(img);
+				img.setPosition(cardListPosX + index * spacing, LIST_POS_HEIGHT_PERCENTAGE * height);
+				this.addActor(img);
+				img.addListener(new ClickListener() {
+					@Override
+		            public void clicked(InputEvent event, float x, float y) {
+		            	lastClickedCard = c;
+		            	isLastClickedChar = false;
+		                	        		
+		        		// Card border
+		            	if (border != null) {
+		            		border.remove();
+		            	}
+		        		border = new CardHighlight(img, 8);
+		        		img.addActorAt(0, border);
+		        		
+		        		isPlayableCardSelected = true;
+		            }
+				});	
+				
+			}
+			catch (Exception e) {
+				System.out.println("Exception updating hand cards.");
+			}
 		}
 	}
 	
