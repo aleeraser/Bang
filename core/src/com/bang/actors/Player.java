@@ -4,6 +4,7 @@ import java.util.Enumeration;
 
 import com.badlogic.gdx.utils.Array;
 import com.bang.gameui.LogBox;
+import com.bang.scenemanager.GeneralStoreCardDialog;
 import com.bang.scenemanager.SceneManager;
 import com.bang.utils.UIUtils;
 
@@ -507,6 +508,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
+    public Boolean isMarketTurn(){
+        return this.isMarketTurn;
+    }
+
     protected void findGun() { //searches for a gun between tableCards and removes it if present.
         for (int i = 0; i < this.tableCards.size(); i++) {
             String name = this.tableCards.get(i).getName();
@@ -704,7 +709,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     marketCards.add(this.deck.draw());
                 }
                 this.syncMarketCards();
-                
             }
         }
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());

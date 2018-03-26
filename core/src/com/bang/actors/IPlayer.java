@@ -2,6 +2,7 @@ package com.bang.actors;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteServer;
 import java.util.ArrayList;
 
 import com.bang.gameui.LogBox;
@@ -108,4 +109,6 @@ public interface IPlayer extends Remote {
     void dynamite( Card dinamite, int[]callerClock) throws RemoteException;
 
     void setMarketCards( ArrayList<Card> mc, int[] callerClock) throws RemoteException;
+
+    Boolean isMarketTurn() throws RemoteException;
 }
