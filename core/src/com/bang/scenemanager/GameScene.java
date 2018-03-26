@@ -457,6 +457,9 @@ public class GameScene extends Scene {
         }
 
     }
+
+    //TODO: gestire il bug sulla pescata delle carde, ora a volte embra che non vengano pescate
+    
     
     public void showMarketDialog() {
     	GeneralStoreCardDialog d;
