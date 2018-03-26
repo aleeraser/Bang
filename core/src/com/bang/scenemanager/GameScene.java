@@ -456,5 +456,25 @@ public class GameScene extends Scene {
         }
 
     }
+    
+    public void showMarketDialog() {
+    	GeneralStoreCardDialog d;
+		try {
+			d = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
+				public void result(Object obj) {
+					try {
+						if (me.isMyTurn()) {
+							me.addMarketCardToHand((int) obj);
+						}
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			d.show(stage);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    }
 
 }

@@ -62,6 +62,8 @@ public class Bang extends ApplicationAdapter {
 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
+                if(me.isMarketTurn()) 
+                	gs.showMarketDialog();
                 if (me.shouldUpdateGUI())
                     gs.update();
                 
