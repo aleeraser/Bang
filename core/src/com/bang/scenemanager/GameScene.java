@@ -464,7 +464,7 @@ public class GameScene extends Scene {
 				public void result(Object obj) {
 					try {
 						if (me.isMyTurn()) {
-							me.addMarketCardToHand((int) obj);
+							me.addMarketCardToHand((Integer) obj);
 						}
 					} catch (RemoteException e) {
 						e.printStackTrace();
