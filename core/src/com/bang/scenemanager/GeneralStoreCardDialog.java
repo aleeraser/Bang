@@ -23,6 +23,7 @@ public class GeneralStoreCardDialog extends Dialog {
 		super("Carta bersaglio", sceneManager.getSkin(), "dialog");
 	
 		this.sceneManager = sceneManager;
+		this.storeCards = storeCards;
 		
 		setup();
 	}

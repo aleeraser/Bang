@@ -748,7 +748,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setMarketCards(ArrayList<Card> mc, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.marketCards = mc;
-        System.out.println("MARKET CARDS LEN: " + marketCards.size());
         this.isMarketTurn = true;
     }
 
