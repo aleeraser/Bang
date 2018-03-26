@@ -732,7 +732,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     private void syncMarketCards() {
         for (IPlayer p : players) {
-            if (p != null && p != this) {
+            if (p != null) {
                 try {
                     this.clock.clockIncreaseLocal();
                     p.setMarketCards(this.marketCards, this.clock.getVec());

@@ -29,6 +29,7 @@ public class GameScene extends Scene {
     LogBox logBox;
     IPlayer me;
     Boolean inputEnabled;
+    boolean isShowingMarketDialog  = false;
 
     /* Gameplay info */
     boolean isPlayableCardSelected;
@@ -459,15 +460,19 @@ public class GameScene extends Scene {
     
     public void showMarketDialog() {
     	GeneralStoreCardDialog d;
+    	if (isShowingMarketDialog == true)
+    		return;
+    	isShowingMarketDialog = true;
 		try {
 			d = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
 				public void result(Object obj) {
 					try {
 						if (me.isMyTurn()) {
 							me.addMarketCardToHand((Integer) obj);
+							isShowingMarketDialog = false;
 						}
 						else {
-							me.redrawSingle();
+							isShowingMarketDialog = false;
 						}
 					} catch (RemoteException e) {
 						e.printStackTrace();

@@ -43,7 +43,7 @@ public class GeneralStoreCardDialog extends Dialog {
 		System.out.println(cardWidth + " - " + cardHeight);
 		
 		for(int i = 0; i < storeCards.size(); i++) {
-			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardBackTexture()));
+			Drawable drawable = new TextureRegionDrawable(new TextureRegion(CardsUtils.getCardTexture(storeCards.get(i))));
 			drawable.setMinHeight(cardHeight);
 			drawable.setMinWidth(cardWidth);
 			ImageButton b = new ImageButton(drawable);
