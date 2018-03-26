@@ -609,6 +609,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 for (int i = 0; i<this.players.size(); i++){
                     if (i != this.pos && this.players.get(i)!= null){
                         try{
+                            this.clock.clockIncreaseLocal();
                             this.players.get(i).decreaselives(this.clock.getVec());
                         }catch(RemoteException e){
                             System.out.println("AAAAAAAAAAAAAA non c'è " + i);
@@ -617,9 +618,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
                 }
             }
-
-            //TODO valutare se gestire la volcanic;
-            //attiva l'effetto su te stesso
+            else if (name.matches("saloon")){
+                this.logOthers(this.getCharacter().getName() + " ha usato un gatling!");
+                for (int i = 0; i < this.players.size(); i++) {
+                    if (this.players.get(i) != null) {
+                        try {
+                            this.clock.clockIncreaseLocal();
+                            if( this.players.get(i).getLives(this.clock.getVec()) < this.players.get(i).getCharacter().getLives() ){
+                                this.clock.clockIncreaseLocal();
+                                this.players.get(i).increaselives(this.clock.getVec());
+                            } 
+                        } catch (RemoteException e) {
+                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            this.alertPlayerMissing(i);
+                        }
+                    }
+                }
+            }
         }
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
         redraw();
@@ -670,7 +685,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (this.view + 1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
                     Card c;
                     if (fromTable) {
                         this.clock.clockIncreaseLocal();
