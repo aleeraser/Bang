@@ -111,4 +111,6 @@ public interface IPlayer extends Remote {
     void setMarketCards( ArrayList<Card> mc, int[] callerClock) throws RemoteException;
 
     Boolean isMarketTurn() throws RemoteException;
+
+    ArrayList<Card> getMarketCards( int [] callerClock) throws RemoteException;
 }

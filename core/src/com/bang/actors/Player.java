@@ -512,6 +512,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.isMarketTurn;
     }
 
+    public ArrayList<Card> getMarketCards(int[] callerClock) {
+        this.clock.clockIncrease(callerClock);
+        return this.marketCards;
+    }
+
     protected void findGun() { //searches for a gun between tableCards and removes it if present.
         for (int i = 0; i < this.tableCards.size(); i++) {
             String name = this.tableCards.get(i).getName();
