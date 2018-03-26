@@ -326,13 +326,13 @@ public class GameScene extends Scene {
 
                             isPlayableCardSelected = false;
 
-                            if (isPlayableCardSelected && areUserInputEnabled()) {
-                                UIUtils.enable(playCardButton);
-                                UIUtils.enable(discardButton);
-                            } else {
+                            //if (isPlayableCardSelected && areUserInputEnabled()) {
+                            //    UIUtils.enable(playCardButton);
+                            //    UIUtils.enable(discardButton);
+                            //} else {
                                 UIUtils.disable(playCardButton);
                                 UIUtils.disable(discardButton);
-                            }
+                            //}
                         }
                     } else {
                         dismissAllHighlights();
