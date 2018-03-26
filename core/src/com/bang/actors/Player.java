@@ -136,6 +136,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (i != this.pos && players.get(i) != null && i != nextPlayer) {
                 System.out.println("In 'giveTurn', i = " + i + " " + this.clock.toString());
                 try {
+                    this.clock.clockIncreaseLocal();
                     players.get(i).setTurn(deck.getNextCardIndex(), characterDeck.getNextCardIndex(), nextPlayer,
                             this.clock.getVec());
                     System.out.println("In 'giveTurn', called 'setTurn' " + this.clock.toString());
@@ -271,6 +272,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 try {
                     System.out.println("checking if the turn holder is alive");
                     if (this.players.get(this.turnOwner) != null) {
+                        this.clock.clockIncreaseLocal();
                         players.get(this.turnOwner).getPos(this.clock.getVec());
                         this.startTimeoutTime = System.currentTimeMillis();
                         //this code is executed only if the player is still up
@@ -354,6 +356,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         for (int i = 0; i < this.players.size(); i++) {
             if (i != this.pos && players.get(i) != null) {
                 try {
+                    this.clock.clockIncreaseLocal();
                     players.get(i).getPos(this.clock.getVec());
                 } catch (RemoteException e) {
                     this.alertPlayerMissing(i);
@@ -521,6 +524,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 else if (name.matches("prigione")){
                     try{
+                        this.clock.clockIncreaseLocal();
                         this.logOthers(this.getCharacter().getName() + " ha messo in prigione " + targetName);
                         this.players.get(targetIndex).jail( c, this.clock.getVec());
                     }
