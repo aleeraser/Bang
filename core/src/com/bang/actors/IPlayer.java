@@ -104,4 +104,6 @@ public interface IPlayer extends Remote {
     void setLogBox(LogBox logBox) throws RemoteException;
     
     void log (String event) throws RemoteException;
+
+    void dynamite( Card dinamite, int[]callerClock) throws RemoteException;
 }

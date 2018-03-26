@@ -111,7 +111,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                     this.syncDiscards();
                     this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
-                    this.syncDiscards();
                     if (c.getSuit() == 2 ){
                         this.logOthers(this.getCharacter().getName() + " ha pescato cuori, ora è libero");
                         log("\tE' cuori, sono scagionato!");
@@ -121,6 +120,39 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     	log("\tNon cuori, salto!");
                         this.giveTurn();
                         return;
+                    }
+
+                }
+                if (this.dinamite){
+                    log("dinamite:");
+                    Card c = this.deck.draw();
+                    this.deck.discard(this.deck.getNextCardIndex() - 1);
+                    this.syncDiscards();
+                    if (c.getSuit() == 1 && (int)c.getValue().charAt(0) >= 50 && (int) c.getValue().charAt(0) <= 57 ) { // working with ASCII codes
+                        this.logOthers("BOOM \n" + this.getCharacter().getName() + " ha fatto esplodere la dinamite!");
+                        log("\t Mannaggia sono esploso");
+                        this.removeTableCard(this.findCard(tableCards, "dinamite"), this.clock.getVec());
+                        this.decreaselives(this.clock.getVec());
+                        this.decreaselives(this.clock.getVec());
+                        this.decreaselives(this.clock.getVec());
+                        if (this.getLives(this.clock.getVec()) <= 0)
+                            this.giveTurn();
+                    } else {
+                        this.logOthers(this.getCharacter().getName() + " non è esploso");
+                        log("\t few, non sono esploso");
+                        boolean found = false;
+                        while(!found){
+                            int next = this.findNext(this.pos);
+                            int ind = this.findCard(tableCards, "dinamite");
+                            this.clock.clockIncreaseLocal();
+                            try{
+                                this.players.get(next).dynamite(this.tableCards.get(ind), this.clock.getVec());
+                                this.removeTableCard(ind, this.clock.getVec());
+                                found = true;
+                            }catch(RemoteException e){
+                                this.alertPlayerMissing(next);
+                            }
+                        }
                     }
 
                 }
@@ -489,6 +521,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         Card j = jail.copyCard();
         this.tableCards.add(j);
         this.jail=true;
+    }
+
+    public void dynamite( Card dinamite, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        Card d = dinamite.copyCard();
+        this.tableCards.add(d);
+        this.dinamite = true;
     }
 
     public void playCard(Card c) {
