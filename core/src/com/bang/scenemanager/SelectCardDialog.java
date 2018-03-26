@@ -46,6 +46,10 @@ public class SelectCardDialog extends Dialog {
 		int cardsNum = handCards.size() + tableCards.size();
 		int widthTot = 600;
 		float cardWidth = (float) ((widthTot / cardsNum) * 0.9);
+		
+		if (cardWidth > 180)
+			cardWidth = 180;
+		
 		float cardHeight = (float) (cardWidth / CardsUtils.CARD_HEIGHT_WIDTH_RATIO);
 		
 		System.out.println(cardWidth + " - " + cardHeight);

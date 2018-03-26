@@ -385,6 +385,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("haha ho un mancato!");
             log("Usato il mancato!");
             this.removeHandCard(i, this.clock.getVec());
+            this.redraw();
             return;
         }
         
