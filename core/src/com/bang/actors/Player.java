@@ -383,7 +383,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("haha ho un mancato!");
             log("Usato il mancato!");
             this.removeHandCard(i, this.clock.getVec());
-            this.redraw();
             return;
         }
         
@@ -711,6 +710,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.handCards.remove(index);
         this.deck.discard(this.deck.getIndices().indexOf(index));
         this.syncDiscards();
+        redraw();
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
