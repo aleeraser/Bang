@@ -23,6 +23,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private String ip;
     private ArrayList<Card> handCards = new ArrayList<Card>();
     private ArrayList<Card> tableCards = new ArrayList<Card>();
+    private ArrayList<Card> marketCards = new ArrayList<Card>();
     private Deck deck;
     private int turnOwner; //turn holder index
     private CharacterDeck characterDeck;
@@ -37,6 +38,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean volcanic;
     private Boolean jail;
     private Boolean dinamite;
+    private Boolean isMarketTurn;
     private int barrel;
     private Clock clock;
     private long startTimeoutTime;
@@ -59,6 +61,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.barrel = 0;
         this.jail = false;
         this.dinamite = false;
+        this.isMarketTurn = false;
 
         this.deck = new Deck();
 
@@ -690,9 +693,43 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
                 }
             }
+            else if (name.matches ("emporio")){
+                this.logOthers(this.getCharacter().getName() + " ha giocato un emporio!");
+                int num = 0;
+                for (IPlayer p : players){
+                    if (p != null)
+                    num++;
+                }
+                for (int i = 0 ; i< num; i++){
+                    marketCards.add(this.deck.draw());
+                }
+                this.syncMarketCards();
+                
+            }
         }
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
         redraw();
+    }
+
+
+    private void syncMarketCards(){
+        for (IPlayer p : players){
+            if (p != null && p!=this){
+                try{
+                    this.clock.clockIncreaseLocal();
+                    p.setMarketCards(this.marketCards, this.clock.getVec());
+                }
+                catch (RemoteException e){
+                    this.alertPlayerMissing(players.indexOf(p));
+                }
+            }
+        }
+    }
+
+    public void setMarketCards( ArrayList<Card> mc, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.marketCards = mc;
+        this.isMarketTurn = true;
     }
 
     public void removeTableCard(int index, int[] callerClock) {

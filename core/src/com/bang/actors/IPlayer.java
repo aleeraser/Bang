@@ -106,4 +106,6 @@ public interface IPlayer extends Remote {
     void log (String event) throws RemoteException;
 
     void dynamite( Card dinamite, int[]callerClock) throws RemoteException;
+
+    void setMarketCards( ArrayList<Card> mc, int[] callerClock) throws RemoteException;
 }
