@@ -35,6 +35,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean alreadyShot;
     private Boolean volcanic;
     private Boolean jail;
+    private Boolean dinamite;
     private int barrel;
     private Clock clock;
     private long startTimeoutTime;
@@ -56,6 +57,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.volcanic = false;
         this.barrel = 0;
         this.jail = false;
+        this.dinamite = false;
 
         this.deck = new Deck();
 
@@ -109,7 +111,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 	log("Prigione:");
                     Card c = this.deck.draw();
                     this.deck.discard(this.deck.getNextCardIndex() - 1);
+                    this.syncDiscards();
                     this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
+                    this.syncDiscards();
                     if (c.getSuit() == 2 ){
                         this.logOthers(this.getCharacter().getName() + " ha pescato cuori, ora è libero");
                         log("\tE' cuori, sono scagionato!");
@@ -329,13 +333,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("mancato, è uscito cuori");
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("pescato cuori, mancato!");
-                this.deck.discard(this.deck.getNextCardIndex()-1);
                 return;
             }
             else {
                 this.logOthers("il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
             	log("\tnon cuori, colpito.");
             }
+            this.deck.discard(this.deck.getNextCardIndex() - 1);
+            this.syncDiscards();
         }
 
         int i = this.findCard(handCards, "mancato");
@@ -623,7 +628,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
             else if (name.matches("saloon")){
-                this.logOthers(this.getCharacter().getName() + " ha usato un gatling!");
+                this.logOthers(this.getCharacter().getName() + " ha usato un saloon!");
                 for (int i = 0; i < this.players.size(); i++) {
                     if (this.players.get(i) != null) {
                         try {
