@@ -104,8 +104,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.logOthers("E' il turno di " + this.getCharacter().getName() );
             	log("E' il mio turno!");
-                this.draw();
-                this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                 if (this.jail){
                 	log("Prigione:");
@@ -122,9 +120,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.logOthers(this.getCharacter().getName() + " non ha pescato cuori, ha perso il turno");
                     	log("\tNon cuori, salto!");
                         this.giveTurn();
+                        return;
                     }
 
                 }
+                this.draw();
+                this.draw();
             } else {
                 this.turn++;
             }
@@ -660,7 +661,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else if (name.matches("mirino")) this.view --;
         else if (name.matches("mustang")) this.distance--;
         else if (name.matches("prigione")) this.jail = false;
-        //TODO: aggiungere dinamite;
+        else if (name.matches("dinamite")) this.dinamite = false;
         else this.shotDistance = 1;
     }
 
