@@ -118,7 +118,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.decreaselives(this.clock.getVec());
                         this.decreaselives(this.clock.getVec());
                         this.decreaselives(this.clock.getVec());
-                            if (this.getLives(this.clock.getVec()) <= 0){
+                        if (this.getLives(this.clock.getVec()) <= 0){
                             this.giveTurn();
                             return;
                         }    
@@ -139,6 +139,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             }
                         }
                     }
+                }
 
                 if (this.jail){
                 	log("Prigione:");
