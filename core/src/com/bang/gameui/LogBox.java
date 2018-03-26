@@ -43,9 +43,13 @@ public class LogBox {
 	
 	public void addEvent(String eventStr) {
 		 eventList.add(eventStr);
-		 paneList.setItems(eventList.toArray(new String[0]));
-		 paneList.layout();
-		 scrollPane.setScrollPercentY(100);
+		 if (paneList != null) {
+			 paneList.setItems(eventList.toArray(new String[0]));
+			 paneList.layout();
+		 }
+		 if (scrollPane != null) {
+			 scrollPane.setScrollPercentY(100);
+		 }
 	}
 	
 	public void setSize(float width, float height) {

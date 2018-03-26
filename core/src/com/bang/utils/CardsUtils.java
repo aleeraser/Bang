@@ -130,6 +130,11 @@ public class CardsUtils {
 		return t;
 	}
 	
+	public static Texture getCardBackTexture() {
+		Texture t = new Texture(Gdx.files.internal(CARD_PATH + "/retro.png"));
+		return t;
+	}
+	
 	public static Group createBackCardImageGroup(double cardImageHeight) {
 		
 		Group g;
