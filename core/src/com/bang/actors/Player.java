@@ -4,6 +4,7 @@ import java.util.Enumeration;
 
 import com.badlogic.gdx.utils.Array;
 import com.bang.gameui.LogBox;
+import com.bang.scenemanager.SceneManager;
 import com.bang.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -103,7 +104,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 // standard turn
                 //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
                 this.logOthers("E' il turno di " + this.getCharacter().getName() );
-            	log("E' il mio turno!");
+            	log("E' il mio turno!");            	
+                this.draw();
+                this.draw();
                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                 if (this.jail){
                 	log("Prigione:");
@@ -156,8 +159,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
 
                 }
-                this.draw();
-                this.draw();
             } else {
                 this.turn++;
             }
@@ -382,6 +383,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("haha ho un mancato!");
             log("Usato il mancato!");
             this.removeHandCard(i, this.clock.getVec());
+            this.redraw();
             return;
         }
         
