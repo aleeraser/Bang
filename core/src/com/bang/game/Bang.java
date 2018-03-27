@@ -75,6 +75,7 @@ public class Bang extends ApplicationAdapter {
                 
                 if (me.shouldUpdateGUI()) {
                 	gs.update();
+                	gs.dismissMarketDialog();
                 }
                 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
