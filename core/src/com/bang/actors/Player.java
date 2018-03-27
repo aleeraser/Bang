@@ -799,8 +799,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         this.deck.discard(this.deck.getIndices().indexOf(index));
-        this.syncDiscards();
         cardsSemaphore.release(1);
+        this.syncDiscards();
         redraw();
     }
     
