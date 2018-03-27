@@ -744,6 +744,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 try {
                     this.clock.clockIncreaseLocal();
                     p.setMarketCards(this.marketCards, this.clock.getVec(), value);
+                    redrawSingle();
+
                 } catch (RemoteException e) {
                     this.alertPlayerMissing(players.indexOf(p));
                 }
@@ -791,7 +793,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	this.addTableCard(c);
+    	this.tableCards.add(c);
     	cardsSemaphore.release(1);
     }
 

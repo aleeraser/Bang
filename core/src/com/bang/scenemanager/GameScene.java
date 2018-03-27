@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -35,6 +36,7 @@ public class GameScene extends Scene {
     boolean isPlayableCardSelected;
     Card clickedCard;
     boolean isDiscarding = false;
+    protected GeneralStoreCardDialog generalStoreDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -466,14 +468,17 @@ public class GameScene extends Scene {
 
     //TODO: gestire il bug sulla pescata delle carde, ora a volte embra che non vengano pescate
     
-    
     public void showMarketDialog() {
-    	GeneralStoreCardDialog d;
-    	if (isShowingMarketDialog == true)
-    		return;
+    	//if (isShowingMarketDialog == true)
+    	//	return;
+    	
+    	if (generalStoreDialog != null) {
+    		generalStoreDialog.remove();
+    	}
+    	
     	isShowingMarketDialog = true;
 		try {
-			d = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
+			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
 				public void result(Object obj) {
 					try {
 						if (me.isMyTurn()) {
@@ -489,10 +494,16 @@ public class GameScene extends Scene {
 					}
 				}
 			};
-			d.show(stage);
+			if (!me.isMyTurn()) generalStoreDialog.setTouchable(Touchable.disabled);
+			generalStoreDialog.show(stage);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
     }
-
+    
+    public void dismissMarketDialog() {
+    	if (generalStoreDialog != null) {
+    		generalStoreDialog.remove();
+    	}
+    }
 }

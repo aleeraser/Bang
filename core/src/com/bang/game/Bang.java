@@ -64,10 +64,19 @@ public class Bang extends ApplicationAdapter {
 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
-                if(me.isMarketTurn()) 
-                	gs.showMarketDialog();
-                if (me.shouldUpdateGUI())
+                
+                //if(me.isMarketTurn()) 
+                //	gs.showMarketDialog();
+                
+                if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
+                    gs.showMarketDialog();
+                }
+                
+                if (me.shouldUpdateGUI()) {
+                	gs.update();
+                	gs.dismissMarketDialog();
+                }
                 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
                     // UIUtils.print("It's my turn and user input were NOT enabled. Enabling user inputs");
