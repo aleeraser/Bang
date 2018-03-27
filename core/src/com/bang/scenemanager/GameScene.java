@@ -504,6 +504,7 @@ public class GameScene extends Scene {
     public void dismissMarketDialog() {
     	if (generalStoreDialog != null) {
     		generalStoreDialog.remove();
+    		isShowingMarketDialog = false;
     	}
     }
 }
