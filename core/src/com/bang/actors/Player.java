@@ -112,9 +112,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     log("e' il mio turno di pescare dall' emporio");
                 } else {
                     if (isMarketTurn && alreadyDrawMarket) {
+                    	System.out.println("Fine turno emporio");
                         isMarketTurn = false;
                         alreadyDrawMarket = false;
                         syncMarketCards(false);
+                        System.out.println("Fine sych emporio");
+                        redrawSingle();
                     } else {
                         // standard turn
                         //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
@@ -757,6 +760,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.marketCards = mc;
         this.isMarketTurn = value;
+        if (value == false) {
+        	alreadyDrawMarket = false;
+        	System.out.println("Ricevuto fine emportio");
+        	redrawSingle();
+        }
     }
 
     public void removeTableCard(int index, int[] callerClock) {
