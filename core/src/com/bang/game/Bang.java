@@ -68,9 +68,12 @@ public class Bang extends ApplicationAdapter {
                 //if(me.isMarketTurn()) 
                 //	gs.showMarketDialog();
                 
-                if (me.isMarketTurn() && me.shouldUpdateGUI()) {
+                if (me.isMarketTurn() ) {
                     gs.update();
                     gs.showMarketDialog();
+                }
+                else{
+                    gs.dismissMarketDialog();
                 }
                 
                 if (me.shouldUpdateGUI()) {
