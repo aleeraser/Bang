@@ -48,11 +48,6 @@ public class OptionsScene extends Scene {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sceneManager.setScene(new MainMenuScene(sceneManager));
-                try {
-					sceneManager.getPlayer().setIp(ipList.getSelected());
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
             }
         });
         
@@ -61,6 +56,11 @@ public class OptionsScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         NetworkUtils.setBaseURL(serverName.getText());
+                        try {
+        					sceneManager.getPlayer().setIp(ipList.getSelected());
+        				} catch (RemoteException e) {
+        					e.printStackTrace();
+        				}
                         sceneManager.setScene(new MainMenuScene(sceneManager));
                     }
                 });
