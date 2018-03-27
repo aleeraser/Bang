@@ -733,7 +733,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    private void syncMarketCards() {
+    public void syncMarketCards() {
         for (IPlayer p : players) {
             if (p != null) {
                 try {

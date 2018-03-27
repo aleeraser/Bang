@@ -478,7 +478,8 @@ public class GameScene extends Scene {
 					try {
 						if (me.isMyTurn()) {
 							me.addMarketCardToHand((Integer) obj);
-							isShowingMarketDialog = false;
+                            isShowingMarketDialog = false;
+                            me.syncMarketCards();
 						}
 						else {
 							isShowingMarketDialog = false;
