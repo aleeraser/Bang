@@ -786,7 +786,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	this.addTableCard(c);
+    	this.tableCards.add(c);
     	cardsSemaphore.release(1);
     }
 
