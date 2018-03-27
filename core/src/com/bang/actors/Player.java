@@ -117,7 +117,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         alreadyDrawMarket = false;
                         syncMarketCards(false);
                         System.out.println("Fine sych emporio");
-                        redrawSingle();
+                        redraw();
                     } else {
                         // standard turn
                         //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
@@ -747,7 +747,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 try {
                     this.clock.clockIncreaseLocal();
                     p.setMarketCards(this.marketCards, this.clock.getVec(), value);
-                    redrawSingle();
+                    redraw();
 
                 } catch (RemoteException e) {
                     this.alertPlayerMissing(players.indexOf(p));
