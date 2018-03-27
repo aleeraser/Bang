@@ -1,7 +1,9 @@
 package com.bang.utils;
 
 import java.io.InputStream;
-
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -15,16 +17,25 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.entity.StringEntity;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 public class NetworkUtils {
+	
+	static String baseURL = "http://marullo.cs.unibo.it:5002";
 
     public static String getBaseURL() {
         // return "http://emilia.cs.unibo.it:5002";
-        return "http://marullo.cs.unibo.it:5002";
+        // return "http://marullo.cs.unibo.it:5002";
         // return "http://localhost:5002";
+    	return baseURL;
+    }
+    
+    public static void setBaseURL(String newBaseURL) {
+    	baseURL = newBaseURL;
     }
 
     public static String getHTTP(String _url) {
@@ -123,5 +134,29 @@ public class NetworkUtils {
 
         JSONObject res = new JSONObject(result);
         return res;
+    }
+    
+    public static ArrayList<String> findAllIps() {
+        SocketException exception = null;
+        ArrayList<String> ips = new ArrayList<String>();
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                Enumeration ee = n.getInetAddresses();
+                while (ee.hasMoreElements()) {
+                    InetAddress i = (InetAddress) ee.nextElement();
+                    String ip = i.getHostAddress();
+         
+                    ips.add(ip);
+                }
+            }
+            return ips;
+        } catch (SocketException e) {
+            e.printStackTrace();
+            exception = e;
+        }
+
+        return ips;
     }
 }
