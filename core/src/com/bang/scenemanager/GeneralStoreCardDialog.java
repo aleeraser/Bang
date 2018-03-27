@@ -33,8 +33,11 @@ public class GeneralStoreCardDialog extends Dialog {
 		
 		int cardsNum = storeCards.size();
 		int widthTot = 600;
-		float cardWidth = (float) ((widthTot / cardsNum) * 0.9);
-		
+		float cardWidth;
+		if(cardsNum >0){
+			cardWidth = (float) ((widthTot / cardsNum) * 0.9);
+		}
+		else cardWidth = 180;
 		if (cardWidth > 180)
 			cardWidth = 180;
 		
