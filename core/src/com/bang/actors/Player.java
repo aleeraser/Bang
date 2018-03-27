@@ -114,6 +114,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     if (isMarketTurn && alreadyDrawMarket) {
                         isMarketTurn = false;
                         alreadyDrawMarket = false;
+                        syncMarketCards(false);
                     } else {
                         // standard turn
                         //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
@@ -733,12 +734,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    public void syncMarketCards() {
+    public void syncMarketCards(){
+        syncMarketCards(true);
+    }
+
+    public void syncMarketCards( Boolean value) {
         for (IPlayer p : players) {
             if (p != null) {
                 try {
                     this.clock.clockIncreaseLocal();
-                    p.setMarketCards(this.marketCards, this.clock.getVec());
+                    p.setMarketCards(this.marketCards, this.clock.getVec(), value);
                 } catch (RemoteException e) {
                     this.alertPlayerMissing(players.indexOf(p));
                 }
@@ -746,10 +751,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public void setMarketCards(ArrayList<Card> mc, int[] callerClock) {
+    public void setMarketCards(ArrayList<Card> mc, int[] callerClock, Boolean value) {
         this.clock.clockIncrease(callerClock);
         this.marketCards = mc;
-        this.isMarketTurn = true;
+        this.isMarketTurn = value;
     }
 
     public void removeTableCard(int index, int[] callerClock) {
