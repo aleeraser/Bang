@@ -35,6 +35,7 @@ public class GameScene extends Scene {
     boolean isPlayableCardSelected;
     Card clickedCard;
     boolean isDiscarding = false;
+    protected GeneralStoreCardDialog generalStoreDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -466,14 +467,17 @@ public class GameScene extends Scene {
 
     //TODO: gestire il bug sulla pescata delle carde, ora a volte embra che non vengano pescate
     
-    
     public void showMarketDialog() {
-    	GeneralStoreCardDialog d;
-    	if (isShowingMarketDialog == true)
-    		return;
+    	//if (isShowingMarketDialog == true)
+    	//	return;
+    	
+    	if (generalStoreDialog != null) {
+    		generalStoreDialog.remove();
+    	}
+    	
     	isShowingMarketDialog = true;
 		try {
-			d = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
+			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
 				public void result(Object obj) {
 					try {
 						if (me.isMyTurn()) {
@@ -489,7 +493,7 @@ public class GameScene extends Scene {
 					}
 				}
 			};
-			d.show(stage);
+			generalStoreDialog.show(stage);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
