@@ -115,6 +115,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     	System.out.println("Fine turno emporio");
                         isMarketTurn = false;
                         alreadyDrawMarket = false;
+                        System.out.println("calling syncMarkeCards false");
                         syncMarketCards(false);
                         System.out.println("Fine sych emporio");
                         redraw();
@@ -570,6 +571,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         log("Ho pescato " + this.marketCards.get(i).getName());
         this.logOthers(this.getCharacter().getName() + " ha pescato " + this.marketCards.get(i).getName());
         this.marketCards.remove(i);
+        System.out.println("calling syncMarkeCards true");
         this.syncMarketCards();
         this.alreadyDrawMarket = true;
         this.giveTurn();
@@ -730,6 +732,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 for (int i = 0; i < num; i++) {
                     marketCards.add(this.deck.draw());
                 }
+                System.out.println("calling syncMarkeCards true");
                 this.syncMarketCards();
             }
         }
@@ -759,6 +762,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setMarketCards(ArrayList<Card> mc, int[] callerClock, Boolean value) {
         this.clock.clockIncrease(callerClock);
         this.marketCards = mc;
+        System.out.println("setting isMarket turn to "+ value);
         this.isMarketTurn = value;
         if (value == false) {
         	alreadyDrawMarket = false;
