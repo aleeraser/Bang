@@ -549,10 +549,9 @@ public class GameScene extends Scene {
 					}
 				}
 				
-				
-    		duelDialog.show(stage);
     		}
     	};
+    	duelDialog.show(stage);
     }
     
     public void dismissDuelDialog() {
