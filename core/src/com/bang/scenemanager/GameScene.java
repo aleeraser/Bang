@@ -37,6 +37,7 @@ public class GameScene extends Scene {
     Card clickedCard;
     boolean isDiscarding = false;
     protected GeneralStoreCardDialog generalStoreDialog;
+    protected DuelDialog duelDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -507,6 +508,56 @@ public class GameScene extends Scene {
     	if (generalStoreDialog != null) {
     		generalStoreDialog.remove();
     		isShowingMarketDialog = false;
+    	}
+    }
+    
+    public void showDuelDialog(boolean isMyDuelTurn, String opponentName) {
+    	if (duelDialog != null) {
+    		duelDialog.remove();
+    	}
+    	
+    	duelDialog = new DuelDialog(sceneManager, isMyDuelTurn, opponentName) {
+    		public void result(Object obj) {
+    			Boolean res = (Boolean) obj;
+    			int enemyIndex;
+				try {
+					enemyIndex = me.getDuelEnemy();
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+					return;
+				}
+				
+				try {
+					IPlayer me = sceneManager.getPlayer();
+					ArrayList<IPlayer> players = me.getPlayers();
+					IPlayer enemy = players.get(enemyIndex);
+					
+					enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
+				
+					if (!res) {
+						me.duello(false, false, -1, new int[players.size()]);
+						me.decreaselives(new int[players.size()]);
+					}
+					
+				} catch (RemoteException e) {
+					e.printStackTrace();
+					try {
+						me.alertPlayerMissing(enemyIndex);
+						me.duello(false, false, -1, new int[players.size()]);
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				
+    			
+    		}
+    	};
+    }
+    
+    public void dismissDuelDialog() {
+    	if (duelDialog != null) {
+    		duelDialog.remove();
     	}
     }
 }
