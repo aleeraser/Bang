@@ -532,8 +532,14 @@ public class GameScene extends Scene {
 					ArrayList<IPlayer> players = me.getPlayers();
 					IPlayer enemy = players.get(enemyIndex);
 					
+					if (res) {
+						int bangIndex = me.findCard(me.getHandCards(), "bang");
+						me.removeHandCard(bangIndex, new int[players.size()]);
+					}
+					
 					enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
 					me.duello(true, false, enemyIndex, new int[players.size()]);
+					
 					if (!res) {
 						me.duello(false, false, -1, new int[players.size()]);
 						me.decreaselives(new int[players.size()]);

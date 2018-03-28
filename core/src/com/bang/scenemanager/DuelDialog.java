@@ -36,7 +36,13 @@ public class DuelDialog extends Dialog {
 		else {
 			this.text("Vuoi giocare il Bang?");
 			
-			this.button("Spara", true);
+			try {
+				if (me.findCard(me.getHandCards(), "bang") != -1)
+					this.button("Spara", true);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
 			this.button("Arrenditi", false);
 		}
 
