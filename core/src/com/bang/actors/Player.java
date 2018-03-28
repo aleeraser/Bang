@@ -1129,6 +1129,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Semaphore getCardsSemaphore() {
         return cardsSemaphore;
     }
+    
+    public int getTurnOwner() {
+    	return turnOwner;
+    }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
     /* public static void main(String[] args) {
