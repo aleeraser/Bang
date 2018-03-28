@@ -45,7 +45,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int turn;
     private Boolean mustUpdateGUI;
     private LogBox logBox;
-    
+
     public Semaphore cardsSemaphore;
 
     public Player() throws RemoteException {
@@ -74,7 +74,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.startTimeoutTime = 0;
         this.turn = 0;
         this.mustUpdateGUI = false;
-        
+
         this.cardsSemaphore = new Semaphore(1);
     }
 
@@ -112,7 +112,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     log("e' il mio turno di pescare dall' emporio");
                 } else {
                     if (isMarketTurn && alreadyDrawMarket) {
-                    	System.out.println("Fine turno emporio");
+                        System.out.println("Fine turno emporio");
                         isMarketTurn = false;
                         alreadyDrawMarket = false;
                         System.out.println("calling syncMarkeCards false");
@@ -390,15 +390,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         for (int i = 0; i < barrel; i++) {
             Card c = this.deck.draw();
-            log("Barile:");
+            log("Ho un Barile in gioco, pesco...");
+            UIUtils.print("Ho un Barile in gioco, pesco...");
             if (c.getSuit() == 2) {
-                System.out.println("mancato, è uscito cuori");
+                System.out.println("ho pescato cuori, mi hanno mancato!");
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
-                log("pescato cuori, mancato!");
+                log("\tho pescato cuori, mi hanno mancato!");
                 return;
             } else {
-                this.logOthers("il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
-                log("\tnon cuori, colpito.");
+                this.logOthers("Il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
+                String suit;
+                if (c.getSuit() == 1)
+                    suit = "picche";
+                else if (c.getSuit() == 3)
+                    suit = "quadri";
+                else
+                    suit = "fiori";
+                log("\tho pescato " + suit + ", colpito.");
             }
             this.deck.discard(this.deck.getNextCardIndex() - 1);
             this.syncDiscards();
@@ -406,15 +414,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         int i = this.findCard(handCards, "mancato");
         if (i != -1) {
-            this.logOthers(this.getCharacter().getName() + " ha un mancato");
-            System.out.println("haha ho un mancato!");
-            log("Usato il mancato!");
+            this.logOthers(this.getCharacter().getName() + " ha un Mancato!");
+            System.out.println("Mancato!");
+            log("Ho usato il Mancato!");
             this.removeHandCard(i, this.clock.getVec());
             return;
         }
 
         this.decreaselives(this.clock.getVec());
-
     }
 
     private void checkCrashes() {
@@ -740,11 +747,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    public void syncMarketCards(){
+    public void syncMarketCards() {
         syncMarketCards(true);
     }
 
-    public void syncMarketCards( Boolean value) {
+    public void syncMarketCards(Boolean value) {
         for (IPlayer p : players) {
             if (p != null) {
                 try {
@@ -762,21 +769,21 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setMarketCards(ArrayList<Card> mc, int[] callerClock, Boolean value) {
         this.clock.clockIncrease(callerClock);
         this.marketCards = mc;
-        System.out.println("setting isMarket turn to "+ value);
+        System.out.println("setting isMarket turn to " + value);
         this.isMarketTurn = value;
         if (value == false) {
-        	alreadyDrawMarket = false;
-        	System.out.println("Ricevuto fine emportio");
-        	redrawSingle();
+            alreadyDrawMarket = false;
+            System.out.println("Ricevuto fine emportio");
+            redrawSingle();
         }
     }
 
     public void removeTableCard(int index, int[] callerClock) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
@@ -798,23 +805,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else
             this.shotDistance = 1;
     }
-    
+
     public void addTableCard(Card c) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-    	this.tableCards.add(c);
-    	cardsSemaphore.release(1);
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.tableCards.add(c);
+        cardsSemaphore.release(1);
     }
 
     public void removeHandCard(int index, int[] callerClock) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         this.deck.discard(this.deck.getIndices().indexOf(index));
@@ -822,15 +829,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.syncDiscards();
         redraw();
     }
-    
+
     public void addHandCard(Card c) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-    	this.handCards.add(c);
-    	cardsSemaphore.release(1);
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.handCards.add(c);
+        cardsSemaphore.release(1);
     }
 
     private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
@@ -1092,10 +1099,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-	@Override
-	public Semaphore getCardsSemaphore() {
-		return cardsSemaphore;
-	}
+    @Override
+    public Semaphore getCardsSemaphore() {
+        return cardsSemaphore;
+    }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
     /* public static void main(String[] args) {
