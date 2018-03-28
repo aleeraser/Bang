@@ -362,24 +362,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void shot(IPlayer target, int i) { //i is the target index
-
+    private void shot(IPlayer target, int i) { // i is the target index
         try {
             this.clock.clockIncreaseLocal();
-            if (findDistance(i, this.pos)
-                    + target.getDistance(this.clock.getVec()) <= (this.view + this.shotDistance)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
-                this.clock.clockIncreaseLocal();
-                target.bang(this.clock.getVec()); // TODO da migliorare, lui potrebbe avere un mancato
-                this.alreadyShot = true;
-                //System.out.println(target.getLives());
-            } else {
-                System.out.println("Target out of range");
-                log("Il bersaglio e' troppo lontano.");
-            }
+            target.bang(this.clock.getVec());
+            this.alreadyShot = true;
 
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'è " + i);
-
             this.alertPlayerMissing(i);
             //e.printStackTrace();
         }
@@ -438,7 +428,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.redraw();
     }
 
-    private int findDistance(int i, int j) {
+    private int findDistance(int i, int j, IPlayer target, int targetIndex) {
         int lDist = 0;
         int rDist = 0;
         if (i > j) {
@@ -457,7 +447,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
 
-        return Math.min(lDist, rDist);
+        int distance = Math.min(lDist, rDist);
+        try {
+            this.clock.clockIncreaseLocal();
+
+            // distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
+            distance += target.getDistance(this.clock.getVec());
+        } catch (RemoteException e) {
+            System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+            this.alertPlayerMissing(targetIndex);
+        }
+
+        return distance;
     }
 
     private int findNext(int index) {
@@ -606,18 +607,28 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             if (target != null) {
                 this.checkCrashes();
+                Boolean targetOutOfRange = findDistance(targetIndex, this.pos, target,
+                        targetIndex) <= (this.view + this.shotDistance);
                 if (name.matches("bang")) {
-                    if (!alreadyShot || volcanic) {
+                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
                         this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
                         this.shot(target, targetIndex);
-                    } else
-                        return;
+                    } else {
+                        System.out.println("Target out of range");
+                        log("Il bersaglio e' troppo lontano.");
+                    }
+
                 } else if (name.matches("catbalou")) {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                     this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
                 } else if (name.matches("panico")) {
-                    this.panico(targetIndex, targetCardIndex, fromTable);
-                    this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
+                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
+                        this.panico(targetIndex, targetCardIndex, fromTable);
+                        this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
+                    } else {
+                        System.out.println("Target out of range");
+                        log("Il bersaglio e' troppo lontano.");
+                    }
                 } else if (name.matches("prigione")) {
                     try {
                         this.clock.clockIncreaseLocal();
@@ -630,7 +641,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
             //attiva l'effetto sul target
-        } else if (c.getType().matches("table")) {
+        } else if (c.getType().matches("table"))
+
+        {
             if (name.matches("mirino")) {
                 this.view++;
                 this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedrà a distanza +1");
@@ -744,7 +757,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
         }
         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+
         redraw();
+
     }
 
     public void syncMarketCards() {
@@ -862,22 +877,19 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         IPlayer target = players.get(pIndex);
         if (target != null) {
             try {
-                this.clock.clockIncreaseLocal();
-                if (findDistance(pIndex, this.pos) + target.getDistance(this.clock.getVec()) <= (1)) { //distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
-                    Card c;
-                    if (fromTable) {
-                        this.clock.clockIncreaseLocal();
-                        c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
-                        this.clock.clockIncreaseLocal();
-                        target.removeTableCard(cIndex, this.clock.getVec());
-                    } else {
-                        this.clock.clockIncreaseLocal();
-                        c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
-                        this.clock.clockIncreaseLocal();
-                        target.removeHandCard(cIndex, this.clock.getVec());
-                    }
-                    this.addHandCard(c);
+                Card c;
+                if (fromTable) {
+                    this.clock.clockIncreaseLocal();
+                    c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
+                    this.clock.clockIncreaseLocal();
+                    target.removeTableCard(cIndex, this.clock.getVec());
+                } else {
+                    this.clock.clockIncreaseLocal();
+                    c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
+                    this.clock.clockIncreaseLocal();
+                    target.removeHandCard(cIndex, this.clock.getVec());
                 }
+                this.addHandCard(c);
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
                 this.alertPlayerMissing(pIndex);
