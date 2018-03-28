@@ -480,7 +480,7 @@ public class GameScene extends Scene {
     	
     	isShowingMarketDialog = true;
 		try {
-			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
+			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()]), me.getTurn()) {
 				public void result(Object obj) {
 					try {
 						if (me.isMyTurn()) {
