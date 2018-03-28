@@ -68,7 +68,7 @@ public class Bang extends ApplicationAdapter {
                 	gs.dismissMarketDialog();
                 }
                 
-                if (me.isInDuel()) {
+                if (me.isInDuel() && me.shouldUpdateGUI()) {
                 	System.out.println("Showing duel dialog");
                 	gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
                 }

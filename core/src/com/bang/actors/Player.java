@@ -958,6 +958,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.duel = duel;
         this.duelTurn = turn;
         this.duelEnemy = enemy;
+        this.redraw();
     }
 
     public Boolean isInDuel(){
