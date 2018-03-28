@@ -51,12 +51,6 @@ public class Bang extends ApplicationAdapter {
             batch.end();
         }
 
-        super.render();
-        s.draw();
-
-        // Needed to allow scrolling
-        s.act();
-
         try {
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
@@ -109,6 +103,13 @@ public class Bang extends ApplicationAdapter {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
         }
+
+        super.render();
+        s.draw();
+
+        // Needed to allow scrolling
+        s.act();
+
     }
 
     @Override
