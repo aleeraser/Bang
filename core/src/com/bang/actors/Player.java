@@ -610,7 +610,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 Boolean targetOutOfRange = findDistance(targetIndex, this.pos, target,
                         targetIndex) <= (this.view + this.shotDistance);
                 if (name.matches("bang")) {
-                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
+                    if (!targetOutOfRange || !alreadyShot || volcanic) {
                         this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
                         this.shot(target, targetIndex);
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
@@ -624,7 +624,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
                     this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                 } else if (name.matches("panico")) {
-                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
+                    if (!targetOutOfRange || !alreadyShot || volcanic) {
                         this.panico(targetIndex, targetCardIndex, fromTable);
                         this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
