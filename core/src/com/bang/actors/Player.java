@@ -233,7 +233,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     }
 
-    private int findCard(ArrayList<Card> cards, String name) {
+    public int findCard(ArrayList<Card> cards, String name) {
         for (int i = 0; i < cards.size(); i++) {
             if (cards.get(i).getName().matches(name))
                 return i;

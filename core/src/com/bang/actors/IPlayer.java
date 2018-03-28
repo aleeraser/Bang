@@ -138,4 +138,6 @@ public interface IPlayer extends Remote {
     Boolean isDuelTurn() throws RemoteException;
 
     int getDuelEnemy() throws RemoteException;
+
+    int findCard(ArrayList<Card> cards, String name) throws RemoteException;
 }
