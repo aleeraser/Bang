@@ -58,6 +58,7 @@ public class OptionsScene extends Scene {
                         NetworkUtils.setBaseURL(serverName.getText());
                         try {
         					sceneManager.getPlayer().setIp(ipList.getSelected());
+        					System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
         				} catch (RemoteException e) {
         					e.printStackTrace();
         				}
