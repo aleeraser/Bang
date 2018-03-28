@@ -550,7 +550,7 @@ public class GameScene extends Scene {
 				}
 				
 				
-    			
+    		duelDialog.show(stage);
     		}
     	};
     }
