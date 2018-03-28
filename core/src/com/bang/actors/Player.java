@@ -16,6 +16,8 @@ import java.util.concurrent.Semaphore;
 import com.bang.gameui.LogBox;
 import com.bang.utils.UIUtils;
 
+import org.apache.commons.io.filefilter.TrueFileFilter;
+
 public class Player extends UnicastRemoteObject implements IPlayer {
     private int lives;
     private String ip;
@@ -38,6 +40,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean dinamite;
     private Boolean isMarketTurn;
     private Boolean alreadyDrawMarket;
+    private Boolean duel;
+    private Boolean duelTurn;
+    
     private int barrel;
     private Clock clock;
     private long startTimeoutTime;
@@ -64,6 +69,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.dinamite = false;
         this.isMarketTurn = false;
         this.alreadyDrawMarket = false;
+        this.duel = false;
+        this.duelTurn = false;
 
         this.deck = new Deck();
 
@@ -646,6 +653,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
                     }
+                }else if (name.matches("duello")){
+                    try{
+                        this.duel=true;
+                        this.clock.clockIncreaseLocal();
+                        this.logOthers(this.getCharacter().getName() + " ha sfidato a duello " + targetName);
+                        this.players.get(targetIndex).duello(true, true, this.clock.getVec());
+                    }catch(RemoteException e){
+                        System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+                        this.alertPlayerMissing(targetIndex);
+                    }
                 }
             }
             //attiva l'effetto sul target
@@ -816,8 +833,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.tableCards.remove(index);
         if (toDiscard)
             this.deck.discard(this.deck.getIndices().indexOf(index));
+            this.syncDiscards();
+
         cardsSemaphore.release(1);
-        this.syncDiscards();
         if (name.matches("barile"))
             this.barrel--;
         else if (name.matches("volcanic"))
@@ -858,10 +876,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.handCards.remove(index);
         if (toDiscard)
             this.deck.discard(this.deck.getIndices().indexOf(index));
+            this.syncDiscards();
+
         cardsSemaphore.release(1);
-        this.syncDiscards();
         redraw();
     }
+
 
     public void addHandCard(Card c) {
         try {
@@ -927,6 +947,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.decreaselives(this.clock.getVec());
         }
         redraw();
+    }
+
+    public void duello(Boolean duel, Boolean turn, int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.duel = duel;
+        this.duelTurn = turn;
+    }
+
+    public Boolean isInDuel(){
+        return this.duel;
+    }
+
+    public Boolean isDuelTurn(){
+        return this.duelTurn;
     }
 
     private static String findIp() {
@@ -1139,42 +1173,4 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public int getTurnOwner() {
         return turnOwner;
     }
-
-    // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
-    /* public static void main(String[] args) {
-        // System.setProperty("java.rmi.server.hostname", findIp());
-    
-        try {
-            LocateRegistry.createRegistry(1099);
-            IPlayer server = new Player();
-            Naming.rebind("//" + server.getIp() + "/Player", server);
-    
-            ArrayList<String> iplist = new ArrayList<String>();
-            iplist.add("1.2.3.4");
-            iplist.add("192.168.1.7");
-            iplist.add("192.168.1.6");
-            iplist.add("192.168.1.2");
-            server.initPlayerList(iplist);
-            System.out.println("---->" + server.getPos());
-            System.out.println("---->" + server.getPlayers().size());
-            
-            for (int i = 0; i < server.getPlayers().size(); i++) {
-                if (i != server.getPos()) {
-                    server.shot((IPlayer) server.getPlayers().get(i), i);
-                    server.getPlayers().get(i).getLives();
-                }
-            }
-    
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    
-    } */
 }
-
-//TODO ping al player in pos turno per vedere se è vivo, se è vivo aspetti, altrimenti ti dichiari in possesso del turno.
-// tutticontrollano chi ha il turno, se quello con il turno muore controlli se tu sei quello subito dopo, nel caso ti dichiari avente il turno, altrimenti inizi a controllare quello subito dopo.
-//quando uno passa il turno avverte tutti. e tutti resettano il tempo di riferimento
-//quando uno ha ricevuto le carte iniziali cambia il temeout per un tempo plausibile al gioco.
