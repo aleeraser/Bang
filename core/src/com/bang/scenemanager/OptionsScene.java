@@ -1,6 +1,9 @@
 package com.bang.scenemanager;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
+import com.bang.actors.Player;
 import com.bang.utils.NetworkUtils;
 import com.bang.utils.UIUtils;
 
@@ -59,10 +63,13 @@ public class OptionsScene extends Scene {
                         try {
         					sceneManager.getPlayer().setIp(ipList.getSelected());
         					System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
-        				} catch (RemoteException e) {
-        					e.printStackTrace();
-        				}
-                        sceneManager.setScene(new MainMenuScene(sceneManager));
+        					Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player", sceneManager.getPlayer());
+        			        } catch (RemoteException e) {
+        			            e.printStackTrace();
+        			        } catch (MalformedURLException e) {
+        			            e.printStackTrace();
+        			        }
+                        	sceneManager.setScene(new MainMenuScene(sceneManager));
                     }
                 });
         
