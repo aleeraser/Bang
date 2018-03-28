@@ -663,6 +663,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.duelEnemy = targetIndex;
                         this.logOthers(this.getCharacter().getName() + " ha sfidato a duello " + targetName);
                         this.players.get(targetIndex).duello(true, true, this.pos, this.clock.getVec());
+                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+
                     }catch(RemoteException e){
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
