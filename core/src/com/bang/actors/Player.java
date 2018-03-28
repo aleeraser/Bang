@@ -604,7 +604,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
     public void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) {
-
+        System.out.println("in play card");
         String name = c.getName();
         if (c.getType().matches("target")) {
             IPlayer target = players.get(targetIndex);
@@ -656,6 +656,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.alertPlayerMissing(targetIndex);
                     }
                 }else if (name.matches("duello")){
+                    System.out.println("in duello in play card");
                     try{
                         this.duel=true;
                         this.clock.clockIncreaseLocal();
