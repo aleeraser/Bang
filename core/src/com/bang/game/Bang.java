@@ -51,12 +51,6 @@ public class Bang extends ApplicationAdapter {
             batch.end();
         }
 
-        super.render();
-        s.draw();
-
-        // Needed to allow scrolling
-        s.act();
-
         try {
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
@@ -64,10 +58,7 @@ public class Bang extends ApplicationAdapter {
 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
-                
-                //if(me.isMarketTurn()) 
-                //	gs.showMarketDialog();
-                
+                               
                 if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showMarketDialog();
@@ -77,9 +68,7 @@ public class Bang extends ApplicationAdapter {
                 	gs.dismissMarketDialog();
                 
                 if (me.shouldUpdateGUI()) {
-                	System.out.println("Should close dialog");
                 	gs.update();
-                	//gs.dismissMarketDialog();
                 }
                 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
@@ -109,6 +98,13 @@ public class Bang extends ApplicationAdapter {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
         }
+
+        super.render();
+        s.draw();
+
+        // Needed to allow scrolling
+        s.act();
+
     }
 
     @Override
