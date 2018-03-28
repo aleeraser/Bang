@@ -980,6 +980,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.players.add((IPlayer) this);
                 } else if (this.ping(ips.get(i))) {
                     IPlayer player = (IPlayer) Naming.lookup("rmi://" + ips.get(i) + "/Player");
+                    if (player != null)
+                    	System.out.println("Successfully added " + player.getIp());
                     this.players.add(player);
                 } else
                     players.add(null);
