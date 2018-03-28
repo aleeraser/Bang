@@ -42,6 +42,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean alreadyDrawMarket;
     private Boolean duel;
     private Boolean duelTurn;
+    private int duelEnemy;
     
     private int barrel;
     private Clock clock;
@@ -71,6 +72,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.alreadyDrawMarket = false;
         this.duel = false;
         this.duelTurn = false;
+        this.duelEnemy = -1;
 
         this.deck = new Deck();
 
@@ -657,8 +659,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     try{
                         this.duel=true;
                         this.clock.clockIncreaseLocal();
+                        this.duelEnemy = targetIndex;
                         this.logOthers(this.getCharacter().getName() + " ha sfidato a duello " + targetName);
-                        this.players.get(targetIndex).duello(true, true, this.clock.getVec());
+                        this.players.get(targetIndex).duello(true, true, this.pos, this.clock.getVec());
                     }catch(RemoteException e){
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
@@ -949,10 +952,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    public void duello(Boolean duel, Boolean turn, int[] callerClock){
+    public void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock){
         this.clock.clockIncrease(callerClock);
         this.duel = duel;
         this.duelTurn = turn;
+        this.duelEnemy = enemy;
     }
 
     public Boolean isInDuel(){
@@ -961,6 +965,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public Boolean isDuelTurn(){
         return this.duelTurn;
+    }
+
+    public int getDuelEnemy(){
+        return this.duelEnemy;
     }
 
     private static String findIp() {
