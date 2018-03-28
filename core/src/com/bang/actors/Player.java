@@ -608,7 +608,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (target != null) {
                 this.checkCrashes();
                 Boolean targetOutOfRange = findDistance(targetIndex, this.pos, target,
-                        targetIndex) <= (this.view + this.shotDistance);
+                        targetIndex) > (this.view + this.shotDistance);
                 if (name.matches("bang")) {
                     if (!targetOutOfRange || !alreadyShot || volcanic) {
                         this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
