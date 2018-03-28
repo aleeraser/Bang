@@ -69,7 +69,11 @@ public class Bang extends ApplicationAdapter {
                 }
                 
                 if (me.isInDuel()) {
-                	gs.showDuelDialog();
+                	gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
+                }
+                
+                if (!me.isDuelTurn()) {
+                	gs.dismissDuelDialog();
                 }
                 
                 if (me.shouldUpdateGUI()) {
