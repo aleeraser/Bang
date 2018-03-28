@@ -13,6 +13,7 @@ import com.bang.utils.UIUtils;
 public class MainMenuScene extends Scene {
 
     TextButton btnStart;
+    TextButton btnOptions;
 
     Label text;
 
@@ -35,6 +36,15 @@ public class MainMenuScene extends Scene {
                     public void changed(ChangeEvent event, Actor actor) {
                         /* Goto RoomListScene */
                         sceneManager.setScene(new RoomListScene(sceneManager));
+                    }
+                });
+        
+        btnOptions = UIUtils.createBtn("Opzioni", Gdx.graphics.getWidth() - 230, 10,
+                stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        /* Goto RoomListScene */
+                        sceneManager.setScene(new OptionsScene(sceneManager));
                     }
                 });
     }

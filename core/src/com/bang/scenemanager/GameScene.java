@@ -476,6 +476,8 @@ public class GameScene extends Scene {
     		generalStoreDialog.remove();
     	}
     	
+    	System.out.println("Showing dialog");
+    	
     	isShowingMarketDialog = true;
 		try {
 			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()])) {
