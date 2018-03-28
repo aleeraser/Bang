@@ -58,10 +58,7 @@ public class Bang extends ApplicationAdapter {
 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
-                
-                //if(me.isMarketTurn()) 
-                //	gs.showMarketDialog();
-                
+                               
                 if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showMarketDialog();
@@ -71,9 +68,7 @@ public class Bang extends ApplicationAdapter {
                 	gs.dismissMarketDialog();
                 
                 if (me.shouldUpdateGUI()) {
-                	System.out.println("Should close dialog");
                 	gs.update();
-                	//gs.dismissMarketDialog();
                 }
                 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
