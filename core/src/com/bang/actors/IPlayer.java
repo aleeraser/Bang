@@ -131,9 +131,11 @@ public interface IPlayer extends Remote {
     
     int getTurnOwner() throws RemoteException;
 
-    void duello(Boolean duel, Boolean turn, int[] callerClock) throws RemoteException;
+    void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock) throws RemoteException;
      
     Boolean isInDuel() throws RemoteException;
      
     Boolean isDuelTurn() throws RemoteException;
+
+    int getDuelEnemy() throws RemoteException;
 }
