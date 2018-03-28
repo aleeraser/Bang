@@ -607,13 +607,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             if (target != null) {
                 this.checkCrashes();
-                Boolean targetOutOfRange = findDistance(targetIndex, this.pos, target,
-                        targetIndex) > (this.view + this.shotDistance);
+                Integer distance = findDistance(targetIndex, this.pos, target, targetIndex);
                 if (name.matches("bang")) {
-                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
-                        this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
-                        this.shot(target, targetIndex);
-                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+                    if (distance <= (this.view + this.shotDistance)) {
+                        if (!alreadyShot || volcanic) {
+                            this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
+                            this.shot(target, targetIndex);
+                            this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+                        } else {
+                            System.out.println("Already shot");
+                            log("Ho gia' sparato.");
+                        }
                     } else {
                         System.out.println("Target out of range");
                         log("Il bersaglio e' troppo lontano.");
@@ -624,7 +628,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
                     this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                 } else if (name.matches("panico")) {
-                    if (!targetOutOfRange && (!alreadyShot || volcanic)) {
+                    if (distance <= 1) {
                         this.panico(targetIndex, targetCardIndex, fromTable);
                         this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
@@ -791,8 +795,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         System.out.println("setting isMarket turn to " + value);
         this.isMarketTurn = value;
         if (value == false) {
-        	alreadyDrawMarket = false;
-        	System.out.println("Ricevuto fine emporio");
+            alreadyDrawMarket = false;
+            System.out.println("Ricevuto fine emporio");
         }
         redrawSingle();
     }
@@ -802,15 +806,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeTableCard(int index, int[] callerClock, Boolean toDiscard) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
-        if (toDiscard) 
+        if (toDiscard)
             this.deck.discard(this.deck.getIndices().indexOf(index));
         cardsSemaphore.release(1);
         this.syncDiscards();
@@ -840,16 +844,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         cardsSemaphore.release(1);
     }
 
-    public void removeHandCard(int index, int[] callerClock){
+    public void removeHandCard(int index, int[] callerClock) {
         removeHandCard(index, callerClock, true);
     }
 
     public void removeHandCard(int index, int[] callerClock, Boolean toDiscard) {
-    	try {
-			cardsSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        try {
+            cardsSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
         if (toDiscard)
@@ -1129,9 +1133,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Semaphore getCardsSemaphore() {
         return cardsSemaphore;
     }
-    
+
     public int getTurnOwner() {
-    	return turnOwner;
+        return turnOwner;
     }
 
     // TODO : quando si capisce che uno non c'e' bisogna anche aggiornare il campo pos di tutti
