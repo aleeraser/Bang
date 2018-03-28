@@ -100,7 +100,11 @@ public class Bang extends ApplicationAdapter {
         }
 
         super.render();
-        s.draw();
+        try{
+            s.draw();
+        }catch(NullPointerException e){
+            System.out.println("non mi freghi!");
+        }
 
         // Needed to allow scrolling
         s.act();
