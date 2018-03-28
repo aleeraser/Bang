@@ -538,11 +538,14 @@ public class GameScene extends Scene {
 					}
 					
 					enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
-					me.duello(true, false, enemyIndex, new int[players.size()]);
 					
 					if (!res) {
 						me.duello(false, false, -1, new int[players.size()]);
 						me.decreaselives(new int[players.size()]);
+					}
+					
+					else {
+						me.duello(true, false, enemyIndex, new int[players.size()]);
 					}
 					
 				} catch (RemoteException e) {
