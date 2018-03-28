@@ -766,9 +766,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.isMarketTurn = value;
         if (value == false) {
         	alreadyDrawMarket = false;
-        	System.out.println("Ricevuto fine emportio");
-        	redrawSingle();
+        	System.out.println("Ricevuto fine emporio");
         }
+        redrawSingle();
     }
 
     public void removeTableCard(int index, int[] callerClock) {
