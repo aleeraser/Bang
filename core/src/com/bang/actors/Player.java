@@ -979,12 +979,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.characterDeck.setIndices(indices);
 
-        ArrayList<Integer> indexis = this.characterDeck.getIndices();
-
-        /*for (int i = 0; i < indexis.size(); i++) {
-            System.out.println("CharDeck: " + indexis.get(i));
-        }*/
-
         startTimeoutTime = System.currentTimeMillis();
     }
 
