@@ -816,8 +816,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.tableCards.remove(index);
         if (toDiscard)
             this.deck.discard(this.deck.getIndices().indexOf(index));
+            this.syncDiscards();
+
         cardsSemaphore.release(1);
-        this.syncDiscards();
         if (name.matches("barile"))
             this.barrel--;
         else if (name.matches("volcanic"))
@@ -858,8 +859,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.handCards.remove(index);
         if (toDiscard)
             this.deck.discard(this.deck.getIndices().indexOf(index));
+            this.syncDiscards();
+
         cardsSemaphore.release(1);
-        this.syncDiscards();
         redraw();
     }
 
