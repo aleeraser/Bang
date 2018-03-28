@@ -36,10 +36,10 @@ public class GeneralStoreCardDialog extends Dialog {
 				this.text("E' il mio turno per scegliere");
 			}
 			else {
-				this.text("Deve scegliere " + me.getPlayers().get(me.getTurn()));
+				this.text("Deve scegliere " + me.getPlayers().get(me.getTurn()).getCharacter().getName());
 			}
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		int cardsNum = storeCards.size();
