@@ -19,8 +19,8 @@ public class GeneralStoreCardDialog extends Dialog {
 	protected SceneManager sceneManager;
 	protected ArrayList<Card> storeCards;
 	
-	public GeneralStoreCardDialog(SceneManager sceneManager, ArrayList<Card> storeCards) {
-		super("Carta bersaglio", sceneManager.getSkin(), "dialog");
+	public GeneralStoreCardDialog(SceneManager sceneManager, ArrayList<Card> storeCards, int turn) {
+		super("Emporio", sceneManager.getSkin(), "dialog");
 	
 		this.sceneManager = sceneManager;
 		this.storeCards = storeCards;
@@ -29,7 +29,18 @@ public class GeneralStoreCardDialog extends Dialog {
 	}
 	
 	protected void setup() {
-		this.text("Scegli la carta bersaglio");
+		IPlayer me = sceneManager.getPlayer();
+		
+		try {
+			if (me.isMyTurn()) {
+				this.text("E' il mio turno per scegliere");
+			}
+			else {
+				this.text("Deve scegliere " + me.getPlayers().get(me.getTurn()));
+			}
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
 		
 		int cardsNum = storeCards.size();
 		int widthTot = 600;

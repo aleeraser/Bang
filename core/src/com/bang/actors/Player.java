@@ -153,7 +153,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     this.clock.clockIncreaseLocal();
                                     try {
                                         this.players.get(next).dynamite(this.tableCards.get(ind), this.clock.getVec());
-                                        this.removeTableCard(ind, this.clock.getVec());
+                                        this.removeTableCard(ind, this.clock.getVec(), false);
                                         found = true;
                                     } catch (RemoteException e) {
                                         this.alertPlayerMissing(next);
@@ -613,6 +613,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     if (!targetOutOfRange && (!alreadyShot || volcanic)) {
                         this.logOthers(this.getCharacter().getName() + " ha sparato a " + targetName);
                         this.shot(target, targetIndex);
+                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                     } else {
                         System.out.println("Target out of range");
                         log("Il bersaglio e' troppo lontano.");
@@ -621,10 +622,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else if (name.matches("catbalou")) {
                     this.catBalou(targetIndex, targetCardIndex, fromTable);
                     this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
+                    this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                 } else if (name.matches("panico")) {
                     if (!targetOutOfRange && (!alreadyShot || volcanic)) {
                         this.panico(targetIndex, targetCardIndex, fromTable);
                         this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
+                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                     } else {
                         System.out.println("Target out of range");
                         log("Il bersaglio e' troppo lontano.");
@@ -634,6 +637,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.clock.clockIncreaseLocal();
                         this.logOthers(this.getCharacter().getName() + " ha messo in prigione " + targetName);
                         this.players.get(targetIndex).jail(c, this.clock.getVec());
+                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec(), false);
                     } catch (RemoteException e) {
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
@@ -681,6 +685,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.dinamite = true;
             }
             addTableCard(c);
+            this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec(), false);
         } else { //single-usage cards
             if (name.matches("indiani")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
@@ -755,9 +760,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("calling syncMarkeCards true");
                 this.syncMarketCards();
             }
+            this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
         }
-        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
-
         redraw();
 
     }
@@ -787,22 +791,27 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         System.out.println("setting isMarket turn to " + value);
         this.isMarketTurn = value;
         if (value == false) {
-            alreadyDrawMarket = false;
-            System.out.println("Ricevuto fine emportio");
-            redrawSingle();
+        	alreadyDrawMarket = false;
+        	System.out.println("Ricevuto fine emporio");
         }
+        redrawSingle();
     }
 
     public void removeTableCard(int index, int[] callerClock) {
-        try {
-            cardsSemaphore.acquire(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        removeTableCard(index, callerClock, true);
+    }
+
+    public void removeTableCard(int index, int[] callerClock, Boolean toDiscard) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
-        this.deck.discard(this.deck.getIndices().indexOf(index));
+        if (toDiscard) 
+            this.deck.discard(this.deck.getIndices().indexOf(index));
         cardsSemaphore.release(1);
         this.syncDiscards();
         if (name.matches("barile"))
@@ -831,15 +840,20 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         cardsSemaphore.release(1);
     }
 
-    public void removeHandCard(int index, int[] callerClock) {
-        try {
-            cardsSemaphore.acquire(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void removeHandCard(int index, int[] callerClock){
+        removeHandCard(index, callerClock, true);
+    }
+
+    public void removeHandCard(int index, int[] callerClock, Boolean toDiscard) {
+    	try {
+			cardsSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
-        this.deck.discard(this.deck.getIndices().indexOf(index));
+        if (toDiscard)
+            this.deck.discard(this.deck.getIndices().indexOf(index));
         cardsSemaphore.release(1);
         this.syncDiscards();
         redraw();
@@ -882,12 +896,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.clock.clockIncreaseLocal();
                     c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
                     this.clock.clockIncreaseLocal();
-                    target.removeTableCard(cIndex, this.clock.getVec());
+                    target.removeTableCard(cIndex, this.clock.getVec(), false);
                 } else {
                     this.clock.clockIncreaseLocal();
                     c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
                     this.clock.clockIncreaseLocal();
-                    target.removeHandCard(cIndex, this.clock.getVec());
+                    target.removeHandCard(cIndex, this.clock.getVec(), false);
                 }
                 this.addHandCard(c);
             } catch (RemoteException e) {
