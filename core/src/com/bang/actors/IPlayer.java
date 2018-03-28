@@ -73,7 +73,11 @@ public interface IPlayer extends Remote {
 
     void removeTableCard(int index, int[] callerClock) throws RemoteException;
 
+    void removeTableCard(int index, int[] callerClock, Boolean toDiscard) throws RemoteException;
+
     void removeHandCard(int index, int[] callerClock) throws RemoteException;
+
+    void removeHandCard(int index, int[] callerClock, Boolean toDiscard) throws RemoteException;
 
     void removePlayer(int index, String ip, int[] callerClock) throws RemoteException;
 
