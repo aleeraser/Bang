@@ -37,6 +37,7 @@ public class GameScene extends Scene {
     Card clickedCard;
     boolean isDiscarding = false;
     protected GeneralStoreCardDialog generalStoreDialog;
+    protected DuelDialog duelDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -507,6 +508,24 @@ public class GameScene extends Scene {
     	if (generalStoreDialog != null) {
     		generalStoreDialog.remove();
     		isShowingMarketDialog = false;
+    	}
+    }
+    
+    public void showDuelDialog(boolean isMyDuelTurn, String opponentName) {
+    	if (duelDialog != null) {
+    		duelDialog.remove();
+    	}
+    	
+    	duelDialog = new DuelDialog(sceneManager, isMyDuelTurn, opponentName) {
+    		public void result(Object obj) {
+    			
+    		}
+    	};
+    }
+    
+    public void dismissDuelDialog() {
+    	if (duelDialog != null) {
+    		duelDialog.remove();
     	}
     }
 }

@@ -18,7 +18,7 @@ public class DuelDialog extends Dialog {
 	protected String opponentName;
 	protected boolean isMyDuelTurn;
 	
-	public DuelDialog(Card card, SceneManager sceneManager, boolean isMyDuelTurn, String opponentName) {
+	public DuelDialog(SceneManager sceneManager, boolean isMyDuelTurn, String opponentName) {
 		super("Duello con " + opponentName, sceneManager.getSkin(), "dialog");
 		this.sceneManager = sceneManager;
 		this.opponentName = opponentName;
