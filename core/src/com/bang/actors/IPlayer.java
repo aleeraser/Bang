@@ -128,4 +128,6 @@ public interface IPlayer extends Remote {
     void syncMarketCards(Boolean value) throws RemoteException;
     
     void setIp(String ip) throws RemoteException;
+    
+    int getTurnOwner() throws RemoteException;
 }
