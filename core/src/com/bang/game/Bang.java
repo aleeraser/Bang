@@ -55,12 +55,6 @@ public class Bang extends ApplicationAdapter {
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
-
-                try {
-					sceneManager.getPlayer().getDrawingSemaphore().acquire(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
                 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
@@ -74,10 +68,11 @@ public class Bang extends ApplicationAdapter {
                 	gs.dismissMarketDialog();
                 }
                 
-                if (me.isInDuel() && me.shouldUpdateGUI()) {
+                if (me.isInDuel() && me.shouldUpdateDuel()) {
                 	System.out.println("Showing duel dialog");
                 	System.out.println("IS MY TURN: " + me.isDuelTurn());
                 	gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
+                	me.redrawDuel(false);
                 }
                 
                 if (!me.isInDuel()) {
@@ -96,8 +91,6 @@ public class Bang extends ApplicationAdapter {
                     // UIUtils.print("It's NOT my turn and user input were enabled. Disabling user inputs");
                     gs.areUserInputEnabled(false);
                 }
-                
-                sceneManager.getPlayer().getDrawingSemaphore().release(1);
 
             } else {
                 if (me.isMyTurn()) {

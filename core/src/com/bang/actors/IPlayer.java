@@ -124,8 +124,6 @@ public interface IPlayer extends Remote {
     void addMarketCardToHand(int i) throws RemoteException;
     
     Semaphore getCardsSemaphore() throws RemoteException;
-    
-    Semaphore getDrawingSemaphore() throws RemoteException;
 
     void syncMarketCards() throws RemoteException;
 
@@ -144,4 +142,8 @@ public interface IPlayer extends Remote {
     int getDuelEnemy() throws RemoteException;
 
     int findCard(ArrayList<Card> cards, String name) throws RemoteException;
+    
+    public void redrawDuel(Boolean b) throws RemoteException;
+    
+    public Boolean shouldUpdateDuel() throws RemoteException;
 }

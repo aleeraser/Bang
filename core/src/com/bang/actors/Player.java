@@ -50,6 +50,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private long playerTimeout;
     private int turn;
     private Boolean mustUpdateGUI;
+    private Boolean mustUpdateDuel;
     private LogBox logBox;
 
     public Semaphore cardsSemaphore;
@@ -84,6 +85,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.startTimeoutTime = 0;
         this.turn = 0;
         this.mustUpdateGUI = false;
+        this.mustUpdateDuel = false;
 
         this.cardsSemaphore = new Semaphore(1);
         this.redrawingSemaphore = new Semaphore(1);
@@ -974,7 +976,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.duel = duel;
         this.duelEnemy = enemy;
         System.out.println("FUNZIONE DUELLO (2)");
-        this.redrawSingle();
+        this.redrawDuel(true);
         System.out.println("FUNZIONE DUELLO (3)");
     }
 
@@ -1141,13 +1143,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void redrawSingle(Boolean shouldRedraw) {
-    	 try {
-				redrawingSemaphore.acquire(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
         this.mustUpdateGUI = shouldRedraw;
-        redrawingSemaphore.release(1);
+    }
+    
+    public void redrawDuel(Boolean b) {
+    	this.mustUpdateDuel = b;
+    }
+    
+    public Boolean shouldUpdateDuel() {
+        return this.mustUpdateDuel;
     }
 
     public Boolean shouldUpdateGUI() {
