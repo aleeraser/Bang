@@ -37,7 +37,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean alreadyShot;
     private Boolean volcanic;
     private Boolean jail;
-    private Boolean dinamite;
+    private int dinamite;
     private Boolean isMarketTurn;
     private Boolean alreadyDrawMarket;
     private Boolean duel;
@@ -69,7 +69,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.volcanic = false;
         this.barrel = 0;
         this.jail = false;
-        this.dinamite = false;
+        this.dinamite = 0;
         this.isMarketTurn = false;
         this.alreadyDrawMarket = false;
         this.duel = false;
@@ -138,7 +138,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.logOthers("E' il turno di " + this.getCharacter().getName());
                         log("E' il mio turno!");
                         System.out.println("Standard turn, drew two cards. " + this.clock.toString());
-                        if (this.dinamite) {
+                        while (this.dinamite > 0) {
                             log("dinamite:");
                             Card c = this.deck.draw();
                             this.deck.discard(this.deck.getNextCardIndex() - 1);
@@ -589,7 +589,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         Card d = dinamite.copyCard();
         this.addTableCard(d);
-        this.dinamite = true;
+        this.dinamite ++;
     }
 
     public void addMarketCardToHand(int i) {
@@ -723,7 +723,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             } else if (name.matches("barile")) {
                 this.barrel++;
             } else if (name.matches("dinamite")) {
-                this.dinamite = true;
+                this.dinamite ++;
             }
             addTableCard(c);
             this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec(), false);
@@ -867,7 +867,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else if (name.matches("prigione"))
             this.jail = false;
         else if (name.matches("dinamite"))
-            this.dinamite = false;
+            this.dinamite --;
         else
             this.shotDistance = 1;
     }
