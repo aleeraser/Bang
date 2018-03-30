@@ -571,6 +571,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
+    public Boolean isInJail( int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        return this.jail;
+    }
+
     public void jail(Card jail, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         Card j = jail.copyCard();
@@ -650,9 +655,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else if (name.matches("prigione")) {
                     try {
                         this.clock.clockIncreaseLocal();
-                        this.logOthers(this.getCharacter().getName() + " ha messo in prigione " + targetName);
-                        this.players.get(targetIndex).jail(c, this.clock.getVec());
-                        this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec(), false);
+                        if(!this.players.get(targetIndex).isInJail(this.clock.getVec())){
+                            this.logOthers(this.getCharacter().getName() + " ha messo in prigione " + targetName);
+                            this.clock.clockIncreaseLocal();
+                            this.players.get(targetIndex).jail(c, this.clock.getVec());
+                            this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec(), false);
+                        }
+                        else
+                            this.log(targetName+ "e' gia' in prigione!!"); 
                     } catch (RemoteException e) {
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
