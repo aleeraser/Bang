@@ -53,6 +53,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private LogBox logBox;
 
     public Semaphore cardsSemaphore;
+    protected Semaphore redrawingSemaphore; 
 
     public Player() throws RemoteException {
         /*this.CharacterPower = genCharacter();
@@ -85,6 +86,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.mustUpdateGUI = false;
 
         this.cardsSemaphore = new Semaphore(1);
+        this.redrawingSemaphore = new Semaphore(1);
     }
 
     public boolean isMyTurn() {
@@ -956,11 +958,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock){
+    	System.out.println("FUNZIONE DUELLO");
         this.clock.clockIncrease(callerClock);
-        this.duel = duel;
         this.duelTurn = turn;
+        this.duel = duel;
         this.duelEnemy = enemy;
-        this.redraw();
+        System.out.println("FUNZIONE DUELLO (2)");
+        this.redrawSingle();
+        System.out.println("FUNZIONE DUELLO (3)");
     }
 
     public Boolean isInDuel(){
@@ -1126,7 +1131,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void redrawSingle(Boolean shouldRedraw) {
+    	 try {
+				redrawingSemaphore.acquire(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
         this.mustUpdateGUI = shouldRedraw;
+        redrawingSemaphore.release(1);
     }
 
     public Boolean shouldUpdateGUI() {
@@ -1180,6 +1191,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     @Override
     public Semaphore getCardsSemaphore() {
         return cardsSemaphore;
+    }
+    
+    public Semaphore getDrawingSemaphore() {
+        return redrawingSemaphore;
     }
 
     public int getTurnOwner() {
