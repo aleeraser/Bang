@@ -1,10 +1,7 @@
 TODO
 - musichetta western in sottofondo
-- bug su set text
-- bug zini morto misteriosamente
 - bug sulle carte che sembrano non apparire
 - sistemare le stampe in modo personale
 - quando hai già giocato un bang disabilitare il gioca carta sui bang se non hai volcanic
 - decidere cosa fare sulle doppie prigioni
 - controlla accenti stampa
-- evidenziare l'emporio quando è il tuo turno di pescare o simile.

@@ -105,6 +105,8 @@ public interface IPlayer extends Remote {
 
     void bang(int[] callerClock) throws RemoteException;
 
+    Boolean isInJail( int[] callerClock) throws RemoteException;
+
     void jail(Card jail, int[] callerClock) throws RemoteException;
     
     void setLogBox(LogBox logBox) throws RemoteException;
