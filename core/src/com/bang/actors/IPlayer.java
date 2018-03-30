@@ -124,6 +124,8 @@ public interface IPlayer extends Remote {
     void addMarketCardToHand(int i) throws RemoteException;
     
     Semaphore getCardsSemaphore() throws RemoteException;
+    
+    Semaphore getDrawingSemaphore() throws RemoteException;
 
     void syncMarketCards() throws RemoteException;
 
