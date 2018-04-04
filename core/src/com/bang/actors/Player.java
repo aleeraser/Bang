@@ -440,7 +440,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.redraw();
     }
-    }
+    
 
     private int findDistance(int i, int j, IPlayer target, int targetIndex) {
         int lDist = 0;
