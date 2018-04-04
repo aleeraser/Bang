@@ -542,6 +542,7 @@ public class GameScene extends Scene {
 					if (!res) {
 						me.duello(false, false, -1, new int[players.size()]);
 						me.decreaselives(new int[players.size()]);
+						me.redraw();
 					}
 					
 					else {
