@@ -373,10 +373,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 if (this.duel && !this.duelTurn ){
                     try{
-                        this.clock.clockIncreaseLocal();
-                        players.get(this.duelEnemy).getPos(this.clock.getVec());
-                        this.startTimeoutTime = System.currentTimeMillis();
-                        //this code is executed only if the player is still up
+                        if( players.get(this.duelEnemy) != null){
+                            this.clock.clockIncreaseLocal();
+                            players.get(this.duelEnemy).getPos(this.clock.getVec());
+                            this.startTimeoutTime = System.currentTimeMillis();
+                            //this code is executed only if the player is still up
+                        }
+                        else{
+                            throw( new RemoteException());
+                        }
                     } catch (RemoteException e) {
                         this.duello(false, false,-1,this.clock.getVec());
                     }
