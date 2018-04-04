@@ -44,8 +44,13 @@ public class LogBox {
 	public void addEvent(String eventStr) {
 		 eventList.add(eventStr);
 		 if (paneList != null) {
+			 try{
 			 paneList.setItems(eventList.toArray(new String[0]));
 			 paneList.layout();
+			 }
+			 catch (Exception e ){
+				 System.out.println("----------------------> catched");
+			 }
 		 }
 		 if (scrollPane != null) {
 			 scrollPane.setScrollPercentY(100);

@@ -440,6 +440,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.redraw();
     }
+    }
 
     private int findDistance(int i, int j, IPlayer target, int targetIndex) {
         int lDist = 0;
@@ -679,7 +680,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.players.get(targetIndex).duello(true, true, this.pos, this.clock.getVec());
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                         this.redrawDuel(true);
-
+                        this.redraw();
                     }catch(RemoteException e){
                         System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
