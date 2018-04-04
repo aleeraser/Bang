@@ -5,3 +5,4 @@ TODO
 - quando hai già giocato un bang disabilitare il gioca carta sui bang se non hai volcanic
 - decidere cosa fare sulle doppie prigioni
 - controlla accenti stampa
+- rendere tollerante ai crash il duello
