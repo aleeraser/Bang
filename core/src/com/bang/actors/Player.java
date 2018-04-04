@@ -385,6 +385,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             throw( new RemoteException());
                         }
                     } catch (RemoteException e) {
+                        if( players.get(this.duelEnemy) != null){
+                            alertPlayerMissing(this.duelEnemy);
+                        }
                         this.duello(false, false,-1,this.clock.getVec());
                     }
                 }
