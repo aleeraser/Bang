@@ -856,7 +856,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void setIndians(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        this.isIndiansTurn = !this.isIndiansTurn;
+        this.isIndiansTurn = ! this.isIndiansTurn;
+
+        if (this.alreadyPlayedIndians) {
+            this.alreadyPlayedIndians = false;
+        }
+        System.out.println(" setting indians to " + this.isIndiansTurn());
     }
 
     public void syncMarketCards() {
