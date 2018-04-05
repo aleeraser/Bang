@@ -621,8 +621,8 @@ public class GameScene extends Scene {
     }
 
     public void dismissBangDialog() {
-        if (duelDialog != null) {
-            duelDialog.remove();
+        if (bangDialog != null) {
+            bangDialog.remove();
         }
     }
     

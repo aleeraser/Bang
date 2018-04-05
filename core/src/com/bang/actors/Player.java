@@ -436,6 +436,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             target.bang(this.pos, this.clock.getVec());
             this.alreadyShot = true;
             this.bangTurn = "killer";
+            System.out.println("sto sparando");
+            this.redrawSingle();
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
@@ -487,7 +489,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.decreaselives(this.clock.getVec());
         */
+        System.out.println("mi hanno sparato");
         this.bangTurn = "target";
+        this.redrawSingle();
     }
 
     private void checkCrashes() {
