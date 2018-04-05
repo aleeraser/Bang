@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.concurrent.Semaphore;
 
 import com.bang.gameui.LogBox;
+import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
 
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -161,7 +162,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     this.syncDiscards();
                                     if (c.getSuit() == 1 && (int) c.getValue().charAt(0) >= 50
                                             && (int) c.getValue().charAt(0) <= 57) { // working with ASCII codes
-                                        this.logOthers("BOOM \n" + this.getCharacter().getName()
+                                        this.logOthers("BOOM: " + this.getCharacter().getName()
                                                 + " ha fatto esplodere la dinamite!");
                                         log("\t Mannaggia sono esploso");
                                         this.removeTableCard(this.findCard(tableCards, "dinamite"),
@@ -584,9 +585,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.redraw();
     }
 
-    private void discardAll(){
+    private void discardAll() {
         int i = this.handCards.size();
-        while (i>0){
+        while (i > 0) {
             this.removeHandCard(0, this.clock.getVec());
             i--;
         }
@@ -654,14 +655,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void jail(Card jail, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        Card j = jail.copyCard();
+        Card j = CardsUtils.getMatchingCard(jail.copyCard(), this.deck.getOrderedDeck());
         this.addTableCard(j);
         this.jail = true;
     }
 
     public void dynamite(Card dinamite, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        Card d = dinamite.copyCard();
+        Card d = CardsUtils.getMatchingCard(dinamite.copyCard(), this.deck.getOrderedDeck());
         this.addTableCard(d);
         this.dinamite++;
     }
@@ -875,7 +876,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void setIndians(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        this.isIndiansTurn = ! this.isIndiansTurn;
+        this.isIndiansTurn = !this.isIndiansTurn;
 
         if (this.alreadyPlayedIndians) {
             this.alreadyPlayedIndians = false;
@@ -1024,12 +1025,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 Card c;
                 if (fromTable) {
                     this.clock.clockIncreaseLocal();
-                    c = target.getCards(this.clock.getVec()).get(cIndex).copyCard();
+                    c = CardsUtils.getMatchingCard(target.getCards(this.clock.getVec()).get(cIndex).copyCard(),
+                            this.deck.getOrderedDeck());
                     this.clock.clockIncreaseLocal();
                     target.removeTableCard(cIndex, this.clock.getVec(), false);
                 } else {
                     this.clock.clockIncreaseLocal();
-                    c = target.getHandCard(cIndex, this.clock.getVec()).copyCard();
+                    c = CardsUtils.getMatchingCard(target.getHandCard(cIndex, this.clock.getVec()).copyCard(),
+                            this.deck.getOrderedDeck());
                     this.clock.clockIncreaseLocal();
                     target.removeHandCard(cIndex, this.clock.getVec(), false);
                 }
