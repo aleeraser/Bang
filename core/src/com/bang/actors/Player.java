@@ -446,6 +446,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void bang(int enemy, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
+        this.enemy = enemy; 
         for (int i = 0; i < barrel; i++) {
             Card c = this.deck.draw();
             log("Ho un Barile in gioco, pesco...");
