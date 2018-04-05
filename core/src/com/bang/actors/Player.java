@@ -159,7 +159,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     this.syncDiscards();
                                     if (c.getSuit() == 1 && (int) c.getValue().charAt(0) >= 50
                                             && (int) c.getValue().charAt(0) <= 57) { // working with ASCII codes
-                                        this.logOthers("BOOM \n" + this.getCharacter().getName()
+                                        this.logOthers("BOOM: " + this.getCharacter().getName()
                                                 + " ha fatto esplodere la dinamite!");
                                         log("\t Mannaggia sono esploso");
                                         this.removeTableCard(this.findCard(tableCards, "dinamite"),
