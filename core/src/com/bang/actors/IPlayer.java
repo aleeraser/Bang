@@ -69,7 +69,7 @@ public interface IPlayer extends Remote {
 
     void decreaselives(int[] callerClock) throws RemoteException;
 
-    void indiani(int[] callerClock) throws RemoteException;
+    void indiani(Boolean playedBang) throws RemoteException;
 
     void removeTableCard(int index, int[] callerClock) throws RemoteException;
 
@@ -143,7 +143,9 @@ public interface IPlayer extends Remote {
 
     int findCard(ArrayList<Card> cards, String name) throws RemoteException;
     
-    public void redrawDuel(Boolean b) throws RemoteException;
+    void redrawDuel(Boolean b) throws RemoteException;
     
-    public Boolean shouldUpdateDuel() throws RemoteException;
+    Boolean shouldUpdateDuel() throws RemoteException;
+
+    Boolean isIndiansTurn() throws RemoteException;
 }

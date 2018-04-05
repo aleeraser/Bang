@@ -38,6 +38,7 @@ public class GameScene extends Scene {
     boolean isDiscarding = false;
     protected GeneralStoreCardDialog generalStoreDialog;
     protected DuelDialog duelDialog;
+    protected IndiansDialog indiansDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -567,6 +568,36 @@ public class GameScene extends Scene {
     public void dismissDuelDialog() {
     	if (duelDialog != null) {
     		duelDialog.remove();
+    	}
+    }
+    
+    public void showIndiansDialog(boolean isMyIndiansTurn) {
+    	if (indiansDialog != null) {
+    		indiansDialog.remove();
+    	}
+    	
+    	indiansDialog = new IndiansDialog(sceneManager, isMyIndiansTurn) {
+    		public void result(Object obj) {
+    			Boolean res = (Boolean) obj;
+				
+				try {
+					IPlayer me = sceneManager.getPlayer();
+					ArrayList<IPlayer> players = me.getPlayers();
+					
+					me.indiani(res);
+					
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				
+    		}
+    	};
+    	indiansDialog.show(stage);
+    }
+    
+    public void dismissIndiansDialog() {
+    	if (indiansDialog != null) {
+    		indiansDialog.remove();
     	}
     }
 }

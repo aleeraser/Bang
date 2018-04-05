@@ -40,6 +40,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int dinamite;
     private Boolean isMarketTurn;
     private Boolean alreadyDrawMarket;
+    private Boolean isIndiansTurn;
+    private Boolean alreadyPlayedIndians;
     private Boolean duel;
     private Boolean duelTurn;
     private int duelEnemy;
@@ -72,6 +74,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.dinamite = 0;
         this.isMarketTurn = false;
         this.alreadyDrawMarket = false;
+        this.isIndiansTurn = false;
+        this.alreadyPlayedIndians = false;
         this.duel = false;
         this.duelTurn = false;
         this.duelEnemy = -1;
@@ -121,59 +125,68 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 //this.giveTurn();
                 this.turn++;
             } else if (turn > 1) {
-                if (isMarketTurn && !alreadyDrawMarket) {
-                    log("e' il mio turno di pescare dall' emporio");
-                } else {
-                    if (isMarketTurn && alreadyDrawMarket) {
-                        System.out.println("Fine turno emporio");
-                        isMarketTurn = false;
-                        alreadyDrawMarket = false;
-                        System.out.println("calling syncMarkeCards false");
-                        syncMarketCards(false);
-                        System.out.println("Fine sych emporio");
+                if(isIndiansTurn && !alreadyPlayedIndians){
+                    log("gli indiani sono arrivati!");
+                }else {
+                    if(isIndiansTurn && alreadyPlayedIndians){
+                        System.out.println("Fine turno indiani");
+                        isIndiansTurn = false;
+                        alreadyPlayedIndians = false;
                         redraw();
-                    } else {
-                        // standard turn
-                        //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
-                        this.logOthers("E' il turno di " + this.getCharacter().getName());
-                        log("E' il mio turno!");
-                        System.out.println("Standard turn, drew two cards. " + this.clock.toString());
-                        while (this.dinamite > 0) {
-                            log("dinamite:");
-                            Card c = this.deck.draw();
-                            this.deck.discard(this.deck.getNextCardIndex() - 1);
-                            this.syncDiscards();
-                            if (c.getSuit() == 1 && (int) c.getValue().charAt(0) >= 50
-                                    && (int) c.getValue().charAt(0) <= 57) { // working with ASCII codes
-                                this.logOthers(
-                                        "BOOM \n" + this.getCharacter().getName() + " ha fatto esplodere la dinamite!");
-                                log("\t Mannaggia sono esploso");
-                                this.removeTableCard(this.findCard(tableCards, "dinamite"), this.clock.getVec());
-                                this.decreaselives(this.clock.getVec());
-                                this.decreaselives(this.clock.getVec());
-                                this.decreaselives(this.clock.getVec());
-                                if (this.getLives(this.clock.getVec()) <= 0) {
-                                    this.giveTurn();
-                                    return;
-                                }
+                    }else{
+                        if (isMarketTurn && !alreadyDrawMarket) {
+                            log("e' il mio turno di pescare dall' emporio");
+                        } else {
+                            if (isMarketTurn && alreadyDrawMarket) {
+                                System.out.println("Fine turno emporio");
+                                isMarketTurn = false;
+                                alreadyDrawMarket = false;
+                                System.out.println("calling syncMarkeCards false");
+                                syncMarketCards(false);
+                                System.out.println("Fine sych emporio");
+                                redraw();
                             } else {
-                                this.logOthers(this.getCharacter().getName() + " non e' esploso");
-                                log("\t few, non sono esploso");
-                                boolean found = false;
-                                while (!found) {
-                                    int next = this.findNext(this.pos);
-                                    int ind = this.findCard(tableCards, "dinamite");
-                                    this.clock.clockIncreaseLocal();
-                                    try {
-                                        this.players.get(next).dynamite(this.tableCards.get(ind), this.clock.getVec());
-                                        this.removeTableCard(ind, this.clock.getVec(), false);
-                                        found = true;
-                                    } catch (RemoteException e) {
-                                        this.alertPlayerMissing(next);
+                                // standard turn
+                                //System.out.println("Standard turn, drawing two cards... " + this.clock.toString());
+                                this.logOthers("E' il turno di " + this.getCharacter().getName());
+                                log("E' il mio turno!");
+                                System.out.println("Standard turn, drew two cards. " + this.clock.toString());
+                                while (this.dinamite > 0) {
+                                    log("dinamite:");
+                                    Card c = this.deck.draw();
+                                    this.deck.discard(this.deck.getNextCardIndex() - 1);
+                                    this.syncDiscards();
+                                    if (c.getSuit() == 1 && (int) c.getValue().charAt(0) >= 50
+                                            && (int) c.getValue().charAt(0) <= 57) { // working with ASCII codes
+                                        this.logOthers(
+                                                "BOOM \n" + this.getCharacter().getName() + " ha fatto esplodere la dinamite!");
+                                        log("\t Mannaggia sono esploso");
+                                        this.removeTableCard(this.findCard(tableCards, "dinamite"), this.clock.getVec());
+                                        this.decreaselives(this.clock.getVec());
+                                        this.decreaselives(this.clock.getVec());
+                                        this.decreaselives(this.clock.getVec());
+                                        if (this.getLives(this.clock.getVec()) <= 0) {
+                                            this.giveTurn();
+                                            return;
+                                        }
+                                    } else {
+                                        this.logOthers(this.getCharacter().getName() + " non e' esploso");
+                                        log("\t few, non sono esploso");
+                                        boolean found = false;
+                                        while (!found) {
+                                            int next = this.findNext(this.pos);
+                                            int ind = this.findCard(tableCards, "dinamite");
+                                            this.clock.clockIncreaseLocal();
+                                            try {
+                                                this.players.get(next).dynamite(this.tableCards.get(ind), this.clock.getVec());
+                                                this.removeTableCard(ind, this.clock.getVec(), false);
+                                                found = true;
+                                            } catch (RemoteException e) {
+                                                this.alertPlayerMissing(next);
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
 
                         if (this.jail) {
                             log("Prigione:");
@@ -192,9 +205,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 return;
                             }
 
+                                }
+                                this.draw();
+                                this.draw();
+                            }
                         }
-                        this.draw();
-                        this.draw();
                     }
                 }
             } else {
@@ -574,6 +589,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.isMarketTurn;
     }
 
+    public Boolean isIndiansTurn() {
+        return this.isIndiansTurn;
+    }
+
     public ArrayList<Card> getMarketCards(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         return this.marketCards;
@@ -752,18 +771,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } else { //single-usage cards
             if (name.matches("indiani")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
-                for (int i = 0; i < players.size(); i++) {
-                    if (i != this.pos && players.get(i) != null) {
-                        try {
-                            this.clock.clockIncreaseLocal();
-                            players.get(i).indiani(this.clock.getVec());
-                        } catch (RemoteException e) {
-                            System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
-                            this.alertPlayerMissing(i);
-                            //e.printStackTrace();
-                        }
-                    }
-                }
+                this.isIndiansTurn = true;
+                this.alreadyPlayedIndians = true;
+                this.giveTurn();
             } else if (name.matches("birra")) {
                 if (this.lives < this.character.getLives()) {
                     this.increaselives(this.clock.getVec());
@@ -980,17 +990,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    public void indiani(int[] callerClock) {
-        this.clock.clockIncrease(callerClock);
-
-        int i = this.findCard(handCards, "bang");
-        if (i != -1) {
-            this.handCards.remove(i);
-        } else {
+    public void indiani(Boolean playedBang) {
+        if(playedBang){
+            int i = this.findCard(handCards, "bang");
+            if (i != -1) {
+                this.handCards.remove(i);
+            } else {
+                this.clock.clockIncreaseLocal();
+                this.decreaselives(this.clock.getVec());
+            }
+        }
+        else{
             this.clock.clockIncreaseLocal();
             this.decreaselives(this.clock.getVec());
         }
+        this.alreadyPlayedIndians = true;
         redraw();
+        giveTurn();
     }
 
     public void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock){

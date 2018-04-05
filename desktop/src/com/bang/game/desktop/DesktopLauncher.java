@@ -26,6 +26,9 @@ public class DesktopLauncher {
 		ip = getSpecificIP("130.[0-9]+.[0-9]+.[0-9]+");
 		if (ip != null) return ip;
 		
+		ip = getSpecificIP("10.10.[0-9]+.[0-9]+");
+		if (ip != null) return ip;
+		
 		ip = getSpecificIP("192.168.[0-9]+.[0-9]+");
 		if (ip != null) return ip;
 		
