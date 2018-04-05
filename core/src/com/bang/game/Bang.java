@@ -87,7 +87,7 @@ public class Bang extends ApplicationAdapter {
                     gs.dismissDuelDialog();
                 }
 
-                if (!me.isInBangTurn().matches("") && me.shouldUpdateDuel()) {
+                if (!me.isInBangTurn().matches("") ) {
                     System.out.println("Showing bang dialog");
                     System.out.println("IS MY TURN: " + me.isInBangTurn());
                     gs.showBangDialog(me.isInBangTurn(), me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
