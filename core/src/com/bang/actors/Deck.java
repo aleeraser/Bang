@@ -120,7 +120,7 @@ public class Deck {
     }
 
     public void discard(int cardIndex) {
-    	if (discardPile.indexOf(cardIndex) != -1) {
+    	if (discardPile.indexOf(cardIndex) == -1) {
     		this.discardPile.add(cardIndex);
     	}
     	
