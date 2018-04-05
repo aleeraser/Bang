@@ -873,9 +873,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         this.tableCards.remove(index);
-        if (toDiscard)
+        if (toDiscard) {
             this.deck.discard(this.deck.getIndices().indexOf(index));
             this.syncDiscards();
+        }
 
         cardsSemaphore.release(1);
         if (name.matches("barile"))
@@ -916,9 +917,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
         this.handCards.remove(index);
-        if (toDiscard)
+        if (toDiscard) {
             this.deck.discard(this.deck.getIndices().indexOf(index));
             this.syncDiscards();
+        }
 
         cardsSemaphore.release(1);
         redraw();
