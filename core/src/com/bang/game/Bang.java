@@ -3,7 +3,6 @@ package com.bang.game;
 import java.rmi.RemoteException;
 import java.util.concurrent.Semaphore;
 
-
 // libgdx libs
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -55,48 +54,47 @@ public class Bang extends ApplicationAdapter {
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
-                
+
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
-                               
+
                 if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showMarketDialog();
                 }
-                
+
                 if (!me.isMarketTurn()) {
-                	gs.dismissMarketDialog();
+                    gs.dismissMarketDialog();
                 }
-                
+
                 if (me.isIndiansTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showIndiansDialog(me.isMyTurn());
                 }
-                
+
                 if (!me.isIndiansTurn()) {
-                	gs.dismissIndiansDialog();
+                    gs.dismissIndiansDialog();
                 }
-                
+
                 if (me.isInDuel() && me.shouldUpdateDuel()) {
-                	System.out.println("Showing duel dialog");
-                	System.out.println("IS MY TURN: " + me.isDuelTurn());
-                	gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
-                	me.redrawDuel(false);
+                    System.out.println("Showing duel dialog");
+                    System.out.println("IS MY TURN: " + me.isDuelTurn());
+                    gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
+                    me.redrawDuel(false);
                 }
-                
+
                 if (!me.isInDuel()) {
-                	gs.dismissDuelDialog();
+                    gs.dismissDuelDialog();
                 }
-                
+
                 if (me.shouldUpdateGUI()) {
-                	gs.update();
+                    gs.update();
                 }
-                
+
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
                     // UIUtils.print("It's my turn and user input were NOT enabled. Enabling user inputs");
                     gs.areUserInputEnabled(true);
-                }
-                else if (!me.isMyTurn() && gs.areUserInputEnabled()) {
+                } else if (!me.isMyTurn() && gs.areUserInputEnabled()) {
                     // UIUtils.print("It's NOT my turn and user input were enabled. Disabling user inputs");
                     gs.areUserInputEnabled(false);
                 }
@@ -120,15 +118,15 @@ public class Bang extends ApplicationAdapter {
             e.printStackTrace();
         }
 
-        super.render();
-        try{
+        try {
+            super.render();
             s.draw();
-        }catch(NullPointerException e){
+
+            // Needed to allow scrolling
+            s.act();
+        } catch (NullPointerException e) {
             System.out.println("non mi freghi!");
         }
-
-        // Needed to allow scrolling
-        s.act();
 
     }
 
