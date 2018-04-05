@@ -4,5 +4,4 @@ TODO
 - sistemare le stampe in modo personale
 - quando hai gia' giocato un bang disabilitare il gioca carta sui bang se non hai volcanic
 - decidere cosa fare sulle doppie prigioni
-- controlla accenti stampa
 - rendere tollerante ai crash il duello
