@@ -24,6 +24,10 @@ public class Deck {
         this.currentDeckSize = orderedDeck.size();
     }
 
+    public ArrayList<Card> getOrderedDeck() {
+        return orderedDeck;
+    }
+
     protected ArrayList<Integer> randomArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
