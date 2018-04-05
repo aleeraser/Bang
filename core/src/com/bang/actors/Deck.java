@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
 
 import org.json.*;
@@ -111,7 +112,14 @@ public class Deck {
     }
 
     public void discard(int cardIndex) {
-        this.discardPile.add(cardIndex);
+    	if (discardPile.indexOf(cardIndex) != -1) {
+    		this.discardPile.add(cardIndex);
+    	}
+    	
+    	else {
+    		System.out.println("#### Scartando carta gia scartata, indice :" + cardIndex);
+    		CardsUtils.printCard(this.orderedDeck.get(cardIndex));
+    	}
     }
 
     public void setDiscardPile(ArrayList<Integer> pile) {
