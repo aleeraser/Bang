@@ -775,7 +775,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedra' a distanza +1");
             } else if (name.matches("mustang")) {
                 this.distance++;
-                this.logOthers(this.getCharacter().getName() + " e' su un mustang, sarai' piu' difficile sparargli");
+                this.logOthers(this.getCharacter().getName() + " e' su un mustang, sara' piu' difficile sparargli");
             } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
@@ -933,9 +933,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
-        this.tableCards.remove(index);
+        Card removedCard = this.tableCards.remove(index);
+        
+        if (removedCard == null) {
+            UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
+        }
+
         if (toDiscard) {
-            this.deck.discard(this.deck.getIndices().indexOf(index));
+            Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
+            if (i == -1) {
+                UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
+            }
+            this.deck.discard(i);
             this.syncDiscards();
         }
 
@@ -987,6 +996,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
             if (i == -1) {
                 UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
+                UIUtils.print("Hand cards: ");
+                for (Card c : handCards) {
+                    CardsUtils.printCard(c);
+                }
             }
             this.deck.discard(i);
             this.syncDiscards();

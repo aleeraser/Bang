@@ -210,74 +210,74 @@
 		"name": "mancato",
 		"value": "10",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "J",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "Q",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "K",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "A",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
 		"name": "mancato",
 		"value": "2",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "3",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "4",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "5",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "6",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "7",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "mancato",
 		"value": "8",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
@@ -373,20 +373,20 @@
 		"name": "diligenza",
 		"value": "9",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "diligenza",
 		"value": "9",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
 		"name": "wellsfargo",
 		"value": "3",
 		"suit": 2,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
@@ -419,33 +419,33 @@
 		"name": "indiani",
 		"value": "K",
 		"suit": 3,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "indiani",
 		"value": "A",
 		"suit": 3,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
 		"name": "emporio",
 		"value": "9",
 		"suit": 4,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 	{
 		"name": "emporio",
 		"value": "Q",
 		"suit": 1,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
 		"name": "saloon",
 		"value": "5",
 		"suit": 2,
-		"type": "signle-usage"
+		"type": "single-usage"
 	},
 
 	{
