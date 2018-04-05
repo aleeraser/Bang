@@ -580,6 +580,21 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.redraw();
     }
 
+    private void discardAll(){
+        int i = this.handCards.size();
+        while (i>0){
+            this.removeHandCard(0, this.clock.getVec());
+            i--;
+        }
+
+        i = this.tableCards.size();
+        while (i > 0) {
+            this.removeTableCard(0, this.clock.getVec());
+            i--;
+        }
+        this.redraw();
+    }
+
     public void decreaselives(int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         this.lives--;
@@ -589,7 +604,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
             this.logOthers(this.getCharacter().getName() + " e' MORTO!!!");
-
+            this.discardAll();
         }
     }
 
