@@ -46,7 +46,7 @@ public class Deck {
         for (int i = 0; i < jsonList.length(); i++) {
             JSONObject entry = jsonList.getJSONObject(i);
             String name = entry.getString("name");
-            card = new Card(name, entry.getString("value"), entry.getInt("suit"), entry.getString("type"));            
+            card = new Card(name, entry.getString("value"), entry.getInt("suit"), entry.getString("type"));
             orderedDeck.add(card);
         }
 
@@ -59,6 +59,16 @@ public class Deck {
     }
 
     private void shuffleDeck() {
+        UIUtils.print("\n########### START DECK FINISEHD DEBUG ###########");
+        UIUtils.print("Discard pile size: " + this.discardPile.size());
+        UIUtils.print("nextCardIndex: " + this.nextCardIndex);
+        UIUtils.print("Printing current discard pile:");
+
+        for (Integer cardIndex : discardPile) {
+            UIUtils.print("\t" + cardIndex + "/" + this.discardPile.size() + ": " + this.getCard(cardIndex).getName());
+        }
+        UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
+
         this.currentDeckSize = this.discardPile.size();
         this.nextCardIndex = 0;
         Collections.shuffle(this.discardPile);
@@ -95,7 +105,7 @@ public class Deck {
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
         return nextCard;
     }
-    
+
     public void discard(int cardIndex) {
         this.discardPile.add(cardIndex);
     }
