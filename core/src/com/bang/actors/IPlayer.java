@@ -107,6 +107,10 @@ public interface IPlayer extends Remote {
 
     void bang(int enemy, int[] callerClock) throws RemoteException;
 
+    void setBangTurn(String val) throws RemoteException;
+
+    String isInBangTurn() throws RemoteException;
+
     Boolean isInJail( int[] callerClock) throws RemoteException;
 
     void jail(Card jail, int[] callerClock) throws RemoteException;
@@ -142,6 +146,8 @@ public interface IPlayer extends Remote {
     Boolean isDuelTurn() throws RemoteException;
 
     int getDuelEnemy() throws RemoteException;
+
+    int getBangEnemy() throws RemoteException;
 
     int findCard(ArrayList<Card> cards, String name) throws RemoteException;
     

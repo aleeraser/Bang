@@ -408,7 +408,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if (this.duel && !this.duelTurn) {
+                if ((this.duel && !this.duelTurn) || this.bangTurn.matches("target") ) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
@@ -422,7 +422,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (players.get(this.enemy) != null) {
                             alertPlayerMissing(this.enemy);
                         }
-                        this.duello(false, false, -1, this.clock.getVec());
+                        if (this.duel)this.duello(false, false, -1, this.clock.getVec());
+                        else this.setBangTurn(null);
                     }
                 }
             }
@@ -453,6 +454,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("ho pescato cuori, mi hanno mancato!");
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("\tho pescato cuori, mi hanno mancato!");
+                try{
+                    this.players.get(enemy).setBangTurn(null);
+                }catch(RemoteException e){
+                    this.alertPlayerMissing(enemy);
+                }
                 return;
             } else {
                 this.logOthers("Il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
@@ -1045,6 +1051,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
+    public void setBangTurn(String val){
+        this.bangTurn = val;
+        if (val == null){
+            this.enemy = -1;
+        }
+        this.redrawSingle();
+    }
+
+    public String isInBangTurn(){
+        return this.bangTurn;
+    }
+
     public void indiani(Boolean playedBang) {
         if (playedBang) {
             int i = this.findCard(handCards, "bang");
@@ -1064,14 +1082,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock) {
-        System.out.println("FUNZIONE DUELLO");
         this.clock.clockIncrease(callerClock);
         this.duelTurn = turn;
         this.duel = duel;
         this.enemy = enemy;
-        System.out.println("FUNZIONE DUELLO (2)");
         this.redrawDuel(true);
-        System.out.println("FUNZIONE DUELLO (3)");
     }
 
     public Boolean isInDuel() {

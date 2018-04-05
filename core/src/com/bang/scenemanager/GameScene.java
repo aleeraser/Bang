@@ -39,6 +39,7 @@ public class GameScene extends Scene {
     protected GeneralStoreCardDialog generalStoreDialog;
     protected DuelDialog duelDialog;
     protected IndiansDialog indiansDialog;
+    protected BangDialog bangDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -569,6 +570,60 @@ public class GameScene extends Scene {
     	if (duelDialog != null) {
     		duelDialog.remove();
     	}
+    }
+
+    public void showBangDialog(String bangRole, String opponentName) {
+        if (bangDialog != null) {
+            bangDialog.remove();
+        }
+
+        bangDialog = new BangDialog(sceneManager, bangRole, opponentName) {
+            public void result(Object obj) {
+                Boolean res = (Boolean) obj;
+                int enemyIndex;
+                try {
+                    enemyIndex = me.getBangEnemy();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+
+                try {
+                    IPlayer me = sceneManager.getPlayer();
+                    ArrayList<IPlayer> players = me.getPlayers();
+                    IPlayer enemy = players.get(enemyIndex);
+
+                    if (res) {
+                        int missIndex = me.findCard(me.getHandCards(), "mancato");
+                        me.removeHandCard(missIndex, new int[players.size()]);
+                    }
+                    else {
+                        me.setBangTurn(null);;
+                        me.decreaselives(new int[players.size()]);
+                        me.redraw();
+                    }
+                    
+                    enemy.setBangTurn(null);
+                    
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    try {
+                        me.alertPlayerMissing(enemyIndex);
+                        me.setBangTurn(null);
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        duelDialog.show(stage);
+    }
+
+    public void dismissBangDialog() {
+        if (duelDialog != null) {
+            duelDialog.remove();
+        }
     }
     
     public void showIndiansDialog(boolean isMyIndiansTurn) {
