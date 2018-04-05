@@ -190,13 +190,19 @@ public class CardsUtils {
     }
 
     public static Card getMatchingCard(Card c, ArrayList<Card> orderedDeck) {
+        UIUtils.print("########### Searching for local card");
+        UIUtils.print("Name: " + c.getName());
+        UIUtils.print("Suit: " + c.getSuit());
+        UIUtils.print("Value: " + c.getValue());
+        UIUtils.print("Type: " + c.getType());
+
         for (Card deckCard : orderedDeck) {
             if (deckCard.getName().matches(c.getName()) && deckCard.getSuit() == c.getSuit()
-                    && deckCard.getValue().matches(c.getValue()) && deckCard.getType().matches(c.getType())) {
+                    && deckCard.getValue().matches(c.getValue())) {
                         return deckCard;
             }
         }
-        UIUtils.print("CAZZO NON HO TROVATO LA CARTA");
+        UIUtils.print("NON HO TROVATO LA CARTA: " + c.getName());
         return null;
     }
 
