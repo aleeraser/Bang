@@ -772,7 +772,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (name.matches("indiani")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
                 for (IPlayer p : this.players){
-                    if(p != null){
+                    if(p != null && this.players.indexOf(p) != this.pos){
                         try{
                             this.clock.clockIncreaseLocal();
                             p.setIndians(this.clock.getVec());
