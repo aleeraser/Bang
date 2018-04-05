@@ -71,6 +71,8 @@ public interface IPlayer extends Remote {
 
     void indiani(Boolean playedBang) throws RemoteException;
 
+    void setIndians(int[] callerClock) throws RemoteException;
+
     void removeTableCard(int index, int[] callerClock) throws RemoteException;
 
     void removeTableCard(int index, int[] callerClock, Boolean toDiscard) throws RemoteException;

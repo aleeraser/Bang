@@ -771,6 +771,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } else { //single-usage cards
             if (name.matches("indiani")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato indiani");
+                for (IPlayer p : this.players){
+                    if(p != null){
+                        try{
+                            this.clock.clockIncreaseLocal();
+                            p.setIndians(this.clock.getVec());
+                        }catch(RemoteException e){
+                            this.alertPlayerMissing(this.players.indexOf(p));
+                        }
+                    }
+                }
                 this.isIndiansTurn = true;
                 this.alreadyPlayedIndians = true;
                 this.giveTurn();
@@ -837,6 +847,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         redraw();
 
+    }
+
+    public void setIndians( int[] callerClock){
+        this.clock.clockIncrease(callerClock);
+        this.isIndiansTurn = true;
     }
 
     public void syncMarketCards() {
