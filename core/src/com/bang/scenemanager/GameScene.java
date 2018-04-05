@@ -617,7 +617,7 @@ public class GameScene extends Scene {
 
             }
         };
-        duelDialog.show(stage);
+        bangDialog.show(stage);
     }
 
     public void dismissBangDialog() {
