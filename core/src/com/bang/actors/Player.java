@@ -375,6 +375,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
         this.deck.setIndices(indices);
+        this.deck.setCurrentSize(indices.size());
 
         this.startTimeoutTime = System.currentTimeMillis();
     }
