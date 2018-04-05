@@ -78,7 +78,7 @@ public class NewLobbyScene extends Scene {
                     vals[1] = lobbyName.getText();
                     
                     JSONObject res = NetworkUtils.postHTTP(server_url + "/new", params, vals);
-                    if (res.getInt("code") == 1) { // nome già presente
+                    if (res.getInt("code") == 1) { // nome gia' presente
                         UIUtils.showError(res.getString("msg"), null, stage, sceneManager, text, removeOnError);
                     } else {
                         sceneManager.setScene(new InLobbyScene(sceneManager, lobbyName.getText(), true));

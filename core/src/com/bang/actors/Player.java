@@ -33,7 +33,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int distance; //incremento della distanza a cui viene visto
     private ArrayList<IPlayer> players;
     private ArrayList<String> ips = new ArrayList<String>(); //valutare se tenere la lista di ip o di player
-    private int pos; //index del player nella lista; sarà una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
+    private int pos; //index del player nella lista; sara' una lista uguale per tutti, quindi ognuno deve sapere la propria posizione
     private Boolean alreadyShot;
     private Boolean volcanic;
     private Boolean jail;
@@ -157,7 +157,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     return;
                                 }
                             } else {
-                                this.logOthers(this.getCharacter().getName() + " non è esploso");
+                                this.logOthers(this.getCharacter().getName() + " non e' esploso");
                                 log("\t few, non sono esploso");
                                 boolean found = false;
                                 while (!found) {
@@ -182,7 +182,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.syncDiscards();
                             this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
                             if (c.getSuit() == 2) {
-                                this.logOthers(this.getCharacter().getName() + " ha pescato cuori, ora è libero");
+                                this.logOthers(this.getCharacter().getName() + " ha pescato cuori, ora e' libero");
                                 log("\tE' cuori, sono scagionato!");
                             } else {
                                 this.logOthers(
@@ -402,7 +402,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.alreadyShot = true;
 
         } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+            System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
             //e.printStackTrace();
         }
@@ -488,7 +488,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             // distanza finale data dal minimo della distanza in una delle due direzioni + l'incremento di distanza del target
             distance += target.getDistance(this.clock.getVec());
         } catch (RemoteException e) {
-            System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+            System.out.println("AAAAAAAAAAAAAA non c'e' " + targetIndex);
             this.alertPlayerMissing(targetIndex);
         }
 
@@ -540,7 +540,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.clock.clockIncreaseLocal();
                     players.get(i).removePlayer(index, ips.get(index), this.clock.getVec());
                 } catch (RemoteException e) {
-                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     this.alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
@@ -687,7 +687,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         else
                             this.log(targetName+ "e' gia' in prigione!!"); 
                     } catch (RemoteException e) {
-                        System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+                        System.out.println("AAAAAAAAAAAAAA non c'e' " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
                     }
                 }else if (name.matches("duello")){
@@ -702,7 +702,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.redrawDuel(true);
                         this.redraw();
                     }catch(RemoteException e){
-                        System.out.println("AAAAAAAAAAAAAA non c'è " + targetIndex);
+                        System.out.println("AAAAAAAAAAAAAA non c'e' " + targetIndex);
                         this.alertPlayerMissing(targetIndex);
                     }
                 }
@@ -713,10 +713,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         {
             if (name.matches("mirino")) {
                 this.view++;
-                this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedrà a distanza +1");
+                this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedra' a distanza +1");
             } else if (name.matches("mustang")) {
                 this.distance++;
-                this.logOthers(this.getCharacter().getName() + " e' su un mustang, saraì piu' difficile sparargli");
+                this.logOthers(this.getCharacter().getName() + " e' su un mustang, sarai' piu' difficile sparargli");
             } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
@@ -758,7 +758,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.clock.clockIncreaseLocal();
                             players.get(i).indiani(this.clock.getVec());
                         } catch (RemoteException e) {
-                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                             this.alertPlayerMissing(i);
                             //e.printStackTrace();
                         }
@@ -788,7 +788,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.clock.clockIncreaseLocal();
                             this.players.get(i).decreaselives(this.clock.getVec());
                         } catch (RemoteException e) {
-                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                             this.alertPlayerMissing(i);
                         }
                     }
@@ -805,7 +805,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 this.players.get(i).increaselives(this.clock.getVec());
                             }
                         } catch (RemoteException e) {
-                            System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                            System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                             this.alertPlayerMissing(i);
                         }
                     }
@@ -946,7 +946,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     target.removeHandCard(cIndex, this.clock.getVec());
                 }
             } catch (RemoteException e) {
-                System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+                System.out.println("AAAAAAAAAAAAAA non c'e' " + pIndex);
                 this.alertPlayerMissing(pIndex);
             }
         }
@@ -971,7 +971,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 this.addHandCard(c);
             } catch (RemoteException e) {
-                System.out.println("AAAAAAAAAAAAAA non c'è " + pIndex);
+                System.out.println("AAAAAAAAAAAAAA non c'e' " + pIndex);
                 this.alertPlayerMissing(pIndex);
             }
         }
@@ -1094,7 +1094,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.clock.clockIncreaseLocal();
                     players.get(i).setDeckOrder(this.deck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
-                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
@@ -1119,7 +1119,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.clock.clockIncreaseLocal();
                     players.get(i).setCharacterDeckOrder(this.characterDeck.getIndices(), this.clock.getVec());
                 } catch (RemoteException e) {
-                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
@@ -1127,7 +1127,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    private void checkConsistency() { //nota: non sono sicuro che questa funziona servirà mai o vada fatta così
+    private void checkConsistency() { //nota: non sono sicuro che questa funziona servira' mai o vada fatta cosi'
         while (true) {
             ArrayList<Clock> clockList = new ArrayList<Clock>();
             for (int i = 0; i < players.size(); i++) {
@@ -1135,7 +1135,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     try {
                         clockList.add(this.players.get(i).getClock(this.clock.getVec()));
                     } catch (RemoteException e) {
-                        System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                        System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                         alertPlayerMissing(i);
                     }
                 }
@@ -1192,7 +1192,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.clock.clockIncreaseLocal();
                     players.get(i).setDiscards(this.deck.getDiscardPile(), this.clock.getVec());
                 } catch (RemoteException e) {
-                    System.out.println("AAAAAAAAAAAAAA non c'è " + i);
+                    System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
                     //e.printStackTrace();
                 }
