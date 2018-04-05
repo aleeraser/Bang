@@ -189,12 +189,17 @@ public class CardsUtils {
         return g;
     }
 
-    public static Card getMatchingCard(Card c, ArrayList<Card> orderedDeck) {
-        UIUtils.print("########### Searching for local card");
+    public static void printCard(Card c) {
         UIUtils.print("Name: " + c.getName());
         UIUtils.print("Suit: " + c.getSuit());
         UIUtils.print("Value: " + c.getValue());
         UIUtils.print("Type: " + c.getType());
+        UIUtils.print("\n");
+    }
+
+    public static Card getMatchingCard(Card c, ArrayList<Card> orderedDeck) {
+        UIUtils.print("########### Searching for local card");
+        printCard(c);
 
         for (Card deckCard : orderedDeck) {
             if (deckCard.getName().matches(c.getName()) && deckCard.getSuit() == c.getSuit()
