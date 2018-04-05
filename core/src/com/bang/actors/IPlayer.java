@@ -152,6 +152,8 @@ public interface IPlayer extends Remote {
     int findCard(ArrayList<Card> cards, String name) throws RemoteException;
     
     void redrawDuel(Boolean b) throws RemoteException;
+
+    void redrawBang(Boolean b) throws RemoteException;
     
     Boolean shouldUpdateDuel() throws RemoteException;
 

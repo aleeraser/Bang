@@ -91,6 +91,7 @@ public class Bang extends ApplicationAdapter {
                     System.out.println("Showing bang dialog");
                     System.out.println("IS MY TURN: " + me.isInBangTurn());
                     gs.showBangDialog(me.isInBangTurn(), me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
+                    me.redrawBang(false);
                 }
 
                 if (me.isInBangTurn().matches("")) {
