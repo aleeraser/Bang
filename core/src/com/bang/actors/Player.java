@@ -81,7 +81,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.duel = false;
         this.duelTurn = false;
         this.enemy = -1;
-        this.bangTurn = null;
+        this.bangTurn = "";
 
         this.deck = new Deck();
 
@@ -409,7 +409,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || (this.bangTurn != null && this.bangTurn.matches("target")) ) {
+                if ((this.duel && !this.duelTurn) || ( this.bangTurn.matches("target")) ) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
@@ -423,8 +423,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (players.get(this.enemy) != null) {
                             alertPlayerMissing(this.enemy);
                         }
-                        if (this.duel)this.duello(false, false, -1, this.clock.getVec());
-                        else this.setBangTurn(null);
+                        if (this.duel && !this.duelTurn)this.duello(false, false, -1, this.clock.getVec());
+                        else this.setBangTurn("");
                     }
                 }
             }
@@ -436,6 +436,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.clock.clockIncreaseLocal();
             target.bang(this.pos, this.clock.getVec());
             this.alreadyShot = true;
+            this.enemy = this.players.indexOf(target);
             this.bangTurn = "killer";
             System.out.println("sto sparando");
             this.redrawSingle();
@@ -459,7 +460,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("\tho pescato cuori, mi hanno mancato!");
                 try{
-                    this.players.get(enemy).setBangTurn(null);
+                    this.players.get(enemy).setBangTurn("");
                 }catch(RemoteException e){
                     this.alertPlayerMissing(enemy);
                 }

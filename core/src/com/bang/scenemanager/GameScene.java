@@ -573,6 +573,7 @@ public class GameScene extends Scene {
     }
 
     public void showBangDialog(String bangRole, String opponentName) {
+        System.out.println("in show Bang dialog");
         if (bangDialog != null) {
             bangDialog.remove();
         }
@@ -598,18 +599,18 @@ public class GameScene extends Scene {
                         me.removeHandCard(missIndex, new int[players.size()]);
                     }
                     else {
-                        me.setBangTurn(null);;
+                        me.setBangTurn("");;
                         me.decreaselives(new int[players.size()]);
                         me.redraw();
                     }
                     
-                    enemy.setBangTurn(null);
+                    enemy.setBangTurn("");
                     
                 } catch (RemoteException e) {
                     e.printStackTrace();
                     try {
                         me.alertPlayerMissing(enemyIndex);
-                        me.setBangTurn(null);
+                        me.setBangTurn("");
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                     }
