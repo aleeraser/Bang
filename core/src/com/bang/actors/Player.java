@@ -765,7 +765,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.logOthers(this.getCharacter().getName() + " ha un mirino! Vedra' a distanza +1");
             } else if (name.matches("mustang")) {
                 this.distance++;
-                this.logOthers(this.getCharacter().getName() + " e' su un mustang, sarai' piu' difficile sparargli");
+                this.logOthers(this.getCharacter().getName() + " e' su un mustang, sara' piu' difficile sparargli");
             } else if (name.matches("carabine")) {
                 findGun();
                 this.shotDistance = 4;
