@@ -151,7 +151,7 @@ public class GameScene extends Scene {
                 sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        //il turno può terminare solo se uno ha un numero di carte in mano <= al numero di vite
+                        //il turno puo' terminare solo se uno ha un numero di carte in mano <= al numero di vite
                         try {
                             int hand_cards = sceneManager.player.getHandCardsSize();
                             int lives = sceneManager.player.getLives(new int[otherPlayerNumber + 1]);
