@@ -155,5 +155,7 @@ public interface IPlayer extends Remote {
     
     Boolean shouldUpdateDuel() throws RemoteException;
 
+    Boolean shouldUpdateBang() throws RemoteException;
+
     Boolean isIndiansTurn() throws RemoteException;
 }

@@ -55,6 +55,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int turn;
     private Boolean mustUpdateGUI;
     private Boolean mustUpdateDuel;
+    private Boolean mustUpdateBang;
     private LogBox logBox;
 
     public Semaphore cardsSemaphore;
@@ -438,7 +439,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.enemy = this.players.indexOf(target);
             this.bangTurn = "killer";
             System.out.println("sto sparando");
-            this.redrawSingle();
+            this.redrawBang(true);;
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
@@ -492,7 +493,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         */
         System.out.println("mi hanno sparato");
         this.bangTurn = "target";
-        this.redrawSingle();
+        this.redrawBang(true);
     }
 
     private void checkCrashes() {
@@ -1282,8 +1283,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.mustUpdateDuel = b;
     }
 
+    public void redrawBang(Boolean b) {
+        this.mustUpdateBang = b;
+    }
+
     public Boolean shouldUpdateDuel() {
         return this.mustUpdateDuel;
+    }
+
+
+    public Boolean shouldUpdateBang() {
+        return this.mustUpdateBang;
     }
 
     public Boolean shouldUpdateGUI() {
