@@ -675,7 +675,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void addMarketCardToHand(int i) {
-        this.addHandCard(this.marketCards.get(i));
+        this.addHandCard(CardsUtils.getMatchingCard(this.marketCards.get(i), this.deck.getOrderedDeck()));
         log("Ho pescato " + this.marketCards.get(i).getName());
         this.logOthers(this.getCharacter().getName() + " ha pescato " + this.marketCards.get(i).getName());
         this.marketCards.remove(i);
