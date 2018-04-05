@@ -435,6 +435,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.clock.clockIncreaseLocal();
             target.bang(this.pos, this.clock.getVec());
             this.alreadyShot = true;
+            this.enemy = this.players.indexOf(target);
             this.bangTurn = "killer";
             System.out.println("sto sparando");
             this.redrawSingle();
