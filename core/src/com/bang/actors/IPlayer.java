@@ -105,7 +105,7 @@ public interface IPlayer extends Remote {
 
     void setDiscards(ArrayList<Integer> discards, int[] callerClock) throws RemoteException;
 
-    void bang(int[] callerClock) throws RemoteException;
+    void bang(int enemy, int[] callerClock) throws RemoteException;
 
     Boolean isInJail( int[] callerClock) throws RemoteException;
 
