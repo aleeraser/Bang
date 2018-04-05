@@ -55,6 +55,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int turn;
     private Boolean mustUpdateGUI;
     private Boolean mustUpdateDuel;
+    private Boolean mustUpdateBang;
     private LogBox logBox;
 
     public Semaphore cardsSemaphore;
@@ -81,7 +82,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.duel = false;
         this.duelTurn = false;
         this.enemy = -1;
-        this.bangTurn = null;
+        this.bangTurn = "";
 
         this.deck = new Deck();
 
@@ -374,6 +375,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public void setDeckOrder(ArrayList<Integer> indices, int[] callerClock) { //used by other processes to synchronize the decks
         this.clock.clockIncrease(callerClock);
         this.deck.setIndices(indices);
+        this.deck.setCurrentSize(indices.size());
 
         this.startTimeoutTime = System.currentTimeMillis();
     }
@@ -408,7 +410,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || (this.bangTurn != null && this.bangTurn.matches("target")) ) {
+                if ((this.duel && !this.duelTurn) || ( this.bangTurn.matches("target")) ) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
@@ -422,8 +424,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (players.get(this.enemy) != null) {
                             alertPlayerMissing(this.enemy);
                         }
-                        if (this.duel)this.duello(false, false, -1, this.clock.getVec());
-                        else this.setBangTurn(null);
+                        if (this.duel && !this.duelTurn)this.duello(false, false, -1, this.clock.getVec());
+                        else this.setBangTurn("");
                     }
                 }
             }
@@ -435,9 +437,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.clock.clockIncreaseLocal();
             target.bang(this.pos, this.clock.getVec());
             this.alreadyShot = true;
+            this.enemy = this.players.indexOf(target);
             this.bangTurn = "killer";
             System.out.println("sto sparando");
-            this.redrawSingle();
+            this.redrawBang(true);;
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
@@ -458,7 +461,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("\tho pescato cuori, mi hanno mancato!");
                 try{
-                    this.players.get(enemy).setBangTurn(null);
+                    this.players.get(enemy).setBangTurn("");
                 }catch(RemoteException e){
                     this.alertPlayerMissing(enemy);
                 }
@@ -491,7 +494,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         */
         System.out.println("mi hanno sparato");
         this.bangTurn = "target";
-        this.redrawSingle();
+        this.redrawBang(true);
     }
 
     private void checkCrashes() {
@@ -1281,8 +1284,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.mustUpdateDuel = b;
     }
 
+    public void redrawBang(Boolean b) {
+        this.mustUpdateBang = b;
+    }
+
     public Boolean shouldUpdateDuel() {
         return this.mustUpdateDuel;
+    }
+
+
+    public Boolean shouldUpdateBang() {
+        return this.mustUpdateBang;
     }
 
     public Boolean shouldUpdateGUI() {

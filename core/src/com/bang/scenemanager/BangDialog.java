@@ -30,7 +30,7 @@ public class BangDialog extends Dialog {
 	
 	protected void setup() {
 		if (this.bangRole.matches("killer")) {
-			this.text("Chissà se riuscirò a colpire " + opponentName + "...");
+			this.text("Chissa' se riusciro' a colpire " + opponentName + "...");
 		}
 		
 		else {
