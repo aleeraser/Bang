@@ -191,8 +191,8 @@ public class CardsUtils {
 
     public static Card getMatchingCard(Card c, ArrayList<Card> orderedDeck) {
         for (Card deckCard : orderedDeck) {
-            if (deckCard.getName() == c.getName() && deckCard.getSuit() == c.getSuit()
-                    && deckCard.getValue() == c.getValue() && deckCard.getType() == c.getType()) {
+            if (deckCard.getName().matches(c.getName()) && deckCard.getSuit() == c.getSuit()
+                    && deckCard.getValue().matches(c.getValue()) && deckCard.getType().matches(c.getType())) {
                         return deckCard;
             }
         }
