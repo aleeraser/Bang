@@ -923,9 +923,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
-        this.tableCards.remove(index);
+        Card removedCard = this.tableCards.remove(index);
+        
+        if (removedCard == null) {
+            UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
+        }
+
         if (toDiscard) {
-            this.deck.discard(this.deck.getIndices().indexOf(index));
+            Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
+            if (i == -1) {
+                UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
+            }
+            this.deck.discard(i);
             this.syncDiscards();
         }
 
