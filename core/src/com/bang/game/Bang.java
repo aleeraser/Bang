@@ -68,6 +68,15 @@ public class Bang extends ApplicationAdapter {
                 	gs.dismissMarketDialog();
                 }
                 
+                if (me.isIndiansTurn() && me.shouldUpdateGUI()) {
+                    gs.update();
+                    gs.showIndiansDialog(me.isMyTurn());
+                }
+                
+                if (!me.isIndiansTurn()) {
+                	gs.dismissIndiansDialog();
+                }
+                
                 if (me.isInDuel() && me.shouldUpdateDuel()) {
                 	System.out.println("Showing duel dialog");
                 	System.out.println("IS MY TURN: " + me.isDuelTurn());
