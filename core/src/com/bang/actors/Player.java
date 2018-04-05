@@ -408,7 +408,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || this.bangTurn.matches("target") ) {
+                if ((this.duel && !this.duelTurn) || (this.bangTurn != null && this.bangTurn.matches("target")) ) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
