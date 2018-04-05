@@ -15,7 +15,7 @@ public class Deck {
     protected ArrayList<Integer> deckIndices;
     protected int nextCardIndex;
     private ArrayList<Integer> discardPile;
-    private int currentDeckSize;
+    private Integer currentDeckSize;
 
     public Deck() {
         this.orderedDeck = this.buildOrderedDeck();
@@ -75,9 +75,17 @@ public class Deck {
 
         this.currentDeckSize = this.discardPile.size();
         this.nextCardIndex = 0;
-        Collections.shuffle(this.discardPile);
         this.deckIndices = this.discardPile;
         this.discardPile = new ArrayList<Integer>();
+        Collections.shuffle(this.deckIndices);
+
+
+        UIUtils.print("\n########### START DECK FINISEHD DEBUG ###########");
+        UIUtils.print("New deck:");
+        for (Integer cardIndex : deckIndices) {
+            UIUtils.print("\t" + cardIndex + "/" + this.discardPile.size() + ": " + this.getCard(cardIndex).getName());
+        }
+        UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
     }
 
     public Card getCard(int cardIndex) {
@@ -120,5 +128,9 @@ public class Deck {
 
     public ArrayList<Integer> getDiscardPile() {
         return this.discardPile;
+    }
+
+    public void setCurrentSize(Integer size) {
+        this.currentDeckSize = size;
     }
 }
