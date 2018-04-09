@@ -77,7 +77,8 @@ public class CardsUtils {
 
         // Card number handling
         LabelStyle labelStyle;
-        BitmapFont font = new BitmapFont();
+        BitmapFont font = new BitmapFont(Gdx.files.internal("skins/default/default.fnt"),
+                Gdx.files.internal("skins/default/default.png"), false);
         labelStyle = new LabelStyle();
         labelStyle.font = font;
         number = new Label(cardNumber, labelStyle);
