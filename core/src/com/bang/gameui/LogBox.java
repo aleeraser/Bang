@@ -56,7 +56,7 @@ public class LogBox {
 			 }
 		 }
 		 if (scrollPane != null) {
-			 scrollPane.setScrollPercentY(100);
+			 scrollPane.setScrollPercentY(200);
 		 }
 	}
 	
