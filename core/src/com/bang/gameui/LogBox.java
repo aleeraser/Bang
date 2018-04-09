@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -24,6 +25,8 @@ public class LogBox {
 	public LogBox(Skin skin) {
 		paneList = new List<String>(skin);
 		eventList = new ArrayList<String>();
+		
+		ScrollPaneStyle sps = new ScrollPaneStyle();
 		scrollPane = new ScrollPane(paneList);
 		
 		ScrollPane.ScrollPaneStyle scrollStyle;
