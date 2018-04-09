@@ -124,7 +124,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     this.draw();
                     System.out.println("Drew card. " + this.clock.toString());
                 }
-                this.playerTimeout = 15000;
+                this.playerTimeout = 3000;
                 //System.out.println("Calling 'giveTurn' " + this.clock.toString());
                 //this.giveTurn();
                 this.turn++;
