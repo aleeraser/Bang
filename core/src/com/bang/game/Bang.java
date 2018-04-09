@@ -137,7 +137,7 @@ public class Bang extends ApplicationAdapter {
             s.act();
         } catch (Exception e) {
             System.out.println("-----------------ECCEZIONE RENDER------------------");
-            render();
+            super.render();
         }
 
     }
