@@ -83,8 +83,8 @@ public class Deck {
 
         UIUtils.print("\n########### START DECK FINISEHD DEBUG ###########");
         UIUtils.print("New deck:");
-        for (Integer cardIndex : deckIndices) {
-            UIUtils.print("\t" + cardIndex + "/" + this.discardPile.size() + ": " + this.getCard(cardIndex).getName());
+        for (int i = 0; i < this.currentDeckSize; i++) {
+            UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
         }
         UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
     }
