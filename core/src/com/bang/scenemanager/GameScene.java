@@ -623,7 +623,12 @@ public class GameScene extends Scene {
 
             }
         };
-        bangDialog.show(stage);
+        try {
+            bangDialog.show(stage);     
+        } catch (Exception e) {
+            e.printStackTrace();
+            //TODO: handle exception
+        }
     }
 
     public void dismissBangDialog() {
