@@ -45,9 +45,9 @@ public class Bang extends ApplicationAdapter {
         InLobbyScene inLobbyScene = null;
 
         if (bg != null) {
-            batch.begin();
+           // batch.begin();
             batch.draw(bg, 0, 0, s.getWidth(), s.getHeight());
-            batch.end();
+           // batch.end();
         }
 
         try {

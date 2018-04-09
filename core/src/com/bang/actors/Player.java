@@ -467,7 +467,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
                 return;
             } else {
-                this.logOthers("Il barile di " + this.getCharacter().getName() + "non ha avuto effetto");
+                this.logOthers("Il barile di " + this.getCharacter().getName() + " non ha avuto effetto");
                 String suit;
                 if (c.getSuit() == 1)
                     suit = "picche";
