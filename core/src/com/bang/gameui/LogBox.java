@@ -46,6 +46,7 @@ public class LogBox {
 	
 	public void addEvent(String eventStr) {
 		 eventList.add(eventStr);
+		 eventList.add(" ");
 		 if (paneList != null) {
 			 try{
 			 paneList.setItems(eventList.toArray(new String[0]));
