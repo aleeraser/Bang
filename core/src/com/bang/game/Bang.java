@@ -132,7 +132,6 @@ public class Bang extends ApplicationAdapter {
         try {
             super.render();
             s.draw();
-            batch.end();
             
             // Needed to allow scrolling
             s.act();
