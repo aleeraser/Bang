@@ -160,4 +160,6 @@ public interface IPlayer extends Remote {
     Boolean shouldUpdateBang() throws RemoteException;
 
     Boolean isIndiansTurn() throws RemoteException;
+
+    void setNextCardIndex(int deckIndex) throws RemoteException;
 }

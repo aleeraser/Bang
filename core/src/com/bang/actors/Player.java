@@ -107,6 +107,25 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.turn;
     }
 
+    public void setNextCardIndex(int deckIndex){
+        this.deck.setNextCardIndex(deckIndex);        
+    }
+
+    private void syncNextCardIndex(int deckIndex){
+        for (IPlayer p : players) {
+            if (p != null) {
+                try {
+                    this.clock.clockIncreaseLocal();
+                    p.setNextCardIndex(deckIndex);
+                    redraw();
+
+                } catch (RemoteException e) {
+                    this.alertPlayerMissing(players.indexOf(p));
+                }
+            }
+        }
+    }
+
     public void setTurn(int deckIndex, int characterIndex, int turnHolder, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
         System.out.println("Starting 'setTurn'... " + this.clock.toString());
@@ -283,6 +302,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void draw() {
         this.addHandCard(deck.draw());
+        this.syncNextCardIndex(this.deck.getNextCardIndex());
     }
 
     public void drawCharacter() {
