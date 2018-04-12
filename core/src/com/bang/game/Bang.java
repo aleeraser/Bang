@@ -129,7 +129,8 @@ public class Bang extends ApplicationAdapter {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
         }
-
+        
+        sceneManager.clearGlyphCache();
         try {
             super.render();
             s.draw();
@@ -139,8 +140,8 @@ public class Bang extends ApplicationAdapter {
         } catch (Exception e) {
             System.out.println("-----------------ECCEZIONE RENDER------------------");
             e.printStackTrace();
+            s.dispose();
             //super.render();
-            sceneManager.clearGlyphCache();
             return;
         }
 
