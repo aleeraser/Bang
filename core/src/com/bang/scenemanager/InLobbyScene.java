@@ -116,6 +116,7 @@ public class InLobbyScene extends Scene {
                                     }
                                 }
                                 me.syncCharacterDeck(me.getCharacterDeck().initialShuffle());
+                                me.getDeck().printDeck();
                                 me.syncDeck(me.getDeck().initialShuffle());
                                 me.setTurn(0, 0, 0, new int[me.getPlayers().size()]);
                             } catch (RemoteException e) {

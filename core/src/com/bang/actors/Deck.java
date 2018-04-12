@@ -111,9 +111,6 @@ public class Deck {
         Card nextCard = this.getCard(this.nextCardIndex);
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
 
-        UIUtils.print("#### CURRENT DECK ####");
-        printDeck();
-
         return nextCard;
     }
 
@@ -147,7 +144,7 @@ public class Deck {
         }
     }
 
-    private void printDeck() {
+    public void printDeck() {
         for (int i = 0; i < this.currentDeckSize; i++) {
             UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
         }
