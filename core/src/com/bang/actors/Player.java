@@ -960,7 +960,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     private void removeCard(int index, int[] callerClock, Boolean toDiscard, String removeFrom) {
 
-        Card removedCard = removeFrom == "table" ? this.tableCards.remove(index) : this.handCards.remove(index);
+        Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
         UIUtils.print("called remove card on card" + removedCard.getName());
 
         try {
@@ -970,8 +970,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
 
-        // Card removedCard = removeFrom == "table" ? this.tableCards.remove(index) : this.handCards.remove(index);
-        String name = removeFrom == "table" ? this.tableCards.get(index).getName() : "";
+        // Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
+        String name = removeFrom.matches("table") ? this.tableCards.get(index).getName() : "";
 
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
@@ -983,7 +983,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             Integer i = this.deck.getIndices().indexOf(this.deck.getOrderedDeck().indexOf(removedCard));
             if (i == -1) {
                 UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
-                if (removeFrom == "hand") {
+                if (removeFrom.matches("hand")) {
                     UIUtils.print("Hand cards: ");
                     for (Card c : handCards) {
                         CardsUtils.printCard(c);
@@ -999,7 +999,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         cardsSemaphore.release(1);
 
-        if (removeFrom == "table") {
+        if (removeFrom.matches("table")) {
+            UIUtils.print("Updating player status for " + name);
+
             if (name.matches("barile"))
                 this.barrel--;
             else if (name.matches("volcanic"))
