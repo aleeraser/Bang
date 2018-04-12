@@ -25,7 +25,7 @@ public interface IPlayer extends Remote {
     
     void giveTurn() throws RemoteException;
 
-    void draw(Boolean addToHand) throws RemoteException;
+    Card draw(Boolean addToHand) throws RemoteException;
 
     void drawCharacter() throws RemoteException;
 

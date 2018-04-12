@@ -107,11 +107,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return this.turn;
     }
 
-    public void setNextCardIndex(int deckIndex){
-        this.deck.setNextCardIndex(deckIndex);        
+    public void setNextCardIndex(int deckIndex) {
+        this.deck.setNextCardIndex(deckIndex);
     }
 
-    private void syncNextCardIndex(int deckIndex){
+    private void syncNextCardIndex(int deckIndex) {
         for (IPlayer p : players) {
             if (p != null) {
                 try {
@@ -300,10 +300,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return -1;
     }
 
-    public void draw(Boolean addToHand) {
+    public Card draw(Boolean addToHand) {
         Card c = this.deck.draw();
-        if (addToHand) this.addHandCard(c);
+        if (addToHand)
+            this.addHandCard(c);
         this.syncNextCardIndex(this.deck.getNextCardIndex());
+        return c;
     }
 
     public void drawCharacter() {
@@ -431,7 +433,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || ( this.bangTurn.matches("target")) ) {
+                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("target"))) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
@@ -445,8 +447,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (players.get(this.enemy) != null) {
                             alertPlayerMissing(this.enemy);
                         }
-                        if (this.duel && !this.duelTurn)this.duello(false, false, -1, this.clock.getVec());
-                        else this.setBangTurn("");
+                        if (this.duel && !this.duelTurn)
+                            this.duello(false, false, -1, this.clock.getVec());
+                        else
+                            this.setBangTurn("");
                     }
                 }
             }
@@ -461,7 +465,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.alreadyShot = true;
             this.enemy = this.players.indexOf(target);
             System.out.println("sto sparando");
-            this.redrawBang(true);;
+            this.redrawBang(true);
+            ;
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
@@ -472,7 +477,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void bang(int enemy, int[] callerClock) {
         this.clock.clockIncrease(callerClock);
-        this.enemy = enemy; 
+        this.enemy = enemy;
         for (int i = 0; i < barrel; i++) {
             Card c = this.draw(false);
             log("Ho un Barile in gioco, pesco...");
@@ -481,9 +486,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("ho pescato cuori, mi hanno mancato!");
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 log("\tho pescato cuori, mi hanno mancato!");
-                try{
+                try {
                     this.players.get(enemy).setBangTurn("");
-                }catch(RemoteException e){
+                } catch (RemoteException e) {
                     this.alertPlayerMissing(enemy);
                 }
                 return;
@@ -510,7 +515,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.removeHandCard(i, this.clock.getVec());
             return;
         }
-
+        
         this.decreaselives(this.clock.getVec());
         */
         System.out.println("mi hanno sparato");
@@ -963,7 +968,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         String name = this.tableCards.get(index).getName();
         Card removedCard = this.tableCards.remove(index);
-        
+
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
         }
@@ -1093,15 +1098,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    public void setBangTurn(String val){
+    public void setBangTurn(String val) {
         this.bangTurn = val;
-        if (val == null){
+        if (val == null) {
             this.enemy = -1;
         }
         this.redrawSingle();
     }
 
-    public String isInBangTurn(){
+    public String isInBangTurn() {
         return this.bangTurn;
     }
 
@@ -1312,7 +1317,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     public Boolean shouldUpdateDuel() {
         return this.mustUpdateDuel;
     }
-
 
     public Boolean shouldUpdateBang() {
         return this.mustUpdateBang;
