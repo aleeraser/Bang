@@ -418,7 +418,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         } else
                             throw new RemoteException();
                     } catch (RemoteException e) { //the turn Holder is crashed
-                        //this.removePlayer(this.turnOwner, ips.get(this.turnOwner), this.clock.getVec()); //remove the player locally
                         this.alertPlayerMissing(this.turnOwner);
                         System.out.println("the Player " + this.turnOwner + " crashed.");
                         log("Il giocatore " + this.turnOwner + " e' crashato.");
@@ -434,7 +433,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("killer"))) {
+                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("killer")) 
+                        || (this.bangTurn.matches("target"))) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();
