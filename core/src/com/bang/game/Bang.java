@@ -140,6 +140,7 @@ public class Bang extends ApplicationAdapter {
             System.out.println("-----------------ECCEZIONE RENDER------------------");
             e.printStackTrace();
             //super.render();
+            sceneManager.clearGlyphCache();
         }
 
     }
