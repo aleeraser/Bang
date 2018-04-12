@@ -99,7 +99,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.cardsSemaphore = new Semaphore(1);
         this.redrawingSemaphore = new Semaphore(1);
 
-
         this.EXIT = false;
     }
 
@@ -436,7 +435,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("killer")) 
+                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("killer"))
                         || (this.bangTurn.matches("target"))) {
                     try {
                         if (players.get(this.enemy) != null) {
@@ -959,15 +958,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redrawSingle();
     }
 
-    private String removeCard(int index, int[] callerClock, Boolean toDiscard) {
+    private void removeCard(int index, int[] callerClock, Boolean toDiscard, String removeFrom) {
+
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         this.clock.clockIncrease(callerClock);
-        Card removedCard = this.handCards.remove(index);
-        String name = this.tableCards.get(index).getName();
+
+        Card removedCard = removeFrom == "table" ? this.tableCards.remove(index) : this.handCards.remove(index);
+        String name = removeFrom == "table" ? this.tableCards.get(index).getName() : "";
 
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
@@ -992,7 +993,24 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         cardsSemaphore.release(1);
 
-        return name;
+        if (removeFrom == "table") {
+            if (name.matches("barile"))
+                this.barrel--;
+            else if (name.matches("volcanic"))
+                this.volcanic = false;
+            else if (name.matches("mirino"))
+                this.view--;
+            else if (name.matches("mustang"))
+                this.distance--;
+            else if (name.matches("prigione"))
+                this.jail = false;
+            else if (name.matches("dinamite"))
+                this.dinamite--;
+            else
+                this.shotDistance = 1;
+        }
+
+        redraw();
     }
 
     public void removeTableCard(int index, int[] callerClock) {
@@ -1000,24 +1018,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeTableCard(int index, int[] callerClock, Boolean toDiscard) {
-        String name = this.removeCard(index, callerClock, toDiscard);
-
-        if (name.matches("barile"))
-            this.barrel--;
-        else if (name.matches("volcanic"))
-            this.volcanic = false;
-        else if (name.matches("mirino"))
-            this.view--;
-        else if (name.matches("mustang"))
-            this.distance--;
-        else if (name.matches("prigione"))
-            this.jail = false;
-        else if (name.matches("dinamite"))
-            this.dinamite--;
-        else
-            this.shotDistance = 1;
-
-        redraw();
+        this.removeCard(index, callerClock, toDiscard, "table");
     }
 
     public void addTableCard(Card c) {
@@ -1035,8 +1036,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeHandCard(int index, int[] callerClock, Boolean toDiscard) {
-        this.removeCard(index, callerClock, toDiscard);
-        redraw();
+        this.removeCard(index, callerClock, toDiscard, "hand");
     }
 
     public void addHandCard(Card c) {
