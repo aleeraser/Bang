@@ -24,18 +24,18 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 public class NetworkUtils {
-	
-	static String baseURL = "http://marullo.cs.unibo.it:5002";
+
+    static String baseURL = "http://marullo.cs.unibo.it:5002";
 
     public static String getBaseURL() {
         // return "http://emilia.cs.unibo.it:5002";
         // return "http://marullo.cs.unibo.it:5002";
         // return "http://localhost:5002";
-    	return baseURL;
+        return baseURL;
     }
-    
+
     public static void setBaseURL(String newBaseURL) {
-    	baseURL = newBaseURL;
+        baseURL = newBaseURL;
     }
 
     public static String getHTTP(String _url) {
@@ -80,7 +80,7 @@ public class NetworkUtils {
         return res;
     }
 
-    public static JSONObject postHTTP(String _url, String[] params, String[] vals) throws Exception {        
+    public static JSONObject postHTTP(String _url, String[] params, String[] vals) throws Exception {
         String url = _url;
 
         for (int i = 0; i < params.length; i++) {
@@ -104,7 +104,8 @@ public class NetworkUtils {
 
             Integer code = httpClient.execute(request).getStatusLine().getStatusCode();
 
-            if (code != 200) throw new RuntimeException("POST request failed.");
+            if (code != 200)
+                throw new RuntimeException("POST request failed.");
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to perform POST to remote server (" + _url + ").", e);
@@ -135,7 +136,7 @@ public class NetworkUtils {
         JSONObject res = new JSONObject(result);
         return res;
     }
-    
+
     public static ArrayList<String> findAllIps() {
         SocketException exception = null;
         ArrayList<String> ips = new ArrayList<String>();
@@ -147,7 +148,7 @@ public class NetworkUtils {
                 while (ee.hasMoreElements()) {
                     InetAddress i = (InetAddress) ee.nextElement();
                     String ip = i.getHostAddress();
-         
+
                     ips.add(ip);
                 }
             }

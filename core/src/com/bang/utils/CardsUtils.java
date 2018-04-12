@@ -205,7 +205,7 @@ public class CardsUtils {
         for (Card deckCard : orderedDeck) {
             if (deckCard.getName().matches(c.getName()) && deckCard.getSuit() == c.getSuit()
                     && deckCard.getValue().matches(c.getValue())) {
-                        return deckCard;
+                return deckCard;
             }
         }
         UIUtils.print("NON HO TROVATO LA CARTA: " + c.getName());

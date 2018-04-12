@@ -89,8 +89,8 @@ public class InLobbyScene extends Scene {
         });
 
         // Update
-        btnUpdate = UIUtils.createBtn("Aggiorna", Gdx.graphics.getWidth() / 2 - btnBack.getWidth() / 2 - 10, 10, stage, sceneManager.getTextButtonStyle(),
-                new ChangeListener() {
+        btnUpdate = UIUtils.createBtn("Aggiorna", Gdx.graphics.getWidth() / 2 - btnBack.getWidth() / 2 - 10, 10, stage,
+                sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         updatePlayerList();
@@ -111,7 +111,7 @@ public class InLobbyScene extends Scene {
                                 ArrayList<IPlayer> playerList = me.getPlayers();
                                 for (IPlayer player : playerList) {
                                     if (player != me) {
-                                    	System.out.println("Setting remote ip list to " + player.getIp());
+                                        System.out.println("Setting remote ip list to " + player.getIp());
                                         player.setIpList(playerIPs);
                                     }
                                 }

@@ -30,17 +30,17 @@ public class MainMenuScene extends Scene {
 
         backgroundImage = new Texture(Gdx.files.internal("images/bang_logo_edit.png"));
 
-        btnStart = UIUtils.createBtn("Inizia!", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10,
-                stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnStart = UIUtils.createBtn("Inizia!", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10, stage,
+                sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         /* Goto RoomListScene */
                         sceneManager.setScene(new RoomListScene(sceneManager));
                     }
                 });
-        
-        btnOptions = UIUtils.createBtn("Opzioni", Gdx.graphics.getWidth() - 230, 10,
-                stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+
+        btnOptions = UIUtils.createBtn("Opzioni", Gdx.graphics.getWidth() - 230, 10, stage,
+                sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         /* Goto RoomListScene */

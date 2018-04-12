@@ -16,13 +16,13 @@ public interface IPlayer extends Remote {
     Boolean shouldUpdateGUI() throws RemoteException;
 
     void redraw() throws RemoteException;
-    
+
     void redrawSingle() throws RemoteException;
-    
+
     void redrawSingle(Boolean shouldRedraw) throws RemoteException;
 
     int getTurn() throws RemoteException;
-    
+
     void giveTurn() throws RemoteException;
 
     Card draw(Boolean addToHand) throws RemoteException;
@@ -97,10 +97,10 @@ public interface IPlayer extends Remote {
 
     void playCard(Card c) throws RemoteException;
 
-    void playCard(Card c,int targetIndex) throws RemoteException; 
-    
-    void playCard(Card c,int targetIndex, int targetCardIndex, boolean fromTable ) throws RemoteException; 
-    
+    void playCard(Card c, int targetIndex) throws RemoteException;
+
+    void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) throws RemoteException;
+
     void alertPlayerMissing(int index) throws RemoteException;
 
     void setDiscards(ArrayList<Integer> discards, int[] callerClock) throws RemoteException;
@@ -111,38 +111,38 @@ public interface IPlayer extends Remote {
 
     String isInBangTurn() throws RemoteException;
 
-    Boolean isInJail( int[] callerClock) throws RemoteException;
+    Boolean isInJail(int[] callerClock) throws RemoteException;
 
     void jail(Card jail, int[] callerClock) throws RemoteException;
-    
+
     void setLogBox(LogBox logBox) throws RemoteException;
-    
-    void log (String event) throws RemoteException;
 
-    void dynamite( Card dinamite, int[]callerClock) throws RemoteException;
+    void log(String event) throws RemoteException;
 
-    void setMarketCards( ArrayList<Card> mc, int[] callerClock, Boolean value) throws RemoteException;
+    void dynamite(Card dinamite, int[] callerClock) throws RemoteException;
+
+    void setMarketCards(ArrayList<Card> mc, int[] callerClock, Boolean value) throws RemoteException;
 
     Boolean isMarketTurn() throws RemoteException;
 
-    ArrayList<Card> getMarketCards( int [] callerClock) throws RemoteException;
+    ArrayList<Card> getMarketCards(int[] callerClock) throws RemoteException;
 
     void addMarketCardToHand(int i) throws RemoteException;
-    
+
     Semaphore getCardsSemaphore() throws RemoteException;
 
     void syncMarketCards() throws RemoteException;
 
     void syncMarketCards(Boolean value) throws RemoteException;
-    
+
     void setIp(String ip) throws RemoteException;
-    
+
     int getTurnOwner() throws RemoteException;
 
     void duello(Boolean duel, Boolean turn, int enemy, int[] callerClock) throws RemoteException;
-     
+
     Boolean isInDuel() throws RemoteException;
-     
+
     Boolean isDuelTurn() throws RemoteException;
 
     int getDuelEnemy() throws RemoteException;
@@ -150,11 +150,11 @@ public interface IPlayer extends Remote {
     int getBangEnemy() throws RemoteException;
 
     int findCard(ArrayList<Card> cards, String name) throws RemoteException;
-    
+
     void redrawDuel(Boolean b) throws RemoteException;
 
     void redrawBang(Boolean b) throws RemoteException;
-    
+
     Boolean shouldUpdateDuel() throws RemoteException;
 
     Boolean shouldUpdateBang() throws RemoteException;

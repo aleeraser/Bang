@@ -94,36 +94,40 @@ public class GameScene extends Scene {
                         if (type.matches("target")) {
                             SelectTargetPlayerDialog d = new SelectTargetPlayerDialog(clickedCard, sceneManager) {
                                 public void result(Object obj) {
-                                    final int playerIndex = (Integer)obj;
+                                    final int playerIndex = (Integer) obj;
                                     //System.out.println("result " + obj);
                                     try {
                                         if (!(clickedCard.getName().matches("catbalou")
                                                 || clickedCard.getName().matches("panico"))) {
-                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
+                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro "
+                                                    + players.get(playerIndex).getCharacter().getName());
                                             sceneManager.player.playCard(clickedCard, playerIndex);
-                                        clickedCard = null;
-                                        selectedCard.removeShownCard();
+                                            clickedCard = null;
+                                            selectedCard.removeShownCard();
                                         } else {
-                                            SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager, (Integer)obj){
-                                                public void result(Object cardIndex){
-                                                    try{
-                                                        int len = players.get(playerIndex).getCards(new int[players.size()] ).size();
+                                            SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager,
+                                                    (Integer) obj) {
+                                                public void result(Object cardIndex) {
+                                                    try {
+                                                        int len = players.get(playerIndex)
+                                                                .getCards(new int[players.size()]).size();
                                                         logBox.addEvent("Carta giocata: " + clickedCard.getName()
-                                                                 + " contro "
-                                                                 + players.get(playerIndex).getCharacter().getName());
+                                                                + " contro "
+                                                                + players.get(playerIndex).getCharacter().getName());
 
-                                                        if ((Integer)cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
-                                                            sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex - len, false);
-                                                        else 
-                                                            sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex, true);
+                                                        if ((Integer) cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
+                                                            sceneManager.player.playCard(clickedCard, playerIndex,
+                                                                    (Integer) cardIndex - len, false);
+                                                        else
+                                                            sceneManager.player.playCard(clickedCard, playerIndex,
+                                                                    (Integer) cardIndex, true);
                                                         clickedCard = null;
                                                         selectedCard.removeShownCard();
-                                                    }
-                                                    catch(RemoteException e){
+                                                    } catch (RemoteException e) {
                                                         e.printStackTrace();
                                                     }
                                                 }
-                                                
+
                                             };
                                             d1.show(stage);
                                         }
@@ -340,8 +344,8 @@ public class GameScene extends Scene {
                             //    UIUtils.enable(playCardButton);
                             //    UIUtils.enable(discardButton);
                             //} else {
-                                UIUtils.disable(playCardButton);
-                                UIUtils.disable(discardButton);
+                            UIUtils.disable(playCardButton);
+                            UIUtils.disable(discardButton);
                             //}
                         }
                     } else {
@@ -472,7 +476,6 @@ public class GameScene extends Scene {
         }
 
     }
-
 
     public void showMarketDialog() {
         //if (isShowingMarketDialog == true)

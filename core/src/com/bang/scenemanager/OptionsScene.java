@@ -46,7 +46,7 @@ public class OptionsScene extends Scene {
         batch = stage.getBatch();
 
         backgroundImage = null;
-        
+
         // Back
         btnBack = UIUtils.createBtn("Indietro", 10, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
             @Override
@@ -54,55 +54,56 @@ public class OptionsScene extends Scene {
                 sceneManager.setScene(new MainMenuScene(sceneManager));
             }
         });
-        
-        btnSave = UIUtils.createBtn("Salva", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10,
-                stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
+
+        btnSave = UIUtils.createBtn("Salva", Gdx.graphics.getWidth() / 2 - UIUtils.btnWidth / 2, 10, stage,
+                sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         NetworkUtils.setBaseURL(serverName.getText());
                         try {
-        					sceneManager.getPlayer().setIp(ipList.getSelected());
-        					System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
-        					Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player", sceneManager.getPlayer());
-        			        } catch (RemoteException e) {
-        			            e.printStackTrace();
-        			        } catch (MalformedURLException e) {
-        			            e.printStackTrace();
-        			        }
-                        	sceneManager.setScene(new MainMenuScene(sceneManager));
+                            sceneManager.getPlayer().setIp(ipList.getSelected());
+                            System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
+                            Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player",
+                                    sceneManager.getPlayer());
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        sceneManager.setScene(new MainMenuScene(sceneManager));
                     }
                 });
-        
+
         // Server label
         serverLabel = new Label("Nome del server", sceneManager.getLabelStyle());
         serverLabel.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2 + 220, 300, 60);
         serverLabel.setFontScale(1.1f, 1.1f);
         serverLabel.setAlignment(Align.center);
         stage.addActor(serverLabel);
-        
+
         // Server name textfield
         serverName = new TextField(NetworkUtils.getBaseURL(), sceneManager.getSkin());
         serverName.setStyle(sceneManager.getTextfieldStyle());
         serverName.setBounds(stage.getWidth() / 6, stage.getHeight() / 2 + 140, stage.getWidth() / 3 * 2, 80);
         serverName.setAlignment(Align.center);
         stage.addActor(serverName);
-        
+
         // IP label
         ipLabel = new Label("Indirizzo IP", sceneManager.getLabelStyle());
         ipLabel.setBounds(stage.getWidth() / 2 - 150, stage.getHeight() / 2 + 20, 300, 60);
         ipLabel.setFontScale(1.1f, 1.1f);
         ipLabel.setAlignment(Align.center);
         stage.addActor(ipLabel);
-        
+
         ipList = new List<String>(sceneManager.getSkin());
 
         scrollPane = new ScrollPane(ipList);
         scrollPane.setBounds(0, 200, stage.getWidth(), 150);
         scrollPane.setTransform(true);
         scrollPane.layout();
-        
+
         String[] ips = NetworkUtils.findAllIps().toArray(new String[0]);
-        
+
         ipList.setItems(ips);
 
         stage.addActor(scrollPane);

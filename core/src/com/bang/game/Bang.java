@@ -100,7 +100,8 @@ public class Bang extends ApplicationAdapter {
                 if (!me.isInBangTurn().matches("") && me.shouldUpdateBang()) {
                     System.out.println("Showing bang dialog");
                     System.out.println("IS MY TURN: " + me.isInBangTurn());
-                    gs.showBangDialog(me.isInBangTurn(), me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
+                    gs.showBangDialog(me.isInBangTurn(),
+                            me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
                     me.redrawBang(false);
                 }
 
@@ -139,12 +140,12 @@ public class Bang extends ApplicationAdapter {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
         }
-        
+
         sceneManager.clearGlyphCache();
         try {
             super.render();
             s.draw();
-            
+
             // Needed to allow scrolling
             s.act();
         } catch (Exception e) {

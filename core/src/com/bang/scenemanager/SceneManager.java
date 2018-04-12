@@ -51,10 +51,10 @@ public class SceneManager {
 
         font = new BitmapFont(Gdx.files.internal("skins/default/default.fnt"),
                 Gdx.files.internal("skins/default/default.png"), false);
-        
+
         textureAtlas = new TextureAtlas(Gdx.files.internal(skinPath + ".atlas"));
         skin = new Skin(Gdx.files.internal(skinPath + ".json"), textureAtlas);
-        
+
         /*skin.remove("font", BitmapFont.class);
         skin.add("font", font, BitmapFont.class);*/
 
@@ -133,7 +133,7 @@ public class SceneManager {
         this.inGame = value;
     }
 
-    public void clearGlyphCache(){
+    public void clearGlyphCache() {
         this.font.getCache().clear();
     }
 }

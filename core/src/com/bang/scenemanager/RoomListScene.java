@@ -59,39 +59,41 @@ public class RoomListScene extends Scene {
         });
 
         // Join room
-        btnJoin = UIUtils.createBtn("Entra", Gdx.graphics.getWidth() - 230, 10, stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
+        btnJoin = UIUtils.createBtn("Entra", Gdx.graphics.getWidth() - 230, 10, stage,
+                sceneManager.getTextButtonStyle(), new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
 
-                try {
-                    String[] params = new String[2];
-                    params[0] = "ip";
-                    params[1] = "lobby";
+                        try {
+                            String[] params = new String[2];
+                            params[0] = "ip";
+                            params[1] = "lobby";
 
-                    String[] vals = new String[2];
-                    vals[0] = sceneManager.getPlayer().getIp();
-                    vals[1] = list.getSelected();
+                            String[] vals = new String[2];
+                            vals[0] = sceneManager.getPlayer().getIp();
+                            vals[1] = list.getSelected();
 
-                    JSONObject res = NetworkUtils.postHTTP(server_url + "/add_player", params, vals);
-                    if (res.getInt("code") == 1) { // nome gia' presente
-                        UIUtils.showError(res.getString("msg"), null, stage, sceneManager, text, removeOnError);
-                    } else {
-                        sceneManager.setCurrentLobby(list.getSelected());
-                        sceneManager.setScene(new InLobbyScene(sceneManager, list.getSelected(), false));
+                            JSONObject res = NetworkUtils.postHTTP(server_url + "/add_player", params, vals);
+                            if (res.getInt("code") == 1) { // nome gia' presente
+                                UIUtils.showError(res.getString("msg"), null, stage, sceneManager, text, removeOnError);
+                            } else {
+                                sceneManager.setCurrentLobby(list.getSelected());
+                                sceneManager.setScene(new InLobbyScene(sceneManager, list.getSelected(), false));
+                            }
+
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text,
+                                    removeOnError);
+                        }
                     }
-
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text, removeOnError);
-                }
-            }
-        });
+                });
 
         // New room
         final String[] lobs = updateLobbyList();
-        btnNewLobby = UIUtils.createBtn("Nuova stanza", Gdx.graphics.getWidth() / 2 - btnJoin.getWidth() / 2 - 10, 10, stage,
-                sceneManager.getTextButtonStyle(), new ChangeListener() {
+        btnNewLobby = UIUtils.createBtn("Nuova stanza", Gdx.graphics.getWidth() / 2 - btnJoin.getWidth() / 2 - 10, 10,
+                stage, sceneManager.getTextButtonStyle(), new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         sceneManager.setScene(new NewLobbyScene(sceneManager, lobs));
