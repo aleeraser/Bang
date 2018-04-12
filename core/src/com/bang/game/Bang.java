@@ -99,6 +99,7 @@ public class Bang extends ApplicationAdapter {
                 }
 
                 if (me.shouldUpdateGUI()) {
+                    sceneManager.clearGlyphCache();
                     gs.update();
                 }
 
