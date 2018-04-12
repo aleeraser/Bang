@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.concurrent.Semaphore;
 
-import com.bang.gameui.LogBox;
+// import com.bang.gameui.LogBox;
 import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
 
@@ -56,7 +56,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean mustUpdateGUI;
     private Boolean mustUpdateDuel;
     private Boolean mustUpdateBang;
-    private LogBox logBox;
+    // private LogBox logBox;
 
     public Semaphore cardsSemaphore;
     protected Semaphore redrawingSemaphore;
@@ -1346,13 +1346,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public void setLogBox(LogBox logBox) {
-        this.logBox = logBox;
-    }
+    // public void setLogBox(LogBox logBox) {
+        // this.logBox = logBox;
+    // }
 
     public void log(String event) {
-        if (logBox != null)
-            logBox.addEvent(event);
+        // if (logBox != null)
+            // logBox.addEvent(event);
 
         System.out.println(event);
     }

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
 import com.bang.actors.IPlayer;
-import com.bang.gameui.LogBox;
+// import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
 import com.bang.gameui.SelectedCardGroup;
@@ -27,10 +27,10 @@ public class GameScene extends Scene {
     SelectedCardGroup selectedCard;
     Character selectedCharacter;
     TextButton playCardButton, endTurnButton, discardButton;
-    LogBox logBox;
+    // LogBox logBox;
     IPlayer me;
     Boolean inputEnabled;
-    boolean isShowingMarketDialog  = false;
+    boolean isShowingMarketDialog = false;
 
     /* Gameplay info */
     boolean isPlayableCardSelected;
@@ -85,7 +85,7 @@ public class GameScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         if (clickedCard == null) {
-                            logBox.addEvent("Nessuna carta selezionata.");
+                            // logBox.addEvent("Nessuna carta selezionata.");
                             return;
                         }
 
@@ -99,7 +99,7 @@ public class GameScene extends Scene {
                                     try {
                                         if (!(clickedCard.getName().matches("catbalou")
                                                 || clickedCard.getName().matches("panico"))) {
-                                            logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
+                                            // logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro " + players.get(playerIndex).getCharacter().getName());
                                             sceneManager.player.playCard(clickedCard, playerIndex);
                                         clickedCard = null;
                                         selectedCard.removeShownCard();
@@ -108,9 +108,9 @@ public class GameScene extends Scene {
                                                 public void result(Object cardIndex){
                                                     try{
                                                         int len = players.get(playerIndex).getCards(new int[players.size()] ).size();
-                                                        logBox.addEvent("Carta giocata: " + clickedCard.getName()
-                                                                + " contro "
-                                                                + players.get(playerIndex).getCharacter().getName());
+                                                        // logBox.addEvent("Carta giocata: " + clickedCard.getName()
+                                                                // + " contro "
+                                                                // + players.get(playerIndex).getCharacter().getName());
 
                                                         if ((Integer)cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
                                                             sceneManager.player.playCard(clickedCard, playerIndex, (Integer)cardIndex - len, false);
@@ -137,7 +137,7 @@ public class GameScene extends Scene {
                         } else {
                             try {
                                 sceneManager.player.playCard(clickedCard);
-                                logBox.addEvent("Carta giocata: " + clickedCard.getName());
+                                // logBox.addEvent("Carta giocata: " + clickedCard.getName());
                                 clickedCard = null;
                                 selectedCard.removeShownCard();
                             } catch (RemoteException e) {
@@ -164,7 +164,7 @@ public class GameScene extends Scene {
                             //         + lives + " lives");
                             if (hand_cards <= lives) {
                                 // System.out.println("End turn");
-                                logBox.addEvent("Turno terminato");
+                                // logBox.addEvent("Turno terminato");
 
                                 me.giveTurn();
 
@@ -174,8 +174,8 @@ public class GameScene extends Scene {
                             } else {
                                 // System.out.println("Too many cards in hand.");
                                 // System.out.println("  you must discard " + (hand_cards - lives) + "!");
-                                logBox.addEvent("Hai troppe carte in mano,");
-                                logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
+                                // logBox.addEvent("Hai troppe carte in mano,");
+                                // logBox.addEvent("  devi scartarne " + (hand_cards - lives) + "!");
                                 isDiscarding = true;
                                 playCardButton.setVisible(false);
                                 discardButton.setVisible(true);
@@ -192,7 +192,7 @@ public class GameScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         if (clickedCard == null) {
-                            logBox.addEvent("Nessuna carta selezionata.");
+                            // logBox.addEvent("Nessuna carta selezionata.");
                             return;
                         }
 
@@ -201,7 +201,7 @@ public class GameScene extends Scene {
                             sceneManager.player.removeHandCard(sceneManager.player.getHandCards().indexOf(clickedCard),
                                     new int[otherPlayerNumber + 1]);
 
-                            logBox.addEvent("Carta scartata " + clickedCard.getName());
+                            // logBox.addEvent("Carta scartata " + clickedCard.getName());
 
                             clickedCard = null;
                             selectedCard.removeShownCard();
@@ -219,7 +219,7 @@ public class GameScene extends Scene {
                                 isDiscarding = false;
                                 playCardButton.setVisible(true);
                                 discardButton.setVisible(false);
-                                logBox.addEvent("Turno terminato.");
+                                // logBox.addEvent("Turno terminato.");
                                 me.giveTurn();
 
                                 UIUtils.disable(playCardButton);
@@ -355,16 +355,16 @@ public class GameScene extends Scene {
             stage.addActor(otherBoard);
 
             /* Log Box */
-            logBox = new LogBox(sceneManager.getSkin());
-            logBox.setPosition(playerBoard.getWidth() + playerBoard.getX(), 50);
-            logBox.setSize(450, 300);
-            stage.addActor(logBox.getPane());
+            // logBox = new LogBox(sceneManager.getSkin());
+            // logBox.setPosition(playerBoard.getWidth() + playerBoard.getX(), 50);
+            // logBox.setSize(450, 300);
+            // stage.addActor(logBox.getPane());
 
-            try {
-                sceneManager.player.setLogBox(logBox);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            // try {
+                // sceneManager.player.setLogBox(logBox);
+            // } catch (RemoteException e) {
+                // e.printStackTrace();
+            // }
         }
     }
 
@@ -413,11 +413,11 @@ public class GameScene extends Scene {
 
         /* Update my board */
         try {
-        	try {
-				me.getCardsSemaphore().acquire(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+            try {
+                me.getCardsSemaphore().acquire(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
             playerBoard.setCharacter();
@@ -474,106 +474,107 @@ public class GameScene extends Scene {
     }
 
     //TODO: gestire il bug sulla pescata delle carde, ora a volte embra che non vengano pescate
-    
+
     public void showMarketDialog() {
-    	//if (isShowingMarketDialog == true)
-    	//	return;
-    	
-    	if (generalStoreDialog != null) {
-    		generalStoreDialog.remove();
-    	}
-    	
-    	System.out.println("Showing dialog");
-    	
-    	isShowingMarketDialog = true;
-		try {
-			generalStoreDialog = new GeneralStoreCardDialog(sceneManager, me.getMarketCards(new int [me.getPlayers().size()]), me.getTurn()) {
-				public void result(Object obj) {
-					try {
-						if (me.isMyTurn()) {
-							me.addMarketCardToHand((Integer) obj);
+        //if (isShowingMarketDialog == true)
+        //	return;
+
+        if (generalStoreDialog != null) {
+            generalStoreDialog.remove();
+        }
+
+        System.out.println("Showing dialog");
+
+        isShowingMarketDialog = true;
+        try {
+            generalStoreDialog = new GeneralStoreCardDialog(sceneManager,
+                    me.getMarketCards(new int[me.getPlayers().size()]), me.getTurn()) {
+                public void result(Object obj) {
+                    try {
+                        if (me.isMyTurn()) {
+                            me.addMarketCardToHand((Integer) obj);
                             isShowingMarketDialog = false;
                             //me.syncMarketCards();
-						}
-						else {
-							isShowingMarketDialog = false;
-						}
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
-			};
-			if (!me.isMyTurn()) generalStoreDialog.setTouchable(Touchable.disabled);
-			generalStoreDialog.show(stage);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+                        } else {
+                            isShowingMarketDialog = false;
+                        }
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            if (!me.isMyTurn())
+                generalStoreDialog.setTouchable(Touchable.disabled);
+            generalStoreDialog.show(stage);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
-    
+
     public void dismissMarketDialog() {
-    	if (generalStoreDialog != null) {
-    		generalStoreDialog.remove();
-    		isShowingMarketDialog = false;
-    	}
+        if (generalStoreDialog != null) {
+            generalStoreDialog.remove();
+            isShowingMarketDialog = false;
+        }
     }
-    
+
     public void showDuelDialog(boolean isMyDuelTurn, String opponentName) {
-    	if (duelDialog != null) {
-    		duelDialog.remove();
-    	}
-    	
-    	duelDialog = new DuelDialog(sceneManager, isMyDuelTurn, opponentName) {
-    		public void result(Object obj) {
-    			Boolean res = (Boolean) obj;
-    			int enemyIndex;
-				try {
-					enemyIndex = me.getDuelEnemy();
-				} catch (RemoteException e1) {
-					e1.printStackTrace();
-					return;
-				}
-				
-				try {
-					IPlayer me = sceneManager.getPlayer();
-					ArrayList<IPlayer> players = me.getPlayers();
-					IPlayer enemy = players.get(enemyIndex);
-					
-					if (res) {
-						int bangIndex = me.findCard(me.getHandCards(), "bang");
-						me.removeHandCard(bangIndex, new int[players.size()]);
-					}
-					
-					enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
-					
-					if (!res) {
-						me.duello(false, false, -1, new int[players.size()]);
-						me.decreaselives(new int[players.size()]);
-						me.redraw();
-					}
-					
-					else {
-						me.duello(true, false, enemyIndex, new int[players.size()]);
-					}
-					
-				} catch (RemoteException e) {
-					e.printStackTrace();
-					try {
-						me.alertPlayerMissing(enemyIndex);
-						me.duello(false, false, -1, new int[players.size()]);
-					} catch (RemoteException e1) {
-						e1.printStackTrace();
-					}
-				}
-				
-    		}
-    	};
-    	duelDialog.show(stage);
+        if (duelDialog != null) {
+            duelDialog.remove();
+        }
+
+        duelDialog = new DuelDialog(sceneManager, isMyDuelTurn, opponentName) {
+            public void result(Object obj) {
+                Boolean res = (Boolean) obj;
+                int enemyIndex;
+                try {
+                    enemyIndex = me.getDuelEnemy();
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                    return;
+                }
+
+                try {
+                    IPlayer me = sceneManager.getPlayer();
+                    ArrayList<IPlayer> players = me.getPlayers();
+                    IPlayer enemy = players.get(enemyIndex);
+
+                    if (res) {
+                        int bangIndex = me.findCard(me.getHandCards(), "bang");
+                        me.removeHandCard(bangIndex, new int[players.size()]);
+                    }
+
+                    enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
+
+                    if (!res) {
+                        me.duello(false, false, -1, new int[players.size()]);
+                        me.decreaselives(new int[players.size()]);
+                        me.redraw();
+                    }
+
+                    else {
+                        me.duello(true, false, enemyIndex, new int[players.size()]);
+                    }
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    try {
+                        me.alertPlayerMissing(enemyIndex);
+                        me.duello(false, false, -1, new int[players.size()]);
+                    } catch (RemoteException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        duelDialog.show(stage);
     }
-    
+
     public void dismissDuelDialog() {
-    	if (duelDialog != null) {
-    		duelDialog.remove();
-    	}
+        if (duelDialog != null) {
+            duelDialog.remove();
+        }
     }
 
     public void showBangDialog(String bangRole, String opponentName) {
@@ -602,15 +603,15 @@ public class GameScene extends Scene {
                         int missIndex = me.findCard(me.getHandCards(), "mancato");
                         me.removeHandCard(missIndex, new int[players.size()]);
                         me.setBangTurn("");
-                    }
-                    else {
-                        me.setBangTurn("");;
+                    } else {
+                        me.setBangTurn("");
+                        ;
                         me.decreaselives(new int[players.size()]);
                         me.redraw();
                     }
-                    
+
                     enemy.setBangTurn("");
-                    
+
                 } catch (RemoteException e) {
                     e.printStackTrace();
                     try {
@@ -624,7 +625,7 @@ public class GameScene extends Scene {
             }
         };
         try {
-            bangDialog.show(stage);     
+            bangDialog.show(stage);
         } catch (Exception e) {
             e.printStackTrace();
             //TODO: handle exception
@@ -636,34 +637,34 @@ public class GameScene extends Scene {
             bangDialog.remove();
         }
     }
-    
+
     public void showIndiansDialog(boolean isMyIndiansTurn) {
-    	if (indiansDialog != null) {
-    		indiansDialog.remove();
-    	}
-    	
-    	indiansDialog = new IndiansDialog(sceneManager, isMyIndiansTurn) {
-    		public void result(Object obj) {
-    			Boolean res = (Boolean) obj;
-				
-				try {
-					IPlayer me = sceneManager.getPlayer();
-					ArrayList<IPlayer> players = me.getPlayers();
-					
-					me.indiani(res);
-					
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-				
-    		}
-    	};
-    	indiansDialog.show(stage);
+        if (indiansDialog != null) {
+            indiansDialog.remove();
+        }
+
+        indiansDialog = new IndiansDialog(sceneManager, isMyIndiansTurn) {
+            public void result(Object obj) {
+                Boolean res = (Boolean) obj;
+
+                try {
+                    IPlayer me = sceneManager.getPlayer();
+                    ArrayList<IPlayer> players = me.getPlayers();
+
+                    me.indiani(res);
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        indiansDialog.show(stage);
     }
-    
+
     public void dismissIndiansDialog() {
-    	if (indiansDialog != null) {
-    		indiansDialog.remove();
-    	}
+        if (indiansDialog != null) {
+            indiansDialog.remove();
+        }
     }
 }
