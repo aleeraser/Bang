@@ -140,7 +140,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("Drew character card. " + this.clock.toString());
                 for (int i = 0; i < this.character.getLives(); i++) {
                     System.out.println("Drawing card... " + this.clock.toString());
-                    this.draw();
+                    this.draw(true);
                     System.out.println("Drew card. " + this.clock.toString());
                 }
                 this.playerTimeout = 3000;
@@ -177,7 +177,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                                 while (this.dinamite > 0) {
                                     log("dinamite:");
-                                    Card c = this.deck.draw();
+                                    Card c = this.draw(false);
                                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                                     this.syncDiscards();
                                     if (c.getSuit() == 1 && (int) c.getValue().charAt(0) >= 50
@@ -216,7 +216,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
                                 if (this.jail) {
                                     log("Prigione:");
-                                    Card c = this.deck.draw();
+                                    Card c = this.draw(false);
                                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                                     this.syncDiscards();
                                     this.removeTableCard(this.findCard(tableCards, "prigione"), this.clock.getVec());
@@ -233,8 +233,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     }
 
                                 }
-                                this.draw();
-                                this.draw();
+                                this.draw(true);
+                                this.draw(true);
                             }
                         }
                     }
@@ -300,8 +300,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         return -1;
     }
 
-    public void draw() {
-        this.addHandCard(deck.draw());
+    public void draw(Boolean addToHand) {
+        Card c = this.deck.draw();
+        if (addToHand) this.addHandCard(c);
         this.syncNextCardIndex(this.deck.getNextCardIndex());
     }
 
@@ -473,7 +474,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.enemy = enemy; 
         for (int i = 0; i < barrel; i++) {
-            Card c = this.deck.draw();
+            Card c = this.draw(false);
             log("Ho un Barile in gioco, pesco...");
             UIUtils.print("Ho un Barile in gioco, pesco...");
             if (c.getSuit() == 2) {
@@ -850,13 +851,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else
                     return;
             } else if (name.matches("diligenza")) {
-                this.draw();
-                this.draw();
+                this.draw(true);
+                this.draw(true);
                 this.logOthers(this.getCharacter().getName() + " ha pescato 2 carte");
             } else if (name.matches("wellsfargo")) {
-                this.draw();
-                this.draw();
-                this.draw();
+                this.draw(true);
+                this.draw(true);
+                this.draw(true);
                 this.logOthers(this.getCharacter().getName() + " ha pescato 3 carte");
 
             } else if (name.matches("gatling")) {
@@ -897,7 +898,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         num++;
                 }
                 for (int i = 0; i < num; i++) {
-                    marketCards.add(this.deck.draw());
+                    marketCards.add(this.draw(false));
                 }
                 System.out.println("calling syncMarkeCards true");
                 this.syncMarketCards();
