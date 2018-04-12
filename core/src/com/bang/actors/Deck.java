@@ -25,10 +25,6 @@ public class Deck {
         this.currentDeckSize = orderedDeck.size();
     }
 
-    public ArrayList<Card> getOrderedDeck() {
-        return orderedDeck;
-    }
-
     protected ArrayList<Integer> randomArrayList(int n) {
         ArrayList<Integer> list = new ArrayList<Integer>();
 
@@ -38,6 +34,10 @@ public class Deck {
 
         Collections.shuffle(list);
         return list;
+    }
+
+    public ArrayList<Card> getOrderedDeck() {
+        return orderedDeck;
     }
 
     private ArrayList<Card> buildOrderedDeck() {
@@ -68,7 +68,6 @@ public class Deck {
         UIUtils.print("Discard pile size: " + this.discardPile.size());
         UIUtils.print("nextCardIndex: " + this.nextCardIndex);
         UIUtils.print("Current discard pile:");
-
         printDiscardPile();
 
         this.currentDeckSize = this.discardPile.size();
