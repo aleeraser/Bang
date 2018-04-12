@@ -960,9 +960,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     private void removeCard(int index, int[] callerClock, Boolean toDiscard, String removeFrom) {
 
-        Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
-        UIUtils.print("called remove card on card" + removedCard.getName());
-
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
@@ -970,7 +967,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
 
-        // Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
+        Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
+        UIUtils.print("called remove card on card" + removedCard.getName());
         String name = removeFrom.matches("table") ? this.tableCards.get(index).getName() : "";
 
         if (removedCard == null) {
@@ -994,7 +992,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.deck.discard(i);
             this.syncDiscards();
 
-            UIUtils.print("Should discard " + removedCard.getName() + ", actually discarded " + this.deck.getCard(i).getName());
+            UIUtils.print("Should discard " + removedCard.getName() + ", actually discarded "
+                    + this.deck.getCard(i).getName());
         }
 
         cardsSemaphore.release(1);
