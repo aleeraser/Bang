@@ -102,15 +102,17 @@ public class Deck {
         return this.nextCardIndex;
     }
 
-    public Card draw() {
+    public Boolean draw() {
+        Boolean reshuffled = false;
         if (this.nextCardIndex == this.currentDeckSize) {
             UIUtils.print("Reshuffling deck");
             shuffleDeck();
+            reshuffled = true;
         }
-        Card nextCard = this.getCard(this.nextCardIndex);
+        // Card nextCard = this.getCard(this.nextCardIndex);
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
 
-        return nextCard;
+        return reshuffled;
     }
 
     public void discard(int cardIndex) {

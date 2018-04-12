@@ -304,7 +304,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public Card draw(Boolean addToHand) {
-        Card c = this.deck.draw();
+        Boolean reshuffled = this.deck.draw();
+
+        if (reshuffled) {
+            syncDeck(this.deck.getIndices());
+            syncDiscards();
+        }
+
+        Card c = this.deck.getCard(this.deck.getNextCardIndex());
+
         if (addToHand)
             this.addHandCard(c);
         this.syncNextCardIndex(this.deck.getNextCardIndex());
