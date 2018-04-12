@@ -150,7 +150,7 @@ public class Bang extends ApplicationAdapter {
         } catch (Exception e) {
             System.out.println("-----------------ECCEZIONE RENDER------------------");
             e.printStackTrace();
-            s.dispose();
+            Gdx.app.exit();
             //super.render();
             return;
         }

@@ -6,7 +6,7 @@ import java.rmi.server.RemoteServer;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
-// import com.bang.gameui.LogBox;
+import com.bang.gameui.LogBox;
 
 public interface IPlayer extends Remote {
 
@@ -115,7 +115,7 @@ public interface IPlayer extends Remote {
 
     void jail(Card jail, int[] callerClock) throws RemoteException;
     
-    // void setLogBox(LogBox logBox) throws RemoteException;
+    void setLogBox(LogBox logBox) throws RemoteException;
     
     void log (String event) throws RemoteException;
 
