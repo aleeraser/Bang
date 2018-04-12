@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.concurrent.Semaphore;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.utils.Logger;
+
 // import com.bang.gameui.LogBox;
 import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
@@ -56,6 +59,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean mustUpdateGUI;
     private Boolean mustUpdateDuel;
     private Boolean mustUpdateBang;
+    private Logger logger;
     // private LogBox logBox;
 
     public Semaphore cardsSemaphore;
@@ -97,6 +101,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         this.cardsSemaphore = new Semaphore(1);
         this.redrawingSemaphore = new Semaphore(1);
+
+        this.logger = new Logger("log", Application.LOG_INFO);
     }
 
     public boolean isMyTurn() {
@@ -1014,6 +1020,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeHandCard(int index, int[] callerClock, Boolean toDiscard) {
+        logger.info("CIAO");
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
