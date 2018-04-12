@@ -969,12 +969,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
         UIUtils.print("called remove card on card: " + removedCard.getName());
-        String name = removedCard.getName();
 
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
             EXIT_NOW();
         }
+
+        String name = removedCard.getName();
 
         if (toDiscard) {
             // Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
@@ -1350,7 +1351,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void setLogBox(LogBox logBox) {
-    this.logBox = logBox;
+        this.logBox = logBox;
     }
 
     public void log(String event) {
