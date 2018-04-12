@@ -141,6 +141,7 @@ public class Bang extends ApplicationAdapter {
             e.printStackTrace();
             //super.render();
             sceneManager.clearGlyphCache();
+            return;
         }
 
     }
