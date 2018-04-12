@@ -979,10 +979,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
             if (i == -1) {
                 UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
-                // UIUtils.print("Hand cards: ");
-                // for (Card c : handCards) {
-                //     CardsUtils.printCard(c);
-                // }
+                if (removeFrom == "hand") {
+                    UIUtils.print("Hand cards: ");
+                    for (Card c : handCards) {
+                        CardsUtils.printCard(c);
+                    }
+                }
                 EXIT_NOW();
             }
             this.deck.discard(i);
