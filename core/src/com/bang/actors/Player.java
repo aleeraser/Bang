@@ -1110,7 +1110,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (playedBang) {
             int i = this.findCard(handCards, "bang");
             if (i != -1) {
-                this.handCards.remove(i);
+                this.removeHandCard(i, this.clock.getVec());
             } else {
                 this.clock.clockIncreaseLocal();
                 this.decreaselives(this.clock.getVec());
