@@ -986,6 +986,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             this.deck.discard(i);
             this.syncDiscards();
+
+            UIUtils.print("Discarded card " + removedCard.getName());
         }
 
         cardsSemaphore.release(1);
