@@ -11,3 +11,5 @@ TODO
 stampare il vincitore del duello nel logbox
 aggiungere log di indiani per tutti i personaggi
 se si hanno troppe carte in mano e si clicca termina turno, dopo non si possono piu' giocare
+
+mettere a posto il divieto quando si deve iniziare una nuova partita, che anche se c'e' piu' di un giocatore non scompare subito
