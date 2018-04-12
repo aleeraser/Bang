@@ -67,12 +67,9 @@ public class Deck {
         UIUtils.print("\n########### START DECK FINISEHD DEBUG ###########");
         UIUtils.print("Discard pile size: " + this.discardPile.size());
         UIUtils.print("nextCardIndex: " + this.nextCardIndex);
-        UIUtils.print("Printing current discard pile:");
+        UIUtils.print("Current discard pile:");
 
-        for (Integer cardIndex : discardPile) {
-            UIUtils.print("\t" + cardIndex + "/" + this.discardPile.size() + ": " + this.getCard(cardIndex).getName());
-        }
-        UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
+        printDiscardPile();
 
         this.currentDeckSize = this.discardPile.size();
         this.nextCardIndex = 0;
@@ -80,12 +77,9 @@ public class Deck {
         this.discardPile = new ArrayList<Integer>();
         Collections.shuffle(this.deckIndices);
 
-
-        UIUtils.print("\n########### START DECK FINISEHD DEBUG ###########");
+        UIUtils.print("------------------------");
         UIUtils.print("New deck:");
-        for (int i = 0; i < this.currentDeckSize; i++) {
-            UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
-        }
+        printDeck();
         UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
     }
 
@@ -116,18 +110,23 @@ public class Deck {
         }
         Card nextCard = this.getCard(this.nextCardIndex);
         UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
+
+        UIUtils.print("#### CURRENT DECK ####");
+        printDeck();
+
         return nextCard;
     }
 
     public void discard(int cardIndex) {
-    	if (discardPile.indexOf(cardIndex) == -1) {
-    		this.discardPile.add(cardIndex);
-    	}
-    	
-    	else {
-    		System.out.println("#### Scartando carta gia scartata, indice :" + cardIndex);
-    		CardsUtils.printCard(this.orderedDeck.get(cardIndex));
-    	}
+        if (discardPile.indexOf(cardIndex) == -1) {
+            this.discardPile.add(cardIndex);
+        } else {
+            System.out.println("#### Scartando carta gia scartata, indice :" + cardIndex);
+            CardsUtils.printCard(this.orderedDeck.get(cardIndex));
+        }
+
+        UIUtils.print("#### CURRENT DISCARD PILE ####");
+        printDiscardPile();
     }
 
     public void setDiscardPile(ArrayList<Integer> pile) {
@@ -140,5 +139,17 @@ public class Deck {
 
     public void setCurrentSize(Integer size) {
         this.currentDeckSize = size;
+    }
+
+    private void printDiscardPile() {
+        for (Integer i : discardPile) {
+            UIUtils.print("\t" + i + "/" + this.discardPile.size() + ": " + this.getCard(i).getName());
+        }
+    }
+
+    private void printDeck() {
+        for (int i = 0; i < this.currentDeckSize; i++) {
+            UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
+        }
     }
 }
