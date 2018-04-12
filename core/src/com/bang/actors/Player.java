@@ -57,6 +57,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean mustUpdateDuel;
     private Boolean mustUpdateBang;
     // private LogBox logBox;
+    private Boolean EXIT;
 
     public Semaphore cardsSemaphore;
     protected Semaphore redrawingSemaphore;
@@ -98,6 +99,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.cardsSemaphore = new Semaphore(1);
         this.redrawingSemaphore = new Semaphore(1);
 
+
+        this.EXIT = false;
     }
 
     public boolean isMyTurn() {
@@ -956,28 +959,29 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redrawSingle();
     }
 
-    public void removeTableCard(int index, int[] callerClock) {
-        removeTableCard(index, callerClock, true);
-    }
-
-    public void removeTableCard(int index, int[] callerClock, Boolean toDiscard) {
+    private String removeCard(int index, int[] callerClock, Boolean toDiscard) {
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         this.clock.clockIncrease(callerClock);
-        String name = this.tableCards.get(index).getName();
-        Card removedCard = this.tableCards.remove(index);
+        Card removedCard = this.handCards.remove(index);
 
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
+            EXIT_NOW();
         }
 
         if (toDiscard) {
             Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
             if (i == -1) {
                 UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
+                // UIUtils.print("Hand cards: ");
+                // for (Card c : handCards) {
+                //     CardsUtils.printCard(c);
+                // }
+                EXIT_NOW();
             }
             this.deck.discard(i);
             this.syncDiscards();
@@ -986,6 +990,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
 
         cardsSemaphore.release(1);
+
+        return this.tableCards.get(index).getName();
+    }
+
+    public void removeTableCard(int index, int[] callerClock) {
+        removeTableCard(index, callerClock, true);
+    }
+
+    public void removeTableCard(int index, int[] callerClock, Boolean toDiscard) {
+        String name = this.removeCard(index, callerClock, toDiscard);
+
         if (name.matches("barile"))
             this.barrel--;
         else if (name.matches("volcanic"))
@@ -1000,6 +1015,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.dinamite--;
         else
             this.shotDistance = 1;
+
+        redraw();
     }
 
     public void addTableCard(Card c) {
@@ -1017,32 +1034,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void removeHandCard(int index, int[] callerClock, Boolean toDiscard) {
-        try {
-            cardsSemaphore.acquire(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.clock.clockIncrease(callerClock);
-        Card removedCard = this.handCards.remove(index);
-
-        if (removedCard == null) {
-            UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
-        }
-
-        if (toDiscard) {
-            Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
-            if (i == -1) {
-                UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
-                UIUtils.print("Hand cards: ");
-                for (Card c : handCards) {
-                    CardsUtils.printCard(c);
-                }
-            }
-            this.deck.discard(i);
-            this.syncDiscards();
-        }
-
-        cardsSemaphore.release(1);
+        this.removeCard(index, callerClock, toDiscard);
         redraw();
     }
 
@@ -1350,12 +1342,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     // public void setLogBox(LogBox logBox) {
-        // this.logBox = logBox;
+    // this.logBox = logBox;
     // }
 
     public void log(String event) {
         // if (logBox != null)
-            // logBox.addEvent(event);
+        // logBox.addEvent(event);
 
         System.out.println(event);
     }
@@ -1384,5 +1376,14 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public int getTurnOwner() {
         return turnOwner;
+    }
+
+    private void EXIT_NOW() {
+        UIUtils.print("Called EXIT_NOW();");
+        this.EXIT = true;
+    }
+
+    public Boolean shouldExit() {
+        return this.EXIT;
     }
 }

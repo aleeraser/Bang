@@ -44,6 +44,16 @@ public class Bang extends ApplicationAdapter {
         GameScene gs = null;
         InLobbyScene inLobbyScene = null;
 
+        try {
+            if (me.shouldExit()) {
+                s.dispose();
+                return;
+            }
+        } catch (RemoteException e) {
+            s.dispose();
+            return;
+        }
+
         if (bg != null) {
             batch.begin();
             batch.draw(bg, 0, 0, s.getWidth(), s.getHeight());
