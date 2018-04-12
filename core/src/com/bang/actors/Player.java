@@ -976,7 +976,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
 
         if (toDiscard) {
-            Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
+            // Integer i = this.deck.getOrderedDeck().indexOf(removedCard);
+            Integer i = this.deck.getIndices().indexOf(this.deck.getOrderedDeck().indexOf(removedCard));
             if (i == -1) {
                 UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT: " + removedCard.getName());
                 if (removeFrom == "hand") {
@@ -990,7 +991,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.deck.discard(i);
             this.syncDiscards();
 
-            UIUtils.print("Discarded card " + removedCard.getName());
+            UIUtils.print("Should discard " + removedCard.getName() + ", actually discarded " + this.deck.getCard(i).getName());
         }
 
         cardsSemaphore.release(1);
