@@ -967,6 +967,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
         Card removedCard = this.handCards.remove(index);
+        String name = this.tableCards.get(index).getName();
 
         if (removedCard == null) {
             UIUtils.print("######### CARD NOT FOUND WHILE REMOVING IT");
@@ -991,7 +992,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         cardsSemaphore.release(1);
 
-        return this.tableCards.get(index).getName();
+        return name;
     }
 
     public void removeTableCard(int index, int[] callerClock) {
