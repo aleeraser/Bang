@@ -312,11 +312,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             for (IPlayer player : this.getPlayers()) {
                 try {
                     for (Card c : player.getHandCards()) {
-                        handCards.add(this.deck.getOrderedDeck().indexOf(c));
+                        handCards.add(this.deck.getOrderedDeck().indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
                     }
 
                     for (Card c : player.getCards(this.clock.getVec())) {
-                        handCards.add(this.deck.getOrderedDeck().indexOf(c));
+                        handCards.add(this.deck.getOrderedDeck().indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
                     }
                 } catch (Exception e) {
                     this.alertPlayerMissing(this.players.indexOf(player));
