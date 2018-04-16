@@ -87,6 +87,9 @@ public class Deck {
         UIUtils.print("------------------------");
         UIUtils.print("New deck:");
         printDeck();
+        
+        UIUtils.print("nextCardIndex: " + this.nextCardIndex);
+        
         UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
     }
 
