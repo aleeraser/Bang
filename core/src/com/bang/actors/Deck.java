@@ -99,7 +99,7 @@ public class Deck {
     }
 
     public int getNextCardIndex() {
-        return this.nextCardIndex == this.currentDeckSize ? 0 : this.nextCardIndex;
+        return this.nextCardIndex;
     }
 
     public Boolean draw() {
