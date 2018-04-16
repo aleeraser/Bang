@@ -304,6 +304,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public Card draw(Boolean addToHand) {
+        Card drawn;
         // Integer drewCardIndex = this.deck.getNextCardIndex() == this.deck.getIndices().size() ? 0 : this.deck.getNextCardIndex();
 
         if (this.deck.getNextCardIndex() == this.deck.getIndices().size()) {
@@ -325,21 +326,24 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             this.deck.setPlayerCards(handCards);
 
-            syncDeck(this.deck.getIndices());
-            syncDiscards();
-
+            drawn = this.deck.draw();
+            
             UIUtils.print("///////////////// New Deck");
             this.deck.printDeck();
+            
+            syncDeck(this.deck.getIndices());
+            syncDiscards();
+        } else {
+            drawn = this.deck.draw();
         }
         
-        Card c = this.deck.draw();
 
         // Card c = this.deck.getCard(drewCardIndex);
 
         if (addToHand)
-            this.addHandCard(c);
+            this.addHandCard(drawn);
         this.syncNextCardIndex(this.deck.getNextCardIndex());
-        return c;
+        return drawn;
     }
 
     public void drawCharacter() {
