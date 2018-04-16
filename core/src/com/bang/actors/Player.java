@@ -304,10 +304,29 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public Card draw(Boolean addToHand) {
-        Integer drewCardIndex = this.deck.getNextCardIndex() == this.deck.getIndices().size() ? 0 : this.deck.getNextCardIndex();
-        Boolean reshuffled = this.deck.draw();
+        Integer drewCardIndex = this.deck.getNextCardIndex() == this.deck.getIndices().size() ? 0
+                : this.deck.getNextCardIndex();
 
-        if (reshuffled) {
+        if (this.deck.getNextCardIndex() == this.deck.getIndices().size()) {
+            ArrayList<Integer> handCards = new ArrayList<Integer>();
+            
+            for (IPlayer player : this.getPlayers()) {
+                try {
+                    for (Card c : player.getHandCards()) {
+                        handCards.add(this.deck.getIndices().indexOf(this.deck.getOrderedDeck().indexOf(c)));
+                    }
+
+                    for (Card c : getCards(this.clock.getVec())) {
+                        handCards.add(this.deck.getIndices().indexOf(this.deck.getOrderedDeck().indexOf(c)));
+                    }
+                } catch (Exception e) {
+                    this.alertPlayerMissing(this.players.indexOf(player));
+                }
+
+            }
+            this.deck.setPlayerCards(handCards);
+
+            this.deck.draw();
             syncDeck(this.deck.getIndices());
             syncDiscards();
         }
@@ -1365,8 +1384,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
     public void log(String event) {
         if (logBox != null)
-        logBox.addEvent(event);
-        
+            logBox.addEvent(event);
+
         System.out.println(event);
     }
 

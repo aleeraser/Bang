@@ -17,12 +17,14 @@ public class Deck {
     protected int nextCardIndex;
     private ArrayList<Integer> discardPile;
     private Integer currentDeckSize;
+    private ArrayList<Integer> playersCards;
 
     public Deck() {
         this.orderedDeck = this.buildOrderedDeck();
         this.nextCardIndex = 0;
         this.discardPile = new ArrayList<Integer>();
         this.currentDeckSize = orderedDeck.size();
+        // this.playersCards = new ArrayList<Integer>();
     }
 
     protected ArrayList<Integer> randomArrayList(int n) {
@@ -70,11 +72,13 @@ public class Deck {
         UIUtils.print("Current discard pile:");
         printDiscardPile();
 
-        this.currentDeckSize = this.discardPile.size();
-        this.nextCardIndex = 0;
-        this.deckIndices = this.discardPile;
+        this.currentDeckSize = this.discardPile.size() + this.playersCards.size();
+        this.deckIndices = new ArrayList<Integer>();
+        this.deckIndices.addAll(playersCards);
+        this.nextCardIndex = this.deckIndices.size();
+        Collections.shuffle(this.discardPile);
+        this.deckIndices.addAll(this.discardPile);
         this.discardPile = new ArrayList<Integer>();
-        Collections.shuffle(this.deckIndices);
 
         UIUtils.print("------------------------");
         UIUtils.print("New deck:");
@@ -151,5 +155,9 @@ public class Deck {
         for (int i = 0; i < this.currentDeckSize; i++) {
             UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
         }
+    }
+
+    public void setPlayerCards(ArrayList<Integer> pc) {
+        this.playersCards = pc;
     }
 }
