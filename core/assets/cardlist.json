@@ -1,509 +1,98 @@
 [
-	{
-		"name": "schofield",
-		"value": "J",
-		"suit": 4,
-		"type": "table"
-	},
-	{
-		"name": "schofield",
-		"value": "Q",
-		"suit": 4,
-		"type": "table"
-	},
-	{
-		"name": "schofield",
-		"value": "K",
-		"suit": 1,
-		"type": "table"
-	},
-
-	{
-		"name": "volcanic",
-		"value": "10",
-		"suit": 1,
-		"type" : "table"
-	},
-	{
-		"name": "volcanic",
-		"value": "10",
-		"suit": 4,
-		"type" : "table"
-	},
-
-	{
-		"name": "carabine",
-		"value": "A",
-		"suit": 4,
-		"type": "table"
-	},
-
-	{
-		"name": "winchester",
-		"value": "8",
-		"suit": 1,
-		"type": "table"
-	},
-
-	{
-		"name": "remington",
-		"value": "K",
-		"suit": 4,
-		"type": "table"
-	},
-
-	{
-		"name": "bang",
-		"value": "2",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "3",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "4",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "5",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "6",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "7",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "8",
-		"suit": 4,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "9",
-		"suit": 4,
-		"type": "target"
-	},
-
-	{
-		"name": "bang",
-		"value": "2",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "3",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "4",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "5",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "6",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "7",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "8",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "9",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "10",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "J",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "Q",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "K",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "A",
-		"suit": 3,
-		"type": "target"
-	},
-
-	{
-		"name": "bang",
-		"value": "Q",
-		"suit": 2,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "K",
-		"suit": 2,
-		"type": "target"
-	},
-	{
-		"name": "bang",
-		"value": "A",
-		"suit": 2,
-		"type": "target"
-	},
-
-	{
-		"name": "bang",
-		"value": "A",
-		"suit": 1,
-		"type": "target"
-	},
-
-	{
-		"name": "mancato",
-		"value": "10",
-		"suit": 4,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "J",
-		"suit": 4,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "Q",
-		"suit": 4,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "K",
-		"suit": 4,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "A",
-		"suit": 4,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "mancato",
-		"value": "2",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "3",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "4",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "5",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "6",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "7",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "mancato",
-		"value": "8",
-		"suit": 1,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "birra",
-		"value": "6",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "birra",
-		"value": "7",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "birra",
-		"value": "8",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "birra",
-		"value": "9",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "birra",
-		"value": "10",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "birra",
-		"value": "J",
-		"suit": 1,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "panico",
-		"value": "J",
-		"suit": 2,
-		"type": "target"
-	},
-	{
-		"name": "panico",
-		"value": "Q",
-		"suit": 2,
-		"type": "target"
-	},
-	{
-		"name": "panico",
-		"value": "A",
-		"suit": 2,
-		"type": "target"
-	},
-
-	{
-		"name": "panico",
-		"value": "8",
-		"suit": 3,
-		"type": "target"
-	},
-
-	{
-		"name": "catbalou",
-		"value": "9",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "catbalou",
-		"value": "10",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "catbalou",
-		"value": "J",
-		"suit": 3,
-		"type": "target"
-	},
-
-	{
-		"name": "catbalou",
-		"value": "K",
-		"suit": 2,
-		"type": "target"
-	},
-
-	{
-		"name": "diligenza",
-		"value": "9",
-		"suit": 1,
-		"type": "single-usage"
-	},
-	{
-		"name": "diligenza",
-		"value": "9",
-		"suit": 1,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "wellsfargo",
-		"value": "3",
-		"suit": 2,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "gatling",
-		"value": "10",
-		"suit": 2,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "duello",
-		"value": "Q",
-		"suit": 3,
-		"type": "target"
-	},
-	{
-		"name": "duello",
-		"value": "J",
-		"suit": 1,
-		"type": "target"
-	},
-	{
-		"name": "duello",
-		"value": "8",
-		"suit": 4,
-		"type": "target"
-	},
-
-	{
-		"name": "indiani",
-		"value": "K",
-		"suit": 3,
-		"type": "single-usage"
-	},
-	{
-		"name": "indiani",
-		"value": "A",
-		"suit": 3,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "emporio",
-		"value": "9",
-		"suit": 4,
-		"type": "single-usage"
-	},
-	{
-		"name": "emporio",
-		"value": "Q",
-		"suit": 1,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "saloon",
-		"value": "5",
-		"suit": 2,
-		"type": "single-usage"
-	},
-
-	{
-		"name": "prigione",
-		"value": "10",
-		"suit": 1,
-		"type": "target"
-	},
-	{
-		"name": "prigione",
-		"value": "J",
-		"suit": 1,
-		"type": "target"
-	},
-	{
-		"name": "prigione",
-		"value": "4",
-		"suit": 2,
-		"type": "target"
-	},
-
-	{
-		"name": "dinamite",
-		"value": "2",
-		"suit": 2,
-		"type": "table"
-	},
-
-	{
-		"name": "barile",
-		"value": "Q",
-		"suit": 1,
-		"type": "table"
-	},
-	{
-		"name": "barile",
-		"value": "K",
-		"suit": 1,
-		"type": "table"
-	},
-
-	{
-		"name": "mirino",
-		"value": "A",
-		"suit": 1,
-		"type": "table"
-	},
-
-	{
-		"name": "mustang",
-		"value": "8",
-		"suit": 2,
-		"type": "table"
-	},
-	{
-		"name": "mustang",
-		"value": "9",
-		"suit": 2,
-		"type": "table"
-	}
+    {
+        "name": "schofield",
+        "value": "J",
+        "suit": 4,
+        "type": "table"
+    },
+    {
+        "name": "volcanic",
+        "value": "10",
+        "suit": 1,
+        "type": "table"
+    },
+    {
+        "name": "carabine",
+        "value": "A",
+        "suit": 4,
+        "type": "table"
+    },
+    {
+        "name": "remington",
+        "value": "K",
+        "suit": 4,
+        "type": "table"
+    },
+    {
+        "name": "bang",
+        "value": "2",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "3",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "4",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "5",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "6",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "7",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "8",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "9",
+        "suit": 4,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "2",
+        "suit": 3,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "3",
+        "suit": 3,
+        "type": "target"
+    },
+    {
+        "name": "bang",
+        "value": "4",
+        "suit": 3,
+        "type": "target"
+    },
+    {
+        "name": "mustang",
+        "value": "9",
+        "suit": 2,
+        "type": "table"
+    }
 ]
