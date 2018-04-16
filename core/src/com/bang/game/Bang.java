@@ -139,6 +139,8 @@ public class Bang extends ApplicationAdapter {
         } catch (RemoteException e) {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             e.printStackTrace();
+            Gdx.app.exit();
+
         }
 
         sceneManager.clearGlyphCache();
@@ -181,6 +183,8 @@ public class Bang extends ApplicationAdapter {
         } catch (RemoteException e) {
             UIUtils.print("WARNING: Failed to remove player from lobby!");
             e.printStackTrace();
+            Gdx.app.exit();
+
         } catch (Exception e) {
             UIUtils.print("WARNING: Failed to remove player from lobby!");
         }
