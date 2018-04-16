@@ -110,7 +110,9 @@ public class Deck {
             reshuffled = true;
         }
         // Card nextCard = this.getCard(this.nextCardIndex);
-        UIUtils.print("Pescata carta " + (1 + this.nextCardIndex++) + "/" + this.currentDeckSize);
+        UIUtils.print("Pescata carta " + (1 + this.nextCardIndex) + "/" + this.currentDeckSize);
+        
+        this.nextCardIndex++;
 
         return reshuffled;
     }
@@ -120,7 +122,7 @@ public class Deck {
             this.discardPile.add(cardIndex);
         } else {
             System.out.println("#### Scartando carta gia scartata, indice :" + cardIndex);
-            CardsUtils.printCard(this.orderedDeck.get(cardIndex));
+            CardsUtils.printCard(this.orderedDeck.get(this.deckIndices.get(cardIndex)));
         }
 
         UIUtils.print("#### CURRENT DISCARD PILE ####");
