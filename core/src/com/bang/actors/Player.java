@@ -152,7 +152,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.turn++;
             } else if (turn > 1) {
                 if (isIndiansTurn && !alreadyPlayedIndians) {
-                    log("gli indiani sono arrivati!");
+                    //log("gli indiani sono arrivati!");
                 } else {
                     if (isIndiansTurn && alreadyPlayedIndians) {
                         System.out.println("Fine turno indiani");
