@@ -103,6 +103,9 @@ public class InLobbyScene extends Scene {
                     sceneManager.getTextButtonStyle(), new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
+                            isRoomMaster = false;
+                            UIUtils.disable(btnStart);
+
                             ArrayList<String> playerIPs = updatePlayerList();
                             UIUtils.print(playerIPs.toString());
                             IPlayer me = sceneManager.getPlayer();
