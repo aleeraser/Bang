@@ -513,7 +513,6 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         for (int i = 0; i < barrel; i++) {
             Card c = this.draw(false);
             log("Ho un Barile in gioco, pesco...");
-            UIUtils.print("Ho un Barile in gioco, pesco...");
             if (c.getSuit() == 2) {
                 System.out.println("ho pescato cuori, mi hanno mancato!");
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
@@ -1387,7 +1386,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (logBox != null)
             logBox.addEvent(event);
 
-        System.out.println(event);
+        UIUtils.print(event);
     }
 
     private void logOthers(String event) {
