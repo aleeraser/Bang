@@ -152,7 +152,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.turn++;
             } else if (turn > 1) {
                 if (isIndiansTurn && !alreadyPlayedIndians) {
-                    //log("gli indiani sono arrivati!");
+                    log("gli indiani sono arrivati!");
                 } else {
                     if (isIndiansTurn && alreadyPlayedIndians) {
                         System.out.println("Fine turno indiani");
@@ -162,7 +162,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         redraw();
                     } else {
                         if (isMarketTurn && !alreadyDrawMarket) {
-                            //log("e' il mio turno di pescare dall' emporio");
+                            log("e' il mio turno di pescare dall' emporio");
                         } else {
                             if (isMarketTurn && alreadyDrawMarket) {
                                 System.out.println("Fine turno emporio");
@@ -179,7 +179,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 //log("E' il mio turno!");
                                 System.out.println("Standard turn, drew two cards. " + this.clock.toString());
                                 while (this.dinamite > 0) {
-                                    //log("dinamite:");
+                                    log("dinamite:");
                                     Card c = this.draw(false);
                                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                                     this.syncDiscards();
@@ -218,7 +218,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 }
 
                                 if (this.jail) {
-                                    //log("Prigione:");
+                                    log("Prigione:");
                                     Card c = this.draw(false);
                                     this.deck.discard(this.deck.getNextCardIndex() - 1);
                                     this.syncDiscards();
@@ -431,7 +431,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     } catch (RemoteException e) { //the turn Holder is crashed
                         this.alertPlayerMissing(this.turnOwner);
                         System.out.println("the Player " + this.turnOwner + " crashed.");
-                        //log("Il giocatore " + this.turnOwner + " e' crashato.");
+                        log("Il giocatore " + this.turnOwner + " e' crashato.");
                         int next = this.findNext(this.turnOwner);
                         if (next == this.pos) { //you are the next
                             System.out.println("I'm taking the turn");
@@ -492,7 +492,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.enemy = enemy;
         for (int i = 0; i < barrel; i++) {
             Card c = this.draw(false);
-            //log("Ho un Barile in gioco, pesco...");
+            log("Ho un Barile in gioco, pesco...");
             UIUtils.print("Ho un Barile in gioco, pesco...");
             if (c.getSuit() == 2) {
                 System.out.println("ho pescato cuori, mi hanno mancato!");
@@ -656,7 +656,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.clock.clockIncrease(callerClock);
         this.lives--;
         System.out.println("mi hanno colpito, ho " + this.getLives(this.clock.getVec()) + " vite");
-        //log("Mi hanno colpito, vite rimaste: " + this.getLives(this.clock.getVec()) + ".");
+        log("Mi hanno colpito, vite rimaste: " + this.getLives(this.clock.getVec()) + ".");
         if (this.lives == 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
             this.discardAll();
@@ -761,11 +761,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                             this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                         } else {
                             System.out.println("Already shot");
-                            //log("Ho gia' sparato.");
+                            log("Ho gia' sparato.");
                         }
                     } else {
                         System.out.println("Target out of range");
-                        //log("Il bersaglio e' troppo lontano.");
+                        log("Il bersaglio e' troppo lontano.");
                     }
 
                 } else if (name.matches("catbalou")) {
@@ -779,7 +779,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                     } else {
                         System.out.println("Target out of range");
-                        //log("Il bersaglio e' troppo lontano.");
+                        log("Il bersaglio e' troppo lontano.");
                     }
                 } else if (name.matches("prigione")) {
                     try {
