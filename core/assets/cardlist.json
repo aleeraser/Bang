@@ -90,6 +90,42 @@
         "type": "target"
     },
     {
+        "name": "prigione",
+        "value": "4",
+        "suit": 2,
+        "type": "target"
+    },
+    {
+        "name": "dinamite",
+        "value": "2",
+        "suit": 2,
+        "type": "table"
+    },
+    {
+        "name": "barile",
+        "value": "Q",
+        "suit": 1,
+        "type": "table"
+    },
+    {
+        "name": "barile",
+        "value": "K",
+        "suit": 1,
+        "type": "table"
+    },
+    {
+        "name": "mirino",
+        "value": "A",
+        "suit": 1,
+        "type": "table"
+    },
+    {
+        "name": "mustang",
+        "value": "8",
+        "suit": 2,
+        "type": "table"
+    },
+    {
         "name": "mustang",
         "value": "9",
         "suit": 2,
