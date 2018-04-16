@@ -79,6 +79,12 @@ public class Deck {
         Collections.shuffle(this.discardPile);
         this.deckIndices.addAll(this.discardPile);
         this.discardPile = new ArrayList<Integer>();
+        this.playersCards = new ArrayList<Integer>();
+
+        UIUtils.print("------------------------");
+        UIUtils.print("Player card size" + playersCards.size());
+        UIUtils.print("Player cards:");
+        printPlayerCards();
 
         UIUtils.print("------------------------");
         UIUtils.print("New deck:");
@@ -150,6 +156,12 @@ public class Deck {
     public void printDeck() {
         for (int i = 0; i < this.currentDeckSize; i++) {
             UIUtils.print("\t" + i + "/" + this.currentDeckSize + ": " + this.getCard(i).getName());
+        }
+    }
+
+    public void printPlayerCards() {
+        for (int i = 0; i < this.playersCards.size(); i++) {
+            UIUtils.print("\t" + i + "/" + this.playersCards.size() + ": " + this.getCard(i).getName());
         }
     }
 
