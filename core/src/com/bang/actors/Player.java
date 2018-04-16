@@ -419,7 +419,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             if (currentTime - startTimeoutTime > this.playerTimeout) {
                 if (this.turnOwner != this.pos) {
                     try {
-                        System.out.println("checking if the turn holder is alive");
+                        // System.out.println("checking if the turn holder is alive");
                         if (this.players.get(this.turnOwner) != null) {
                             this.clock.clockIncreaseLocal();
                             players.get(this.turnOwner).getPos(this.clock.getVec());
