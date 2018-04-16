@@ -1,18 +1,12 @@
 package com.bang.gameui;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class LogBox {
 
@@ -20,6 +14,7 @@ public class LogBox {
     protected ArrayList<String> eventList;
     protected String[] strList;
     protected ScrollPane scrollPane;
+    protected Semaphore semaphore;
 
     public LogBox(Skin skin) {
         paneList = new List<String>(skin);
@@ -41,22 +36,31 @@ public class LogBox {
         scrollPane.setBounds(200, 200, 200, 200);
         scrollPane.setTransform(true);
         scrollPane.layout();
+        
+        semaphore = new Semaphore(1);
     }
 
     public void addEvent(String eventStr) {
         eventList.add(eventStr);
         eventList.add(" ");
+        try {
+			semaphore.acquire(1);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
         if (paneList != null) {
             try {
                 paneList.setItems(eventList.toArray(new String[0]));
                 paneList.layout();
             } catch (Exception e) {
                 System.out.println("----------------------> catched");
+                semaphore.release(1);
             }
         }
         if (scrollPane != null) {
             scrollPane.setScrollPercentY(200);
         }
+        semaphore.release(1);
     }
 
     public void setSize(float width, float height) {
