@@ -326,12 +326,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             }
             this.deck.setPlayerCards(handCards);
 
-            this.deck.draw();
             syncDeck(this.deck.getIndices());
             syncDiscards();
         }
+        
+        Card c = this.deck.draw();
 
-        Card c = this.deck.getCard(drewCardIndex);
+        // Card c = this.deck.getCard(drewCardIndex);
 
         if (addToHand)
             this.addHandCard(c);
