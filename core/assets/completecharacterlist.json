@@ -1,58 +1,66 @@
 [
 	{
 		"name": "bartcassidy",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "blackjack",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "calamityjanet",
-		"lives": 4
+		"lives": 4,
+	},
+	{
+		"name": "elgringo",
+		"lives": 3,
 	},
 	{
 		"name": "jessejones",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "jourdonnais",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "kitcarlson",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "luckyduke",
-		"lives": 4
+		"lives": 4,
+	},
+	{
+		"name": "paulregret",
+		"lives": 3,
 	},
 	{
 		"name": "pedroramirez",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "rosedoolan",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "sidketchum",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "slabthekiller",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "suzylafayette",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "vulturesam",
-		"lives": 4
+		"lives": 4,
 	},
 	{
 		"name": "willythekid",
-		"lives": 4
+		"lives": 4,
 	}
 ]
