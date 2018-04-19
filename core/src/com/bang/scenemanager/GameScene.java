@@ -40,6 +40,7 @@ public class GameScene extends Scene {
     protected DuelDialog duelDialog;
     protected IndiansDialog indiansDialog;
     protected BangDialog bangDialog;
+    protected EndingDialog endingDialog;
 
     /* Other Boards size */
     float obHeight;
@@ -667,6 +668,23 @@ public class GameScene extends Scene {
     public void dismissIndiansDialog() {
         if (indiansDialog != null) {
             indiansDialog.remove();
+        }
+    }
+    
+    public void showEndingDialog(boolean winner) {
+    	if (endingDialog == null) {
+	        endingDialog = new EndingDialog(sceneManager, winner) {
+	            public void result(Object obj) {
+	            	sceneManager.setScene(new MainMenuScene(sceneManager));
+	            }
+	        };
+    	}
+        endingDialog.show(stage);
+    }
+    
+    public void dismissEndingDialog() {
+        if (endingDialog != null) {
+            endingDialog.remove();
         }
     }
 }
