@@ -131,7 +131,7 @@ public class Bang extends ApplicationAdapter {
                     gs.areUserInputEnabled(false);
                 }
 
-            } else {
+            } else if(me.getGameStatus().matches("")){
                 if (me.isMyTurn()) {
                     if (me.getTurn() == 1) {
                         // During the first turn cards are drawn and the game is set up. The GUI can't

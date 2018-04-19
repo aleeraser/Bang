@@ -1,14 +1,6 @@
 TODO
 - musichetta western in sottofondo
-- bug sulle carte che sembrano non apparire
-- sistemare le stampe in modo personale
-- quando hai gia' giocato un bang disabilitare il gioca carta sui bang se non hai volcanic
-- decidere cosa fare sulle doppie prigioni
-- rendere tollerante ai crash il duello
 
-
-
-stampare il vincitore del duello nel logbox
 aggiungere log di indiani per tutti i personaggi
 se si hanno troppe carte in mano e si clicca termina turno, dopo non si possono piu' giocare
 
