@@ -678,8 +678,9 @@ public class GameScene extends Scene {
 	            	sceneManager.setScene(new MainMenuScene(sceneManager));
 	            }
 	        };
+	        endingDialog.show(stage);
     	}
-        endingDialog.show(stage);
+        
     }
     
     public void dismissEndingDialog() {
