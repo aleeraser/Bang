@@ -607,6 +607,7 @@ public class GameScene extends Scene {
                         int missIndex = me.findCard(me.getHandCards(), "mancato");
                         me.removeHandCard(missIndex, new int[players.size()]);
                         me.setBangTurn("");
+                        me.logOthers(me.getCharacter().getName() + " ha giocato un mancato");
                     } else {
                         me.setBangTurn("");
                         ;

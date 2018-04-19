@@ -949,7 +949,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("calling syncMarkeCards true");
                 this.syncMarketCards();
             }
-            this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+            if( name.matches("mancato")){
+                this.log("non è questo il momento di schivare un colpo!");
+            }
+            else{
+                this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
+            }
         }
         redraw();
 
