@@ -680,6 +680,7 @@ public class GameScene extends Scene {
 	            	sceneManager.acquireInGame();
 	            	sceneManager.setInGame(false);
 	            	sceneManager.releaseInGame();
+	            	sceneManager = new SceneManager();
 	            	sceneManager.setScene(new MainMenuScene(sceneManager));
 	            }
 	        };
