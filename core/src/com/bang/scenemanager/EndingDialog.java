@@ -19,6 +19,7 @@ public class EndingDialog extends Dialog {
     public EndingDialog(SceneManager sceneManager, boolean winner) {
         super("Fine della Partita", sceneManager.getSkin(), "dialog");
         this.sceneManager = sceneManager;
+        this.winner = winner;
         this.me = sceneManager.getPlayer();
 
         setup();

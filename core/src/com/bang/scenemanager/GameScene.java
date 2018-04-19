@@ -675,6 +675,7 @@ public class GameScene extends Scene {
     	if (endingDialog == null) {
 	        endingDialog = new EndingDialog(sceneManager, winner) {
 	            public void result(Object obj) {
+	            	sceneManager.inGame = false;
 	            	sceneManager.setScene(new MainMenuScene(sceneManager));
 	            }
 	        };
