@@ -164,4 +164,6 @@ public interface IPlayer extends Remote {
     void setNextCardIndex(int deckIndex) throws RemoteException;
 
     Boolean shouldExit() throws RemoteException;
+
+    String getGameStatus() throws RemoteException;
 }

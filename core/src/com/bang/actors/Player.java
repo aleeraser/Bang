@@ -58,6 +58,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean mustUpdateBang;
     private LogBox logBox;
     private Boolean EXIT;
+    private String gameStatus;
 
     public Semaphore cardsSemaphore;
     protected Semaphore redrawingSemaphore;
@@ -84,6 +85,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.duelTurn = false;
         this.enemy = -1;
         this.bangTurn = "";
+        this.gameStatus = "";
 
         this.deck = new Deck();
 
@@ -628,6 +630,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.ips.set(index, null);
 
         if (this.checkVictory()) {
+            this.gameStatus = "winner";
             System.out.println("HO VINTOOOOOOOOOOOOOOOOOOO");
         }
 
@@ -684,6 +687,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         log("Mi hanno colpito, vite rimaste: " + this.getLives(this.clock.getVec()) + ".");
         if (this.lives == 0) {
             System.out.println("SONO MORTO"); //todo chiamare routine per aggiornare le liste dei player
+            this.gameStatus = "dead";
             this.discardAll();
             this.alertPlayerMissing(this.pos); //when a player dies it ack the others.
             this.logOthers(this.getCharacter().getName() + " e' MORTO!!!");
@@ -1406,6 +1410,10 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
         }
+    }
+
+    public String getGameStatus(){
+        return this.gameStatus;
     }
 
     @Override
