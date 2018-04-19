@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bang.actors.Card;
 import com.bang.actors.Character;
 import com.bang.actors.IPlayer;
+import com.bang.actors.Player;
 import com.bang.gameui.LogBox;
 import com.bang.gameui.OtherBoardGroup;
 import com.bang.gameui.PlayerBoardGroup;
@@ -681,7 +682,11 @@ public class GameScene extends Scene {
 	            	sceneManager.acquireInGame();
 	            	sceneManager.setInGame(false);
 	            	sceneManager.releaseInGame();
-	            	sceneManager = new SceneManager();
+	            	try {
+						sceneManager.player = new Player();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
 	            	sceneManager.setScene(new MainMenuScene(sceneManager));
 	            }
 	        };
