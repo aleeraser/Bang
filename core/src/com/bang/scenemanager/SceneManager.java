@@ -133,13 +133,7 @@ public class SceneManager {
     }
 
     public void setInGame(boolean value) {
-    	try {
-			this.inGameSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
         this.inGame = value;
-        this.inGameSemaphore.release(1);
     }
     
     public void acquireInGame() {
