@@ -61,6 +61,7 @@ public class Bang extends ApplicationAdapter {
         }
 
         try {
+        	sceneManager.acquireInGame();
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
@@ -143,6 +144,8 @@ public class Bang extends ApplicationAdapter {
                     }
                 }
             }
+            
+            sceneManager.releaseInGame();
 
         } catch (RemoteException e) {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");

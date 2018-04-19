@@ -33,6 +33,7 @@ public class SceneManager {
     protected IPlayer player;
     protected String currentLobby;
     protected boolean inGame;
+    protected Semaphore inGameSemaphore;
 
     public SceneManager() {
         gameScene = null;
@@ -74,6 +75,8 @@ public class SceneManager {
         textFieldStyle.font = font;
         textFieldStyle.fontColor = new Color(0, 0, 0, 1);
         textFieldStyle.background = skin.getDrawable("textfield");
+        
+        inGameSemaphore = new Semaphore(1);
     }
 
     public void setScene(Scene scene) {
@@ -130,7 +133,25 @@ public class SceneManager {
     }
 
     public void setInGame(boolean value) {
+    	try {
+			this.inGameSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         this.inGame = value;
+        this.inGameSemaphore.release(1);
+    }
+    
+    public void acquireInGame() {
+    	try {
+			this.inGameSemaphore.acquire(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void releaseInGame() {
+    	this.inGameSemaphore.release(1);
     }
 
     public void clearGlyphCache() {
