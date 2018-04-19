@@ -950,7 +950,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.syncMarketCards();
             }
             if( name.matches("mancato")){
-                this.log("non è questo il momento di schivare un colpo!");
+                this.log("non e' questo il momento di schivare un colpo!");
             }
             else{
                 this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());

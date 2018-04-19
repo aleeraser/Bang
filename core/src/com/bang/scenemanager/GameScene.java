@@ -142,7 +142,8 @@ public class GameScene extends Scene {
                         } else {
                             try {
                                 sceneManager.player.playCard(clickedCard);
-                                logBox.addEvent("Carta giocata: " + clickedCard.getName());
+                                if(!clickedCard.getName().matches("mancato"))
+                                    logBox.addEvent("Carta giocata: " + clickedCard.getName());
                                 clickedCard = null;
                                 selectedCard.removeShownCard();
                             } catch (RemoteException e) {
