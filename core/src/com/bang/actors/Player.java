@@ -1399,7 +1399,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         UIUtils.print(event);
     }
 
-    private void logOthers(String event) {
+    public void logOthers(String event) {
         for (IPlayer p : players) {
             if (p != null && p != this) {
                 try {

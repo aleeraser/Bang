@@ -166,4 +166,6 @@ public interface IPlayer extends Remote {
     Boolean shouldExit() throws RemoteException;
 
     String getGameStatus() throws RemoteException;
+
+    void logOthers(String event) throws RemoteException;
 }

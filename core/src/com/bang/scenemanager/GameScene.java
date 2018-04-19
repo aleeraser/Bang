@@ -552,9 +552,10 @@ public class GameScene extends Scene {
                     if (!res) {
                         me.duello(false, false, -1, new int[players.size()]);
                         me.decreaselives(new int[players.size()]);
+                        me.logOthers(enemy.getCharacter().getName() + " ha vinto il duello");
                         me.redraw();
                     }
-
+                    
                     else {
                         me.duello(true, false, enemyIndex, new int[players.size()]);
                     }
