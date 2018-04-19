@@ -13,7 +13,7 @@ import org.json.*;
 public class Deck {
 
     protected ArrayList<Card> orderedDeck;
-    protected ArrayList<Integer> deckIndices;
+    protected ArrayList<Integer> deckIndices;    
     protected int nextCardIndex;
     private ArrayList<Integer> discardPile;
     private Integer currentDeckSize;
@@ -71,17 +71,25 @@ public class Deck {
         UIUtils.print("Current discard pile:");
         printDiscardPile();
 
+        ArrayList<Integer> newDeckIndices;
+        
         this.currentDeckSize = this.discardPile.size() + this.playersCards.size();
-        this.deckIndices = new ArrayList<Integer>();
-        this.deckIndices.addAll(playersCards);
-        this.nextCardIndex = this.deckIndices.size();
         UIUtils.print("Non shuffled discard pile:");
         printDiscardPile();
         Collections.shuffle(this.discardPile);
         UIUtils.print("Shuffled discard pile:");
         printDiscardPile();
-        this.deckIndices.addAll(this.discardPile);
+        newDeckIndices = new ArrayList<Integer>();
+        newDeckIndices.addAll(playersCards);
+        this.nextCardIndex = newDeckIndices.size();
+        //this.deckIndices.addAll(this.discardPile);
+        for (int i : this.discardPile) {
+        	newDeckIndices.add(this.deckIndices.get(i));
+        }
+        
         this.discardPile = new ArrayList<Integer>();
+        this.deckIndices = new ArrayList<Integer>();
+        this.deckIndices.addAll(newDeckIndices);
 
         UIUtils.print("------------------------");
         UIUtils.print("Player card size: " + playersCards.size());
