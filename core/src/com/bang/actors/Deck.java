@@ -75,7 +75,11 @@ public class Deck {
         this.deckIndices = new ArrayList<Integer>();
         this.deckIndices.addAll(playersCards);
         this.nextCardIndex = this.deckIndices.size();
+        UIUtils.print("Non shuffled discard pile:");
+        printDiscardPile();
         Collections.shuffle(this.discardPile);
+        UIUtils.print("Shuffled discard pile:");
+        printDiscardPile();
         this.deckIndices.addAll(this.discardPile);
         this.discardPile = new ArrayList<Integer>();
 
