@@ -67,6 +67,14 @@ public class Bang extends ApplicationAdapter {
 
                 if (gs == null)
                     gs = (GameScene) sceneManager.getCurrentScene();
+                
+                if (me.getGameStatus().matches("dead")) {
+                	gs.showEndingDialog(false);
+                }
+                
+                if (me.getGameStatus().matches("winner")) {
+                	gs.showEndingDialog(true);
+                }
 
                 if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
