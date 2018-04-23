@@ -1,7 +1,7 @@
 {
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
         "font": {
-            "file": "../default/default.fnt"
+            "file": "font-export.fnt"
         },
         "title": {
             "file": "font-title-export.fnt"
