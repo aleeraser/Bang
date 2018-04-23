@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.concurrent.Semaphore;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.bang.gameui.LogBox;
 import com.bang.utils.CardsUtils;
 import com.bang.utils.UIUtils;
@@ -168,6 +170,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         } else {
                             if (isMarketTurn && alreadyDrawMarket) {
                                 System.out.println("Fine turno emporio");
+                                for(int i = 0; i<marketCards.size(); i++){
+                                    this.removeCard(i, this.clock.getVec(), true, "market");
+                                }
                                 isMarketTurn = false;
                                 alreadyDrawMarket = false;
                                 System.out.println("calling syncMarkeCards false");
@@ -1010,7 +1015,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
 
-        Card removedCard = removeFrom.matches("table") ? this.tableCards.remove(index) : this.handCards.remove(index);
+        Card removedCard ;
+        if(removeFrom.matches("table"))
+            removedCard = this.tableCards.remove(index);  
+        else if(removeFrom.matches("market"))
+            removedCard = this.marketCards.remove(index);
+        else
+            removedCard = this.tableCards.remove(index);
         UIUtils.print("called remove card on card: " + removedCard.getName());
 
         if (removedCard == null) {
