@@ -1116,7 +1116,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (fromTable) {
+                if (target.getCards(this.clock.getVec()).indexOf(c) != -1) {
                     target.removeTableCard(target.getCards(this.clock.getVec()).indexOf(c), this.clock.getVec());
                 } else {
                     target.removeHandCard(target.getHandCards().indexOf(c), this.clock.getVec());
@@ -1133,7 +1133,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         IPlayer target = players.get(pIndex);
         if (target != null) {
             try {
-                if (fromTable) {
+                if (target.getCards(this.clock.getVec()).indexOf(c) != -1) {
                     this.clock.clockIncreaseLocal();
                     this.clock.clockIncreaseLocal();
                     target.removeTableCard(target.getCards(this.clock.getVec()).indexOf(c), this.clock.getVec(), false);
