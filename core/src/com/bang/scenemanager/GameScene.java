@@ -109,7 +109,7 @@ public class GameScene extends Scene {
                                         } else {
                                             SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager,
                                                     (Integer) obj) {
-                                                public void result(Object cardIndex) {
+                                                public void result(Object card) {
                                                     try {
                                                         int len = players.get(playerIndex)
                                                                 .getCards(new int[players.size()]).size();
@@ -117,12 +117,8 @@ public class GameScene extends Scene {
                                                                 + " contro "
                                                                 + players.get(playerIndex).getCharacter().getName());
 
-                                                        if ((Integer) cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
-                                                            sceneManager.player.playCard(clickedCard, playerIndex,
-                                                                    (Integer) cardIndex - len, false);
-                                                        else
-                                                            sceneManager.player.playCard(clickedCard, playerIndex,
-                                                                    (Integer) cardIndex, true);
+                                                        sceneManager.player.playCard(clickedCard, playerIndex,
+                                                                (Card)card, true);
                                                         clickedCard = null;
                                                         selectedCard.removeShownCard();
                                                     } catch (RemoteException e) {

@@ -99,7 +99,7 @@ public interface IPlayer extends Remote {
 
     void playCard(Card c, int targetIndex) throws RemoteException;
 
-    void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) throws RemoteException;
+    void playCard(Card c, int targetIndex, Card targetCard, boolean fromTable) throws RemoteException;
 
     void alertPlayerMissing(int index) throws RemoteException;
 
