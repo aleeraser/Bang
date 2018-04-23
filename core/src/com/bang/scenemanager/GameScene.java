@@ -111,8 +111,6 @@ public class GameScene extends Scene {
                                                     (Integer) obj) {
                                                 public void result(Object card) {
                                                     try {
-                                                        int len = players.get(playerIndex)
-                                                                .getCards(new int[players.size()]).size();
                                                         logBox.addEvent("Carta giocata: " + clickedCard.getName()
                                                                 + " contro "
                                                                 + players.get(playerIndex).getCharacter().getName());
