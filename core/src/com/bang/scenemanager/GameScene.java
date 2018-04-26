@@ -109,14 +109,20 @@ public class GameScene extends Scene {
                                         } else {
                                             SelectCardDialog d1 = new SelectCardDialog(clickedCard, sceneManager,
                                                     (Integer) obj) {
-                                                public void result(Object card) {
+                                                public void result(Object cardIndex) {
                                                     try {
+                                                        int len = players.get(playerIndex)
+                                                                .getCards(new int[players.size()]).size();
                                                         logBox.addEvent("Carta giocata: " + clickedCard.getName()
                                                                 + " contro "
                                                                 + players.get(playerIndex).getCharacter().getName());
 
-                                                        sceneManager.player.playCard(clickedCard, playerIndex,
-                                                                (Card)card, true);
+                                                        if ((Integer) cardIndex >= len) //card index is the right card index if the card is a tableCard, elseway it is the hand card index + the number of table cards.
+                                                            sceneManager.player.playCard(clickedCard, playerIndex,
+                                                                    (Integer) cardIndex - len, false);
+                                                        else
+                                                            sceneManager.player.playCard(clickedCard, playerIndex,
+                                                                    (Integer) cardIndex, true);
                                                         clickedCard = null;
                                                         selectedCard.removeShownCard();
                                                     } catch (RemoteException e) {

@@ -62,7 +62,7 @@ public class SelectCardDialog extends Dialog {
             ImageButton b = new ImageButton(drawable);
             b.setTransform(true);
             b.setSize(cardWidth, cardHeight);
-            this.button(b, handCards.get(i));
+            this.button(b, tableCards.size() + i);
         }
 
         for (int i = 0; i < tableCards.size(); i++) {
@@ -74,7 +74,7 @@ public class SelectCardDialog extends Dialog {
             ImageButton b = new ImageButton(drawable);
             b.setTransform(true);
             b.setSize(cardWidth, cardHeight);
-            this.button(b, tableCards.get(i));
+            this.button(b, i);
         }
     }
 

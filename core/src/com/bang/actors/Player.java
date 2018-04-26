@@ -765,15 +765,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     public void playCard(Card c) {
-        this.playCard(c, -1, null, false);
+        this.playCard(c, -1, -1, false);
     }
 
     public void playCard(Card c, int targetIndex) {
-        this.playCard(c, targetIndex, null, false);
+        this.playCard(c, targetIndex, -1, false);
     }
 
     //TODO: ora come ora se usi una carta su un target crashato la carta viene comunque tolta dalla tua mano, valutare se cambiare questa cosa
-    public void playCard(Card c, int targetIndex, Card targetCard, boolean fromTable) {
+    public void playCard(Card c, int targetIndex, int targetCardIndex, boolean fromTable) {
         System.out.println("in play card");
         String name = c.getName();
         if (c.getType().matches("target")) {
@@ -803,12 +803,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     }
 
                 } else if (name.matches("catbalou")) {
-                    this.catBalou(targetIndex, targetCard, fromTable);
+                    this.catBalou(targetIndex, targetCardIndex, fromTable);
                     this.logOthers(this.getCharacter().getName() + " ha distrutto una carta a " + targetName);
                     this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                 } else if (name.matches("panico")) {
                     if (distance <= 1) {
-                        this.panico(targetIndex, targetCard, fromTable);
+                        this.panico(targetIndex, targetCardIndex, fromTable);
                         this.logOthers(this.getCharacter().getName() + " ha rubato una carta a " + targetName);
                         this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
                     } else {
@@ -1021,7 +1021,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         else if(removeFrom.matches("market"))
             removedCard = this.marketCards.remove(index);
         else
-            removedCard = this.handCards.remove(index);
+            removedCard = this.tableCards.remove(index);
         UIUtils.print("called remove card on card: " + removedCard.getName());
 
         if (removedCard == null) {
@@ -1111,15 +1111,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         cardsSemaphore.release(1);
     }
 
-    private void catBalou(int pIndex, Card c, Boolean fromTable) {
+    private void catBalou(int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
         if (target != null) {
             try {
                 this.clock.clockIncreaseLocal();
-                if (target.getCards(this.clock.getVec()).indexOf(c) != -1) {
-                    target.removeTableCard(target.getCards(this.clock.getVec()).indexOf(c), this.clock.getVec());
+                if (fromTable) {
+                    target.removeTableCard(cIndex, this.clock.getVec());
                 } else {
-                    target.removeHandCard(target.getHandCards().indexOf(c), this.clock.getVec());
+                    target.removeHandCard(cIndex, this.clock.getVec());
                 }
             } catch (RemoteException e) {
                 System.out.println("AAAAAAAAAAAAAA non c'e' " + pIndex);
@@ -1129,18 +1129,23 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         redraw();
     }
 
-    private void panico(int pIndex, Card c, Boolean fromTable) {
+    private void panico(int pIndex, int cIndex, Boolean fromTable) {
         IPlayer target = players.get(pIndex);
         if (target != null) {
             try {
-                if (target.getCards(this.clock.getVec()).indexOf(c) != -1) {
+                Card c;
+                if (fromTable) {
                     this.clock.clockIncreaseLocal();
+                    c = CardsUtils.getMatchingCard(target.getCards(this.clock.getVec()).get(cIndex).copyCard(),
+                            this.deck.getOrderedDeck());
                     this.clock.clockIncreaseLocal();
-                    target.removeTableCard(target.getCards(this.clock.getVec()).indexOf(c), this.clock.getVec(), false);
+                    target.removeTableCard(cIndex, this.clock.getVec(), false);
                 } else {
                     this.clock.clockIncreaseLocal();
+                    c = CardsUtils.getMatchingCard(target.getHandCard(cIndex, this.clock.getVec()).copyCard(),
+                            this.deck.getOrderedDeck());
                     this.clock.clockIncreaseLocal();
-                    target.removeHandCard(target.getHandCards().indexOf(c), this.clock.getVec(), false);
+                    target.removeHandCard(cIndex, this.clock.getVec(), false);
                 }
                 this.addHandCard(c);
             } catch (RemoteException e) {

@@ -13,7 +13,7 @@ import org.json.*;
 public class Deck {
 
     protected ArrayList<Card> orderedDeck;
-    protected ArrayList<Integer> deckIndices;
+    protected ArrayList<Integer> deckIndices;    
     protected int nextCardIndex;
     private ArrayList<Integer> discardPile;
     private Integer currentDeckSize;
@@ -51,7 +51,8 @@ public class Deck {
 
         for (int i = 0; i < jsonList.length(); i++) {
             JSONObject entry = jsonList.getJSONObject(i);
-            card = new Card(entry.getString("name"), entry.getString("value"), entry.getInt("suit"), entry.getString("type"));
+            String name = entry.getString("name");
+            card = new Card(name, entry.getString("value"), entry.getInt("suit"), entry.getString("type"));
             orderedDeck.add(card);
         }
 
@@ -71,7 +72,7 @@ public class Deck {
         printDiscardPile();
 
         ArrayList<Integer> newDeckIndices;
-
+        
         this.currentDeckSize = this.discardPile.size() + this.playersCards.size();
         UIUtils.print("Non shuffled discard pile:");
         printDiscardPile();
@@ -83,9 +84,9 @@ public class Deck {
         this.nextCardIndex = newDeckIndices.size();
         //this.deckIndices.addAll(this.discardPile);
         for (int i : this.discardPile) {
-            newDeckIndices.add(this.deckIndices.get(i));
+        	newDeckIndices.add(this.deckIndices.get(i));
         }
-
+        
         this.discardPile = new ArrayList<Integer>();
         this.deckIndices = new ArrayList<Integer>();
         this.deckIndices.addAll(newDeckIndices);
@@ -98,9 +99,9 @@ public class Deck {
         UIUtils.print("------------------------");
         UIUtils.print("New deck:");
         printDeck();
-
+        
         UIUtils.print("nextCardIndex: " + this.nextCardIndex);
-
+        
         UIUtils.print("\n############ END DECK FINISEHD DEBUG #############");
     }
 

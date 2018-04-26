@@ -52,7 +52,7 @@ public class SceneManager {
 
         /*font = new BitmapFont(Gdx.files.internal("skins/default/default.fnt"),
                 Gdx.files.internal("skins/default/default.png"), false);*/
-
+        
         font = new BitmapFont();
 
         textureAtlas = new TextureAtlas(Gdx.files.internal(skinPath + ".atlas"));
