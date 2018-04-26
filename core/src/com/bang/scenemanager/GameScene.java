@@ -580,9 +580,9 @@ public class GameScene extends Scene {
                 } catch (RemoteException e) {
                     //e.printStackTrace();
                     try {
+                    	me.duello(false, false, -1, new int[players.size()]);
                         me.alertPlayerMissing(enemyIndex);
-                        if (me == null ) System.out.println("me è null");
-                        me.duello(false, false, -1, new int[players.size()]);
+                        if (me == null ) System.out.println("me è null");                        
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                         System.out.println("nel catch riga 588");
