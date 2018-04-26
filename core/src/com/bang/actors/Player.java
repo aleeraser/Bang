@@ -44,6 +44,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private Boolean isMarketTurn;
     private Boolean alreadyDrawMarket;
     private Boolean isIndiansTurn;
+    private Boolean iPlayedIndians;
     private Boolean alreadyPlayedIndians;
     private Boolean duel;
     private Boolean duelTurn;
@@ -82,6 +83,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.isMarketTurn = false;
         this.alreadyDrawMarket = false;
         this.isIndiansTurn = false;
+        this.iPlayedIndians = false;
         this.alreadyPlayedIndians = false;
         this.duel = false;
         this.duelTurn = false;
@@ -158,12 +160,18 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 if (isIndiansTurn && !alreadyPlayedIndians) {
                     //log("gli indiani sono arrivati!");
                 } else {
-                    if (isIndiansTurn && alreadyPlayedIndians) {
+                    if (isIndiansTurn && alreadyPlayedIndians ) {
                         System.out.println("Fine turno indiani");
                         isIndiansTurn = false;
                         alreadyPlayedIndians = false;
                         syncIndians();
                         redraw();
+                        if(!iPlayedIndians){
+                            this.draw(true);
+                            this.draw(true);
+                        }
+                        else 
+                            iPlayedIndians = false;
                     } else {
                         if (isMarketTurn && !alreadyDrawMarket) {
                             log("e' il mio turno di pescare dall' emporio");
@@ -895,6 +903,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 syncIndians();
                 this.isIndiansTurn = true;
                 this.alreadyPlayedIndians = true;
+                this.iPlayedIndians = true;
                 this.giveTurn();
             } else if (name.matches("birra")) {
                 if (this.lives < this.character.getLives()) {
