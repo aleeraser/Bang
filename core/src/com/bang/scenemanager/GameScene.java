@@ -446,7 +446,7 @@ public class GameScene extends Scene {
             UIUtils.print("ERROR");
         }
         
-        logBox.scrollToEnd();
+        if (logBox != null) logBox.scrollToEnd();
 
         /* Update other players board */
         /* Get player info */
@@ -486,7 +486,7 @@ public class GameScene extends Scene {
 
                 }
             } else {
-                System.out.println("Found null player, draw the X");
+                //System.out.println("Found null player, draw the X");
                 otherBoard.setDisabledPlayer();
             }
         }
