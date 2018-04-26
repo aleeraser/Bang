@@ -496,7 +496,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (this.duel && !this.duelTurn)
                             this.duello(false, false, -1, this.clock.getVec());
                         else
-                            this.setBangTurn("");
+                            this.setBangTurn(null);
                     }
                 }
             }
@@ -506,7 +506,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private void shot(IPlayer target, int i) { // i is the target index
         try {
             this.clock.clockIncreaseLocal();
-            this.bangTurn = "killer";
+            this.setBangTurn("killer");
             target.bang(this.pos, this.clock.getVec());
             this.alreadyShot = true;
             this.enemy = this.players.indexOf(target);
@@ -532,7 +532,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 this.logOthers(this.getCharacter().getName() + " ha pescato cuori, non e' stato colpito");
                 //log("\tho pescato cuori, mi hanno mancato!");
                 try {
-                    this.players.get(enemy).setBangTurn("");
+                    this.players.get(enemy).setBangTurn(null);
                 } catch (RemoteException e) {
                     this.alertPlayerMissing(enemy);
                 }
@@ -564,7 +564,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.decreaselives(this.clock.getVec());
         */
         System.out.println("mi hanno sparato");
-        this.bangTurn = "target";
+        this.setBangTurn("target");
         this.redrawBang(true);
     }
 
