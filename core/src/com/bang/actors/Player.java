@@ -182,16 +182,16 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 for (int i = 0; i < marketCards.size(); i++) {
                                     this.removeCard(i, this.clock.getVec(), true, "market");
                                 }
-                                if (!this.iPlayedMarket) {
-                                    this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
-                                }
-                                else
-                                    this.iPlayedMarket = false;
                                 isMarketTurn = false;
                                 alreadyDrawMarket = false;
                                 System.out.println("calling syncMarkeCards false");
                                 syncMarketCards(false);
                                 System.out.println("Fine sych emporio");
+                                if (!this.iPlayedMarket) {
+                                    this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
+                                }
+                                else
+                                    this.iPlayedMarket = false;
                                 redraw();
                             } else {
                                 // standard turn
