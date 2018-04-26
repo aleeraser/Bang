@@ -496,7 +496,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (this.duel && !this.duelTurn)
                             this.duello(false, false, -1, this.clock.getVec());
                         else
-                            this.bangTurn = "";
+                            this.setBangTurn("");
                     }
                 }
             }
