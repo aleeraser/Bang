@@ -28,14 +28,9 @@ public class EndingDialog extends Dialog {
     protected void setup() {
         if (winner) {
             this.text("Hai vinto!");
-        }
-
-        else {
+        } else {
             this.text("Sei morto!");
         }
-        
         this.button("Torna al Menu", 0);
-
     }
-
 }
