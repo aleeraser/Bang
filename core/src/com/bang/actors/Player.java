@@ -1020,8 +1020,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             removedCard = this.tableCards.remove(index);  
         else if(removeFrom.matches("market"))
             removedCard = this.marketCards.remove(index);
-        else
-            removedCard = this.tableCards.remove(index);
+        else // standard hand discard
+            removedCard = this.handCards.remove(index);
         UIUtils.print("called remove card on card: " + removedCard.getName());
 
         if (removedCard == null) {
