@@ -43,6 +43,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     private int dinamite;
     private Boolean isMarketTurn;
     private Boolean alreadyDrawMarket;
+    private Boolean iPlayedMarket;
     private Boolean isIndiansTurn;
     private Boolean iPlayedIndians;
     private Boolean alreadyPlayedIndians;
@@ -82,6 +83,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         this.dinamite = 0;
         this.isMarketTurn = false;
         this.alreadyDrawMarket = false;
+        this.iPlayedMarket = false;
         this.isIndiansTurn = false;
         this.iPlayedIndians = false;
         this.alreadyPlayedIndians = false;
@@ -166,12 +168,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         alreadyPlayedIndians = false;
                         syncIndians();
                         redraw();
-                        if(!iPlayedIndians){
+                        if(!this.iPlayedIndians){
                             this.draw(true);
                             this.draw(true);
                         }
                         else 
-                            iPlayedIndians = false;
+                            this.iPlayedIndians = false;
                     } else {
                         if (isMarketTurn && !alreadyDrawMarket) {
                             log("e' il mio turno di pescare dall' emporio");
@@ -181,6 +183,12 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 for (int i = 0; i < marketCards.size(); i++) {
                                     this.removeCard(i, this.clock.getVec(), true, "market");
                                 }
+                                if (!this.iPlayedMarket) {
+                                    this.draw(true);
+                                    this.draw(true);
+                                }
+                                else
+                                    this.iPlayedMarket = false;
                                 isMarketTurn = false;
                                 alreadyDrawMarket = false;
                                 System.out.println("calling syncMarkeCards false");
@@ -953,6 +961,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             } else if (name.matches("emporio")) {
                 this.logOthers(this.getCharacter().getName() + " ha giocato un emporio!");
+                this.iPlayedMarket = true;
                 int num = 0;
                 for (IPlayer p : players) {
                     if (p != null)
