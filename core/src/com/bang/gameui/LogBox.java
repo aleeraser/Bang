@@ -77,6 +77,7 @@ public class LogBox {
 
     public void scrollToEnd() {
         if (scrollPane != null) {
+        	scrollPane.layout();
             scrollPane.setScrollPercentY(100);
         }
     }

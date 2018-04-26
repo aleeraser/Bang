@@ -101,10 +101,10 @@ public class Bang extends ApplicationAdapter {
                     gs.dismissBangDialog();
                 }
 
-                if (me.isMarketTurn() && me.shouldUpdateGUI()) {
+                /*if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showMarketDialog();
-                }
+                }*/
 
                 if (!me.isMarketTurn()) {
                     gs.dismissMarketDialog();
@@ -113,6 +113,9 @@ public class Bang extends ApplicationAdapter {
                 if (me.shouldUpdateGUI()) {
                     sceneManager.clearGlyphCache();
                     gs.update();
+                    if (me.isMarketTurn()) {
+                    		gs.showMarketDialog();
+                    }
                 }
 
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
