@@ -559,9 +559,13 @@ public class GameScene extends Scene {
                         int bangIndex = me.findCard(me.getHandCards(), "bang");
                         me.removeHandCard(bangIndex, new int[players.size()]);
                     }
-
-                    enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
-
+                    if (enemy != null){
+                        System.out.println("era nullo");
+                        enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
+                    }else{
+                        me.duello(true, false, enemyIndex, new int[players.size()]);
+                        return;
+                    }
                     if (!res) {
                         me.duello(false, false, -1, new int[players.size()]);
                         me.decreaselives(new int[players.size()]);

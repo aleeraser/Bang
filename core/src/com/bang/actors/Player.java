@@ -478,7 +478,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel && !this.duelTurn) || (this.bangTurn.matches("killer"))
+                if ((this.duel) || (this.bangTurn.matches("killer"))
                         || (this.bangTurn.matches("target"))) {
                     try {
                         if (players.get(this.enemy) != null) {
