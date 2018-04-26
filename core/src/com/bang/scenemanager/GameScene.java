@@ -126,7 +126,12 @@ public class GameScene extends Scene {
                                                         clickedCard = null;
                                                         selectedCard.removeShownCard();
                                                     } catch (RemoteException e) {
-                                                        e.printStackTrace();
+                                                        //e.printStackTrace();
+                                                        try {
+                                                            me.alertPlayerMissing(playerIndex);
+                                                        } catch (Exception ex) {
+                                                            ex.printStackTrace();
+                                                        }
                                                     }
                                                 }
 
@@ -135,6 +140,11 @@ public class GameScene extends Scene {
                                         }
                                     } catch (RemoteException e) {
                                         e.printStackTrace();
+                                        try {
+                                            me.alertPlayerMissing(playerIndex);
+                                        } catch (Exception ex) {
+                                            ex.printStackTrace();
+                                        }
                                     }
                                 }
                             };
