@@ -169,8 +169,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         syncIndians();
                         redraw();
                         if(!this.iPlayedIndians){
-                            this.draw(true);
-                            this.draw(true);
+                            this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
                         }
                         else 
                             this.iPlayedIndians = false;
@@ -184,8 +183,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                     this.removeCard(i, this.clock.getVec(), true, "market");
                                 }
                                 if (!this.iPlayedMarket) {
-                                    this.draw(true);
-                                    this.draw(true);
+                                    this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
                                 }
                                 else
                                     this.iPlayedMarket = false;
