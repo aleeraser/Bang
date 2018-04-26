@@ -559,7 +559,7 @@ public class GameScene extends Scene {
                         int bangIndex = me.findCard(me.getHandCards(), "bang");
                         me.removeHandCard(bangIndex, new int[players.size()]);
                     }
-                    
+
                     if (enemy != null){
                         enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
                     }else{
@@ -581,9 +581,11 @@ public class GameScene extends Scene {
                     //e.printStackTrace();
                     try {
                         me.alertPlayerMissing(enemyIndex);
+                        if (me == null ) System.out.println("me è null");
                         me.duello(false, false, -1, new int[players.size()]);
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
+                        System.out.println("nel catch riga 588");
                     }
                 }
 
