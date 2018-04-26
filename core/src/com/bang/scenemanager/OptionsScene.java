@@ -66,9 +66,9 @@ public class OptionsScene extends Scene {
                             Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player",
                                     sceneManager.getPlayer());
                         } catch (RemoteException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         } catch (MalformedURLException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                         sceneManager.setScene(new MainMenuScene(sceneManager));
                     }

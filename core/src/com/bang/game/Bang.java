@@ -149,7 +149,7 @@ public class Bang extends ApplicationAdapter {
 
         } catch (RemoteException e) {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
-            e.printStackTrace();
+            //e.printStackTrace();
             Gdx.app.exit();
             
         }
@@ -163,7 +163,7 @@ public class Bang extends ApplicationAdapter {
             s.act();
         } catch (Exception e) {
             System.out.println("-----------------ECCEZIONE RENDER------------------");
-            e.printStackTrace();
+            //e.printStackTrace();
             Gdx.app.exit();
             //super.render();
             return;
@@ -193,7 +193,7 @@ public class Bang extends ApplicationAdapter {
             }
         } catch (RemoteException e) {
             UIUtils.print("WARNING: Failed to remove player from lobby!");
-            e.printStackTrace();
+            //e.printStackTrace();
             Gdx.app.exit();
 
         } catch (Exception e) {

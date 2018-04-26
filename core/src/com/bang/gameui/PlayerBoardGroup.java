@@ -71,7 +71,7 @@ public class PlayerBoardGroup extends Group {
         try {
             character = sceneManager.getPlayer().getCharacter();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         setupLayout();
     }
@@ -209,7 +209,7 @@ public class PlayerBoardGroup extends Group {
 
             this.addActor(charImage);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

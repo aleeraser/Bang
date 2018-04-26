@@ -24,7 +24,7 @@ public class SelectTargetPlayerDialog extends Dialog {
             this.me = sceneManager.getPlayer();
             this.players = sceneManager.getPlayer().getPlayers();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         setup();
@@ -53,7 +53,7 @@ public class SelectTargetPlayerDialog extends Dialog {
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                     }
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }

@@ -66,12 +66,12 @@ public class GameScene extends Scene {
         /*try {
         	sceneManager.player = new Player();
         } catch (RemoteException e) {
-        	e.printStackTrace();
+        	//e.printStackTrace();
         };
         try {
         	me.setCharacter(new Character("slabthekiller", 4));
         } catch (RemoteException e) {
-        	e.printStackTrace();
+        	//e.printStackTrace();
         }*/
 
         sceneManager.setInGame(true);
@@ -127,7 +127,7 @@ public class GameScene extends Scene {
                                                         clickedCard = null;
                                                         selectedCard.removeShownCard();
                                                     } catch (RemoteException e) {
-                                                        //e.printStackTrace();
+                                                        ////e.printStackTrace();
                                                         try {
                                                             me.alertPlayerMissing(playerIndex);
                                                         } catch (Exception ex) {
@@ -140,7 +140,7 @@ public class GameScene extends Scene {
                                             d1.show(stage);
                                         }
                                     } catch (RemoteException e) {
-                                        e.printStackTrace();
+                                        //e.printStackTrace();
                                         try {
                                             me.alertPlayerMissing(playerIndex);
                                         } catch (Exception ex) {
@@ -159,7 +159,7 @@ public class GameScene extends Scene {
                                 clickedCard = null;
                                 selectedCard.removeShownCard();
                             } catch (RemoteException e) {
-                                e.printStackTrace();
+                                //e.printStackTrace();
                             }
                         }
 
@@ -199,7 +199,7 @@ public class GameScene extends Scene {
                                 discardButton.setVisible(true);
                             }
                         } catch (RemoteException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                     }
                 });
@@ -247,7 +247,7 @@ public class GameScene extends Scene {
                                 //UIUtils.disable(discardButton);
                             }
                         } catch (RemoteException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
 
                         clickedCard = null;
@@ -300,7 +300,7 @@ public class GameScene extends Scene {
             otherPlayerNumber = sceneManager.player.getPlayers().size() - 1;
         } catch (RemoteException e) {
             UIUtils.print("Remote Exception in GameScene.java while getting the number of players.");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         /* Dynamic sizing of other players boards */
@@ -321,7 +321,7 @@ public class GameScene extends Scene {
             myPos = me.getPos(new int[playerNum]);
         } catch (RemoteException e) {
             System.out.println("ERROR: couldn't get other players' info.");
-            e.printStackTrace();
+            //e.printStackTrace();
             return;
         }
 
@@ -338,7 +338,7 @@ public class GameScene extends Scene {
                 otherBoard.updateHandCards(players.get(index).getHandCards());
             } catch (RemoteException e) {
                 System.out.println("ERROR: couldn't get other players' info.");
-                e.printStackTrace();
+                //e.printStackTrace();
                 return;
             }
 
@@ -381,7 +381,7 @@ public class GameScene extends Scene {
             try {
                 sceneManager.player.setLogBox(logBox);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
@@ -434,7 +434,7 @@ public class GameScene extends Scene {
             try {
                 me.getCardsSemaphore().acquire(1);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             playerBoard.updateHandCards(me.getHandCards());
             playerBoard.updateBoardCards(me.getCards(new int[me.getPlayers().size()]));
@@ -442,7 +442,7 @@ public class GameScene extends Scene {
             me.redrawSingle(false);
             me.getCardsSemaphore().release(1);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             UIUtils.print("ERROR");
         }
 
@@ -474,7 +474,7 @@ public class GameScene extends Scene {
                     otherBoard.updateHandCards(p.getHandCards());
                     otherBoard.setCharacter();
                 } catch (RemoteException e) {
-                    // e.printStackTrace();
+                    // //e.printStackTrace();
                     System.out.println("ERROR: not able to get other playes info, calling alert.");
                     try {
                         me.alertPlayerMissing(index);
@@ -515,7 +515,7 @@ public class GameScene extends Scene {
                             isShowingMarketDialog = false;
                         }
                     } catch (RemoteException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
                 }
             };
@@ -523,7 +523,7 @@ public class GameScene extends Scene {
                 generalStoreDialog.setTouchable(Touchable.disabled);
             generalStoreDialog.show(stage);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -574,7 +574,7 @@ public class GameScene extends Scene {
                     }
 
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     try {
                         me.alertPlayerMissing(enemyIndex);
                         me.duello(false, false, -1, new int[players.size()]);
@@ -631,7 +631,7 @@ public class GameScene extends Scene {
                     enemy.setBangTurn(null);
 
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     try {
                         me.alertPlayerMissing(enemyIndex);
                         me.setBangTurn(null);
@@ -645,7 +645,7 @@ public class GameScene extends Scene {
         try {
             bangDialog.show(stage);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //TODO: handle exception
         }
     }
@@ -672,7 +672,7 @@ public class GameScene extends Scene {
                     me.indiani(res);
 
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
 
             }
@@ -696,7 +696,7 @@ public class GameScene extends Scene {
 	            	try {
 						sceneManager.player = new Player();
 					} catch (RemoteException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 	            	sceneManager.setScene(new MainMenuScene(sceneManager));
 	            }

@@ -38,7 +38,7 @@ public class GeneralStoreCardDialog extends Dialog {
                 this.text("Deve scegliere " + me.getPlayers().get(me.getTurnOwner()).getCharacter().getName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         int cardsNum = storeCards.size();

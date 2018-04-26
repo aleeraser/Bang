@@ -51,7 +51,7 @@ public class SelectedCardGroup extends Group {
             } catch (RemoteException e1) {
                 e1.printStackTrace();
             }
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         cardImage.setPosition((float) (width * (1 - BOARD_RATIO) * 0.5), (float) (height * (1 - BOARD_RATIO) * 0.5));
         this.addActor(cardImage);

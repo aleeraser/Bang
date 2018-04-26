@@ -40,7 +40,7 @@ public class BangDialog extends Dialog {
                 if (me.findCard(me.getHandCards(), "mancato") != -1)
                     this.button("si", true);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             this.button("no", false);

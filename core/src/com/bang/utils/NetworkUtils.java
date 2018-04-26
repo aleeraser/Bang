@@ -154,7 +154,7 @@ public class NetworkUtils {
             }
             return ips;
         } catch (SocketException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             exception = e;
         }
 

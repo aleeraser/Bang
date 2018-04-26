@@ -272,7 +272,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } catch (RemoteException e) {
                     UIUtils.print("Error while passing token to player " + i + ".");
                     this.alertPlayerMissing(i);
-                    //e.printStackTrace();
+                    ////e.printStackTrace();
                 }
             }
         }
@@ -284,7 +284,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } catch (RemoteException e) {
             UIUtils.print("Error while passing token to player " + nextPlayer + ".");
             this.alertPlayerMissing(nextPlayer);
-            //e.printStackTrace();
+            ////e.printStackTrace();
         }
 
     }
@@ -516,7 +516,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         } catch (RemoteException e) {
             System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
             this.alertPlayerMissing(i);
-            //e.printStackTrace();
+            ////e.printStackTrace();
         }
 
     }
@@ -663,7 +663,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     this.alertPlayerMissing(i);
-                    //e.printStackTrace();
+                    ////e.printStackTrace();
                 }
             }
         }
@@ -1011,7 +1011,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         this.clock.clockIncrease(callerClock);
 
@@ -1087,7 +1087,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         this.tableCards.add(c);
         cardsSemaphore.release(1);
@@ -1105,7 +1105,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         try {
             cardsSemaphore.acquire(1);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         this.handCards.add(c);
         cardsSemaphore.release(1);
@@ -1228,7 +1228,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             exception = e;
         }
 
@@ -1267,13 +1267,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else
                     players.add(null);
             } catch (NotBoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (RemoteException e) {
                 players.add(null);
-                //e.printStackTrace();
+                ////e.printStackTrace();
                 System.out.println("remote call to " + ips.get(i) + " failed. ");
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             UIUtils.print(ips.get(i));
@@ -1292,7 +1292,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
-                    //e.printStackTrace();
+                    ////e.printStackTrace();
                 }
             }
         }
@@ -1317,7 +1317,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
-                    //e.printStackTrace();
+                    ////e.printStackTrace();
                 }
             }
         }
@@ -1398,7 +1398,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } catch (RemoteException e) {
                     System.out.println("AAAAAAAAAAAAAA non c'e' " + i);
                     alertPlayerMissing(i);
-                    //e.printStackTrace();
+                    ////e.printStackTrace();
                 }
             }
         }
@@ -1422,7 +1422,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                     p.log(event);
                 } catch (RemoteException e) {
                     alertPlayerMissing(players.indexOf(p));
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }

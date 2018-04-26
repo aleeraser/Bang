@@ -39,7 +39,7 @@ public class IndiansDialog extends Dialog {
                 if (me.findCard(me.getHandCards(), "bang") != -1)
                     this.button("Bang!", true);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             this.button("No", false);

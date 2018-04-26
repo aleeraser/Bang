@@ -82,7 +82,7 @@ public class RoomListScene extends Scene {
                             }
 
                         } catch (RemoteException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         } catch (Exception e) {
                             UIUtils.showError("Errore di connessione al server", e, stage, sceneManager, text,
                                     removeOnError);

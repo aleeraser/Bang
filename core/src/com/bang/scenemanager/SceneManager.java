@@ -43,9 +43,9 @@ public class SceneManager {
             player = new Player();
             Naming.rebind("//" + player.getIp() + "/Player", player);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         String skinPath = "skins/rusty-robot/rusty-robot-ui";
@@ -142,7 +142,7 @@ public class SceneManager {
     	try {
 			this.inGameSemaphore.acquire(1);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
     }
     

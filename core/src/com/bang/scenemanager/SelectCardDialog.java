@@ -34,7 +34,7 @@ public class SelectCardDialog extends Dialog {
             this.handCards = remotePlayer.getHandCards();
             this.tableCards = remotePlayer.getCards(new int[players.size()]);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         setup();

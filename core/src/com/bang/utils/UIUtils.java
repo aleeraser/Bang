@@ -70,7 +70,7 @@ public class UIUtils {
 
         if (e != null) {
             print("Error getting lobby list\nERROR: " + e);
-            e.printStackTrace();
+            //e.printStackTrace();
         } else {
             print(err);
         }

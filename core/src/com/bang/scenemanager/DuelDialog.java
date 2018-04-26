@@ -40,7 +40,7 @@ public class DuelDialog extends Dialog {
                 if (me.findCard(me.getHandCards(), "bang") != -1)
                     this.button("Spara", true);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             this.button("Arrenditi", false);

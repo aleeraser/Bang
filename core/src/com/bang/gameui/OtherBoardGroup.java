@@ -196,7 +196,7 @@ public class OtherBoardGroup extends Group {
                 charImage.remove();
             charImage = character.getCharacterCard(charHeight, remaningLives);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         charImage.setSize(charWidth, charHeight);

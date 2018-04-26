@@ -21,7 +21,7 @@ public class DesktopLauncher {
             config.resizable = false;
             new LwjglApplication(new Bang(), config);
         }catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             Gdx.app.exit();
         }
 	}
@@ -58,7 +58,7 @@ public class DesktopLauncher {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             exception = e;
         }
 
