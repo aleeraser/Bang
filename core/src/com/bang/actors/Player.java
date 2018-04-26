@@ -168,7 +168,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         alreadyPlayedIndians = false;
                         syncIndians();
                         redraw();
-                        if(!this.iPlayedIndians){
+                        if(!this.iPlayedIndians){ //if you have to close indian turn but you did not played it you have to close it and than to play your turn normally
                             this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
                         }
                         else 
