@@ -99,7 +99,7 @@ public class GameScene extends Scene {
                                     final int playerIndex = (Integer) obj;
                                     //System.out.println("result " + obj);
                                     try {
-                                        players.get(playerIndex).getPos( new int[players.size()]);
+                                        players.get(playerIndex).getPos(new int[players.size()]);
                                         if (!(clickedCard.getName().matches("catbalou")
                                                 || clickedCard.getName().matches("panico"))) {
                                             logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro "
@@ -154,7 +154,7 @@ public class GameScene extends Scene {
                         } else {
                             try {
                                 sceneManager.player.playCard(clickedCard);
-                                if(!clickedCard.getName().matches("mancato"))
+                                if (!clickedCard.getName().matches("mancato"))
                                     logBox.addEvent("Carta giocata: " + clickedCard.getName());
                                 clickedCard = null;
                                 selectedCard.removeShownCard();
@@ -445,8 +445,9 @@ public class GameScene extends Scene {
             //e.printStackTrace();
             UIUtils.print("ERROR");
         }
-        
-        if (logBox != null) logBox.scrollToEnd();
+
+        if (logBox != null)
+            logBox.scrollToEnd();
 
         /* Update other players board */
         /* Get player info */
@@ -562,11 +563,11 @@ public class GameScene extends Scene {
                         me.removeHandCard(bangIndex, new int[players.size()]);
                     }
 
-                    if (enemy != null){
-                    	System.out.println("Chiamo la duello sul remoto");
+                    if (enemy != null) {
+                        System.out.println("Chiamo la duello sul remoto");
                         enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
                         System.out.println("Chiamata con successo");
-                     
+
                     } else {
                         throw new RemoteException();
                     }
@@ -577,16 +578,16 @@ public class GameScene extends Scene {
                         me.logOthers(enemy.getCharacter().getName() + " ha vinto il duello");
                         me.redraw();
                     }
-                    
+
                     else {
                         me.duello(true, false, enemyIndex, new int[players.size()]);
                     }
 
                 } catch (RemoteException e) {
                     //e.printStackTrace();
-                    try {                    	
-                    	me.duello(false, false, -1, new int[me.getPlayers().size()]);
-                        me.alertPlayerMissing(enemyIndex);                                          
+                    try {
+                        me.duello(false, false, -1, new int[me.getPlayers().size()]);
+                        me.alertPlayerMissing(enemyIndex);
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                     }
@@ -694,27 +695,27 @@ public class GameScene extends Scene {
             indiansDialog.remove();
         }
     }
-    
+
     public void showEndingDialog(boolean winner) {
-    	if (endingDialog == null) {
-	        endingDialog = new EndingDialog(sceneManager, winner) {
-	            public void result(Object obj) {
-	            	sceneManager.acquireInGame();
-	            	sceneManager.setInGame(false);
-	            	sceneManager.releaseInGame();
-	            	try {
-						sceneManager.player = new Player();
-					} catch (RemoteException e) {
-						//e.printStackTrace();
-					}
-	            	sceneManager.setScene(new MainMenuScene(sceneManager));
-	            }
-	        };
-	        endingDialog.show(stage);
-    	}
-        
+        if (endingDialog == null) {
+            endingDialog = new EndingDialog(sceneManager, winner) {
+                public void result(Object obj) {
+                    sceneManager.acquireInGame();
+                    sceneManager.setInGame(false);
+                    sceneManager.releaseInGame();
+                    try {
+                        sceneManager.player = new Player();
+                    } catch (RemoteException e) {
+                        //e.printStackTrace();
+                    }
+                    sceneManager.setScene(new MainMenuScene(sceneManager));
+                }
+            };
+            endingDialog.show(stage);
+        }
+
     }
-    
+
     public void dismissEndingDialog() {
         if (endingDialog != null) {
             endingDialog.remove();

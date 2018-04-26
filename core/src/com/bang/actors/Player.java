@@ -162,16 +162,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 if (isIndiansTurn && !alreadyPlayedIndians) {
                     //log("gli indiani sono arrivati!");
                 } else {
-                    if (isIndiansTurn && alreadyPlayedIndians ) {
+                    if (isIndiansTurn && alreadyPlayedIndians) {
                         System.out.println("Fine turno indiani");
                         isIndiansTurn = false;
                         alreadyPlayedIndians = false;
                         syncIndians();
                         redraw();
-                        if(!this.iPlayedIndians){ //if you have to close indian turn but you did not played it you have to close it and than to play your turn normally
+                        if (!this.iPlayedIndians) { //if you have to close indian turn but you did not played it you have to close it and than to play your turn normally
                             this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
-                        }
-                        else 
+                        } else
                             this.iPlayedIndians = false;
                     } else {
                         if (isMarketTurn && !alreadyDrawMarket) {
@@ -189,8 +188,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                                 System.out.println("Fine sych emporio");
                                 if (!this.iPlayedMarket) {
                                     this.setTurn(deckIndex, characterIndex, turnHolder, callerClock);
-                                }
-                                else
+                                } else
                                     this.iPlayedMarket = false;
                                 redraw();
                             } else {
@@ -492,8 +490,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         }
                     }
                 }
-                if ((this.duel) || (this.bangTurn.matches("killer"))
-                        || (this.bangTurn.matches("target"))) {
+                if ((this.duel) || (this.bangTurn.matches("killer")) || (this.bangTurn.matches("target"))) {
                     try {
                         if (players.get(this.enemy) != null) {
                             this.clock.clockIncreaseLocal();

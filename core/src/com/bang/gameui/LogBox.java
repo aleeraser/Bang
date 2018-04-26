@@ -36,7 +36,7 @@ public class LogBox {
         scrollPane.setBounds(200, 200, 200, 200);
         scrollPane.setTransform(true);
         scrollPane.layout();
-        
+
         semaphore = new Semaphore(1);
     }
 
@@ -44,10 +44,10 @@ public class LogBox {
         eventList.add(eventStr);
         eventList.add(" ");
         try {
-			semaphore.acquire(1);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+            semaphore.acquire(1);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
         if (paneList != null) {
             try {
                 paneList.setItems(eventList.toArray(new String[0]));
@@ -74,9 +74,9 @@ public class LogBox {
     public ScrollPane getPane() {
         return scrollPane;
     }
-    
+
     public void scrollToEnd() {
-    	if (scrollPane != null) {
+        if (scrollPane != null) {
             scrollPane.setScrollPercentY(100);
         }
     }

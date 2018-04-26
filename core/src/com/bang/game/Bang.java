@@ -36,14 +36,14 @@ public class Bang extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         Stage s = sceneManager.getCurrentStage();
         Texture bg = sceneManager.getCurrentBackgroundImage();
         Batch batch = s.getBatch();
         IPlayer me = sceneManager.getPlayer();
         GameScene gs = null;
         InLobbyScene inLobbyScene = null;
-        
+
         try {
             if (me.shouldExit()) {
                 s.dispose();
@@ -53,7 +53,7 @@ public class Bang extends ApplicationAdapter {
             s.dispose();
             return;
         }
-        
+
         if (bg != null) {
             batch.begin();
             batch.draw(bg, 0, 0, s.getWidth(), s.getHeight());
@@ -61,61 +61,60 @@ public class Bang extends ApplicationAdapter {
         }
 
         try {
-        	sceneManager.acquireInGame();
+            sceneManager.acquireInGame();
             if (sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
-                
+
                 if (gs == null)
-                gs = (GameScene) sceneManager.getCurrentScene();
-                
-                
+                    gs = (GameScene) sceneManager.getCurrentScene();
+
                 if (me.isIndiansTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showIndiansDialog(me.isMyTurn());
                 }
-                
+
                 if (!me.isIndiansTurn()) {
                     gs.dismissIndiansDialog();
                 }
-                
+
                 if (me.isInDuel() && me.shouldUpdateDuel()) {
                     System.out.println("Showing duel dialog");
                     System.out.println("IS MY TURN: " + me.isDuelTurn());
                     gs.showDuelDialog(me.isDuelTurn(), me.getPlayers().get(me.getDuelEnemy()).getCharacter().getName());
                     me.redrawDuel(false);
                 }
-                
+
                 if (!me.isInDuel()) {
                     gs.dismissDuelDialog();
                 }
-                
+
                 if (!me.isInBangTurn().matches("") && me.shouldUpdateBang()) {
                     System.out.println("Showing bang dialog");
                     System.out.println("IS MY TURN: " + me.isInBangTurn());
                     gs.showBangDialog(me.isInBangTurn(),
-                    me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
+                            me.getPlayers().get(me.getBangEnemy()).getCharacter().getName());
                     me.redrawBang(false);
                 }
-                
+
                 if (me.isInBangTurn().matches("")) {
                     gs.dismissBangDialog();
                 }
-                
+
                 if (me.isMarketTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showMarketDialog();
                 }
-                
+
                 if (!me.isMarketTurn()) {
                     gs.dismissMarketDialog();
                 }
-                
+
                 if (me.shouldUpdateGUI()) {
                     sceneManager.clearGlyphCache();
                     gs.update();
                 }
-                
+
                 if (me.isMyTurn() && !gs.areUserInputEnabled()) {
                     // UIUtils.print("It's my turn and user input were NOT enabled. Enabling user inputs");
                     gs.areUserInputEnabled(true);
@@ -123,15 +122,15 @@ public class Bang extends ApplicationAdapter {
                     // UIUtils.print("It's NOT my turn and user input were enabled. Disabling user inputs");
                     gs.areUserInputEnabled(false);
                 }
-                
+
                 if (me.getGameStatus().matches("dead")) {
                     gs.showEndingDialog(false);
                 }
-                
+
                 if (me.getGameStatus().matches("winner")) {
                     gs.showEndingDialog(true);
                 }
-            } else if(me.getGameStatus().matches("")){
+            } else if (me.getGameStatus().matches("")) {
                 if (me.isMyTurn()) {
                     if (me.getTurn() == 1) {
                         // During the first turn cards are drawn and the game is set up. The GUI can't
@@ -144,16 +143,16 @@ public class Bang extends ApplicationAdapter {
                     }
                 }
             }
-            
+
             sceneManager.releaseInGame();
 
         } catch (RemoteException e) {
             UIUtils.print("Remote Exeception in Bang.java while doing the main render");
             //e.printStackTrace();
             Gdx.app.exit();
-            
+
         }
-        
+
         sceneManager.clearGlyphCache();
         try {
             super.render();

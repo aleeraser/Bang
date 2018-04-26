@@ -52,7 +52,7 @@ public class SceneManager {
 
         /*font = new BitmapFont(Gdx.files.internal("skins/default/default.fnt"),
                 Gdx.files.internal("skins/default/default.png"), false);*/
-        
+
         font = new BitmapFont();
 
         textureAtlas = new TextureAtlas(Gdx.files.internal(skinPath + ".atlas"));
@@ -77,7 +77,7 @@ public class SceneManager {
         textFieldStyle.font = font;
         textFieldStyle.fontColor = new Color(0, 0, 0, 1);
         textFieldStyle.background = skin.getDrawable("textfield");
-        
+
         inGameSemaphore = new Semaphore(1);
     }
 
@@ -137,17 +137,17 @@ public class SceneManager {
     public void setInGame(boolean value) {
         this.inGame = value;
     }
-    
+
     public void acquireInGame() {
-    	try {
-			this.inGameSemaphore.acquire(1);
-		} catch (InterruptedException e) {
-			//e.printStackTrace();
-		}
+        try {
+            this.inGameSemaphore.acquire(1);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
     }
-    
+
     public void releaseInGame() {
-    	this.inGameSemaphore.release(1);
+        this.inGameSemaphore.release(1);
     }
 
     public void clearGlyphCache() {

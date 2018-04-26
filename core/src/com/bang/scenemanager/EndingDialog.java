@@ -33,7 +33,7 @@ public class EndingDialog extends Dialog {
         else {
             this.text("Sei morto!");
         }
-        
+
         this.button("Torna al Menu", 0);
 
     }
