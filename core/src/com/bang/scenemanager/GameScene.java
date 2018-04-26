@@ -99,6 +99,7 @@ public class GameScene extends Scene {
                                     final int playerIndex = (Integer) obj;
                                     //System.out.println("result " + obj);
                                     try {
+                                        players.get(playerIndex).getPos( new int[players.size()]);
                                         if (!(clickedCard.getName().matches("catbalou")
                                                 || clickedCard.getName().matches("panico"))) {
                                             logBox.addEvent("Carta giocata: " + clickedCard.getName() + " contro "
