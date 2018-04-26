@@ -170,7 +170,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         } else {
                             if (isMarketTurn && alreadyDrawMarket) {
                                 System.out.println("Fine turno emporio");
-                                for(int i = 0; i<marketCards.size(); i++){
+                                for (int i = 0; i < marketCards.size(); i++) {
                                     this.removeCard(i, this.clock.getVec(), true, "market");
                                 }
                                 isMarketTurn = false;
@@ -316,15 +316,17 @@ public class Player extends UnicastRemoteObject implements IPlayer {
 
         if (this.deck.getNextCardIndex() == this.deck.getIndices().size()) {
             ArrayList<Integer> handCards = new ArrayList<Integer>();
-            
+
             for (IPlayer player : this.getPlayers()) {
                 try {
                     for (Card c : player.getHandCards()) {
-                        handCards.add(this.deck.getOrderedDeck().indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
+                        handCards.add(this.deck.getOrderedDeck()
+                                .indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
                     }
 
                     for (Card c : player.getCards(this.clock.getVec())) {
-                        handCards.add(this.deck.getOrderedDeck().indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
+                        handCards.add(this.deck.getOrderedDeck()
+                                .indexOf(CardsUtils.getMatchingCard(c, this.deck.getOrderedDeck())));
                     }
                 } catch (Exception e) {
                     this.alertPlayerMissing(this.players.indexOf(player));
@@ -334,16 +336,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
             this.deck.setPlayerCards(handCards);
 
             drawn = this.deck.draw();
-            
+
             UIUtils.print("///////////////// New Deck");
             this.deck.printDeck();
-            
+
             syncDeck(this.deck.getIndices());
             syncDiscards();
         } else {
             drawn = this.deck.draw();
         }
-        
 
         // Card c = this.deck.getCard(drewCardIndex);
 
@@ -954,10 +955,9 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("calling syncMarkeCards true");
                 this.syncMarketCards();
             }
-            if( name.matches("mancato")){
+            if (name.matches("mancato")) {
                 this.log("non e' questo il momento di schivare un colpo!");
-            }
-            else{
+            } else {
                 this.removeHandCard(this.handCards.indexOf(c), this.clock.getVec());
             }
         }
@@ -1015,11 +1015,11 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
         this.clock.clockIncrease(callerClock);
 
-        Card removedCard ;
-        if(removeFrom.matches("table"))
-            removedCard = this.tableCards.remove(index);  
-        else if(removeFrom.matches("market"))
-            removedCard = this.marketCards.remove(index);
+        Card removedCard;
+        if (removeFrom.matches("table"))
+            removedCard = this.tableCards.remove(index);
+        else if (removeFrom.matches("market"))
+            removedCard = CardsUtils.getMatchingCard(this.marketCards.remove(index), this.deck.getOrderedDeck());
         else // standard hand discard
             removedCard = this.handCards.remove(index);
         UIUtils.print("called remove card on card: " + removedCard.getName());
@@ -1428,7 +1428,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
         }
     }
 
-    public String getGameStatus(){
+    public String getGameStatus() {
         return this.gameStatus;
     }
 
