@@ -582,22 +582,11 @@ public class GameScene extends Scene {
 
                 } catch (RemoteException e) {
                     //e.printStackTrace();
-                	System.out.println("Inizio il catch da RemoteException");
                     try {                    	
-                    	System.out.println("Chiamo duello su me stesso");
-                    	if (me == null ) {
-                    		System.out.println("me è null");
-                    		me = sceneManager.getPlayer();
-                    	}
-                    	else System.out.println("me non null");
-                    	me.duello(false, false, -1, new int[players.size()]);
-                    	System.out.println("Chiamata duello su me stesso");
-                    	System.out.println("Chiamo alertPlayerMissing");
-                        me.alertPlayerMissing(enemyIndex);
-                        System.out.println("Chiamata alertPlayerMissing");                                              
+                    	me.duello(false, false, -1, new int[me.getPlayers().size()]);
+                        me.alertPlayerMissing(enemyIndex);                                          
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
-                        System.out.println("nel catch riga 588");
                     }
                 }
 
