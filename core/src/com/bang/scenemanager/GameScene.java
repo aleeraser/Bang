@@ -619,22 +619,22 @@ public class GameScene extends Scene {
                     if (res) {
                         int missIndex = me.findCard(me.getHandCards(), "mancato");
                         me.removeHandCard(missIndex, new int[players.size()]);
-                        me.setBangTurn(null);
+                        me.setBangTurn("");
                         me.logOthers(me.getCharacter().getName() + " ha giocato un mancato");
                     } else {
-                        me.setBangTurn(null);
+                        me.setBangTurn("");
                         ;
                         me.decreaselives(new int[players.size()]);
                         me.redraw();
                     }
 
-                    enemy.setBangTurn(null);
+                    enemy.setBangTurn("");
 
                 } catch (RemoteException e) {
                     //e.printStackTrace();
                     try {
                         me.alertPlayerMissing(enemyIndex);
-                        me.setBangTurn(null);
+                        me.setBangTurn("");
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                     }
