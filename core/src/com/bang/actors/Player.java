@@ -493,7 +493,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                         if (players.get(this.enemy) != null) {
                             alertPlayerMissing(this.enemy);
                         }
-                        if (this.duel && !this.duelTurn)
+                        if (this.duel)
                             this.duello(false, false, -1, this.clock.getVec());
                         else
                             this.setBangTurn("");
