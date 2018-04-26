@@ -70,15 +70,6 @@ public class Bang extends ApplicationAdapter {
                 gs = (GameScene) sceneManager.getCurrentScene();
                 
                 
-                if (me.isMarketTurn() && me.shouldUpdateGUI()) {
-                    gs.update();
-                    gs.showMarketDialog();
-                }
-                
-                if (!me.isMarketTurn()) {
-                    gs.dismissMarketDialog();
-                }
-                
                 if (me.isIndiansTurn() && me.shouldUpdateGUI()) {
                     gs.update();
                     gs.showIndiansDialog(me.isMyTurn());
@@ -109,6 +100,15 @@ public class Bang extends ApplicationAdapter {
                 
                 if (me.isInBangTurn().matches("")) {
                     gs.dismissBangDialog();
+                }
+                
+                if (me.isMarketTurn() && me.shouldUpdateGUI()) {
+                    gs.update();
+                    gs.showMarketDialog();
+                }
+                
+                if (!me.isMarketTurn()) {
+                    gs.dismissMarketDialog();
                 }
                 
                 if (me.shouldUpdateGUI()) {
