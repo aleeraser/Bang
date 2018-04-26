@@ -445,6 +445,8 @@ public class GameScene extends Scene {
             //e.printStackTrace();
             UIUtils.print("ERROR");
         }
+        
+        logBox.scrollToEnd();
 
         /* Update other players board */
         /* Get player info */

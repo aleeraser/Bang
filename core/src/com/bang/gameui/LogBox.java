@@ -74,5 +74,11 @@ public class LogBox {
     public ScrollPane getPane() {
         return scrollPane;
     }
+    
+    public void scrollToEnd() {
+    	if (scrollPane != null) {
+            scrollPane.setScrollPercentY(100);
+        }
+    }
 
 }
