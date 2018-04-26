@@ -551,7 +551,7 @@ public class GameScene extends Scene {
                 }
 
                 try {
-                    IPlayer me = sceneManager.getPlayer();
+                    //IPlayer me = sceneManager.getPlayer();
                     ArrayList<IPlayer> players = me.getPlayers();
                     IPlayer enemy = players.get(enemyIndex);
 
@@ -561,8 +561,11 @@ public class GameScene extends Scene {
                     }
 
                     if (enemy != null){
+                    	System.out.println("Chiamo la duello sul remoto");
                         enemy.duello(res, res, me.getPos(new int[players.size()]), new int[players.size()]);
-                    }else{
+                        System.out.println("Chiamata con successo");
+                     
+                    } else {
                         throw new RemoteException();
                     }
 
@@ -579,10 +582,15 @@ public class GameScene extends Scene {
 
                 } catch (RemoteException e) {
                     //e.printStackTrace();
+                	System.out.println("Inizio il catch da RemoteException");
                     try {
+                    	System.out.println("Chiamo duello su me stesso");
+                    	me.duello(false, false, -1, new int[players.size()]);
+                    	System.out.println("Chiamata duello su me stesso");
+                    	System.out.println("Chiamo alertPlayerMissing");
                         me.alertPlayerMissing(enemyIndex);
-                        if (me == null ) System.out.println("me è null");
-                        me.duello(false, false, -1, new int[players.size()]);
+                        System.out.println("Chiamata alertPlayerMissing");
+                        if (me == null ) System.out.println("me è null");                        
                     } catch (RemoteException e1) {
                         e1.printStackTrace();
                         System.out.println("nel catch riga 588");
