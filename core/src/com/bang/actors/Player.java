@@ -1284,8 +1284,7 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 System.out.println("RMI not bound for " + ips.get(i));
             } catch (RemoteException e) {
                 players.add(null);
-                ////e.printStackTrace();
-                System.out.println("remote call to " + ips.get(i) + " failed. ");
+                System.out.println("remote call to " + ips.get(i) + " failed: " + e.getMessage());
             } catch (MalformedURLException e) {
                 //e.printStackTrace();
             }
