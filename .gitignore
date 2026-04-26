@@ -12,6 +12,7 @@ server/server.pid
 server/server.pyc
 server/lobbies.json
 server/server.*.pid
+server/__pycache__/**
 
 ## Java
 *.class
