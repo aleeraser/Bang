@@ -1224,8 +1224,33 @@ public class Player extends UnicastRemoteObject implements IPlayer {
     }
 
     private static String findIp() {
-        SocketException exception = null;
+        // Prefer real LAN IPs over Docker/VM bridges.
+        // Try each range in priority order, same logic as DesktopLauncher.
+        String[] priorityPatterns = {
+            "130\\.[0-9]+\\.[0-9]+\\.[0-9]+",   // university network
+            "192\\.168\\.[0-9]+\\.[0-9]+",       // home/office LAN
+            "10\\.[0-9]+\\.[0-9]+\\.[0-9]+",     // corporate LAN
+        };
 
+        for (String pattern : priorityPatterns) {
+            String ip = findIpByPattern(pattern);
+            if (ip != null) {
+                System.out.println(ip);
+                return ip;
+            }
+        }
+
+        // Fallback: any non-loopback IPv4
+        String ip = findIpByPattern("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+");
+        if (ip != null && !ip.startsWith("127.")) {
+            System.out.println(ip);
+            return ip;
+        }
+
+        return "127.0.0.1";
+    }
+
+    private static String findIpByPattern(String pattern) {
         try {
             Enumeration e = NetworkInterface.getNetworkInterfaces();
             while (e.hasMoreElements()) {
@@ -1234,18 +1259,15 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 while (ee.hasMoreElements()) {
                     InetAddress i = (InetAddress) ee.nextElement();
                     String ip = i.getHostAddress();
-                    if (ip.matches("[0-9]+.[0-9]+.[0-9]+.[0-9]+") && !(ip.substring(0, 3).matches("127"))) {
-                        System.out.println(ip);
-                        return (ip);
+                    if (ip.matches(pattern) && !ip.startsWith("127.")) {
+                        return ip;
                     }
                 }
             }
         } catch (SocketException e) {
-            //e.printStackTrace();
-            exception = e;
+            // ignore
         }
-
-        return exception.toString();
+        return null;
     }
 
     private Boolean ping(String ip) {
