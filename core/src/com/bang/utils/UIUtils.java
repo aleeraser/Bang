@@ -44,10 +44,16 @@ public class UIUtils {
     public static void enable(TextButton b) {
         b.setTouchable(Touchable.enabled);
 
+        // Collect first, then remove — modifying the children list while
+        // iterating with for-each skips elements in LibGDX's SnapshotArray.
+        ArrayList<Actor> toRemove = new ArrayList<Actor>();
         for (Actor c : b.getChildren()) {
             if (c instanceof Image) {
-                c.remove();
+                toRemove.add(c);
             }
+        }
+        for (Actor c : toRemove) {
+            c.remove();
         }
     }
 

@@ -113,7 +113,7 @@ public class InLobbyScene extends Scene {
                                 me.setIpList(playerIPs);
                                 ArrayList<IPlayer> playerList = me.getPlayers();
                                 for (IPlayer player : playerList) {
-                                    if (player != me) {
+                                    if (player != null && player != me) {
                                         System.out.println("Setting remote ip list to " + player.getIp());
                                         player.setIpList(playerIPs);
                                     }
