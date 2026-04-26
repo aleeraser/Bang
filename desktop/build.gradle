@@ -12,6 +12,7 @@ def lwjglJvmArgs = [
     '--add-opens', 'java.base/java.nio=ALL-UNNAMED',
     '--add-opens', 'java.desktop/sun.awt=ALL-UNNAMED',
     '--add-opens', 'java.desktop/sun.java2d=ALL-UNNAMED',
+    '--add-opens', 'java.desktop/java.awt=ALL-UNNAMED',
 ]
 
 task run(dependsOn: classes, type: JavaExec) {

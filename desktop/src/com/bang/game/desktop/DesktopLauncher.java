@@ -6,20 +6,18 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import com.badlogic.gdx.Gdx;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.bang.game.Bang;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
         try{
-            LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+            Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
             System.setProperty("java.rmi.server.hostname", getPriorityIP());
-            System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true");
-            config.height = 700;
-            config.width = 1200;
-            config.resizable = false;
-            new LwjglApplication(new Bang(), config);
+            config.setWindowedMode(1200, 700);
+            config.setResizable(false);
+            new Lwjgl3Application(new Bang(), config);
         }catch (Exception e) {
             //e.printStackTrace();
             Gdx.app.exit();
