@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 public class NetworkUtils {
 
-    static String baseURL = "http://marullo.cs.unibo.it:5002";
+    static String baseURL = "http://localhost:5002";
 
     public static String getBaseURL() {
         // return "http://emilia.cs.unibo.it:5002";
