@@ -39,13 +39,20 @@ public class SceneManager {
         gameScene = null;
 
         try {
-            LocateRegistry.createRegistry(1099);
+            try {
+                LocateRegistry.createRegistry(1099);
+            } catch (RemoteException registryExists) {
+                // Registry already running (e.g. from a previous run) — reuse it
+            }
             player = new Player();
             Naming.rebind("//" + player.getIp() + "/Player", player);
         } catch (RemoteException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
+            if (player == null) {
+                try { player = new Player(); } catch (RemoteException ignored) {}
+            }
         } catch (MalformedURLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
         String skinPath = "skins/rusty-robot/rusty-robot-ui";

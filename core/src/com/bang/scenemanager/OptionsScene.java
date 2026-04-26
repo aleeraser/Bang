@@ -61,10 +61,12 @@ public class OptionsScene extends Scene {
                     public void changed(ChangeEvent event, Actor actor) {
                         NetworkUtils.setBaseURL(serverName.getText());
                         try {
-                            sceneManager.getPlayer().setIp(ipList.getSelected());
-                            System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
-                            Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player",
-                                    sceneManager.getPlayer());
+                            if (sceneManager.getPlayer() != null) {
+                                sceneManager.getPlayer().setIp(ipList.getSelected());
+                                System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
+                                Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player",
+                                        sceneManager.getPlayer());
+                            }
                         } catch (RemoteException e) {
                             //e.printStackTrace();
                         } catch (MalformedURLException e) {
