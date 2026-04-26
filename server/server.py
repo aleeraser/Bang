@@ -1,15 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
-# import os
-# import base64
 import json
 from flask import Flask
-from urllib import unquote_plus
-
-reload(sys)
-sys.setdefaultencoding('utf8')
+from urllib.parse import unquote_plus
 
 try:
     with open('./lobbies.json', 'r') as data_file:
@@ -28,7 +22,7 @@ def res_builder(msg, code):
 
 def storeLobbies():
     with open('lobbies.json', 'w') as outfile:
-        json.dump(lobbies, outfile, encoding='utf-8')
+        json.dump(lobbies, outfile)
 
 
 @app.route("/reset", methods=["GET"])
@@ -61,7 +55,7 @@ def new_lobby(ip, _lobby):
             res = res_builder("Lobby name already present", 1)
 
     except Exception as e:
-        res = res_builder("Error: " + str(e.message), -1)
+        res = res_builder("Error: " + str(e), -1)
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
@@ -94,7 +88,7 @@ def remove_player(ip, _lobby):
             res = res_builder("Player wasn't in lobby", 1)
 
     except Exception as e:
-        res = res_builder("Error: " + str(e.message), -1)
+        res = res_builder("Error: " + str(e), -1)
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
@@ -114,7 +108,7 @@ def add_player(ip, _lobby):
             res = res_builder("Already joined", 1)
 
     except Exception as e:
-        res = res_builder("Error: " + str(e.message), -1)
+        res = res_builder("Error: " + str(e), -1)
 
     return json.dumps(res, sort_keys=True, separators=(',', ':'))
 
@@ -122,3 +116,7 @@ def add_player(ip, _lobby):
 @app.route("/", methods=["GET"])
 def main():
     return "<h2>We</h2>"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5002)
