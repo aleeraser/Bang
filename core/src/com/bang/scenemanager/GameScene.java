@@ -328,6 +328,11 @@ public class GameScene extends Scene {
         for (int i = 0; i < otherPlayerNumber; i++) {
             final int index = (myPos + 1 + i) % (playerNum);
 
+            if (players.get(index) == null) {
+                System.out.println("WARNING: player at index " + index + " is null, skipping.");
+                continue;
+            }
+
             final OtherBoardGroup otherBoard = new OtherBoardGroup(obWidth, obHeight, sceneManager, players.get(index));
             otherBoardList.add(otherBoard);
             otherBoard.setPosition(50 + 10 * i + obWidth * i, 500);

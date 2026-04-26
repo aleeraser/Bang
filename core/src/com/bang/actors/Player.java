@@ -1280,7 +1280,8 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 } else
                     players.add(null);
             } catch (NotBoundException e) {
-                //e.printStackTrace();
+                players.add(null); // keep list aligned with IP list
+                System.out.println("RMI not bound for " + ips.get(i));
             } catch (RemoteException e) {
                 players.add(null);
                 ////e.printStackTrace();
