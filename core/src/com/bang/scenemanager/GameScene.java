@@ -473,6 +473,7 @@ public class GameScene extends Scene {
 
         for (int i = 0; i < otherPlayerNumber; i++) {
             int index = (myPos + 1 + i) % (playerNum);
+            if (i >= otherBoardList.size()) continue;
             OtherBoardGroup otherBoard = otherBoardList.get(i);
 
             IPlayer p = players.get(index);
