@@ -2,8 +2,10 @@ package com.bang.scenemanager;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -60,17 +62,22 @@ public class OptionsScene extends Scene {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         NetworkUtils.setBaseURL(serverName.getText());
-                        try {
-                            if (sceneManager.getPlayer() != null) {
-                                sceneManager.getPlayer().setIp(ipList.getSelected());
-                                System.setProperty("java.rmi.server.hostname", sceneManager.getPlayer().getIp());
-                                Naming.rebind("//" + sceneManager.getPlayer().getIp() + "/Player",
-                                        sceneManager.getPlayer());
+                        if (sceneManager.getPlayer() != null) {
+                            String newIp = ipList.getSelected();
+                            try {
+                                // Must unexport and re-export so the new hostname is baked
+                                // into the stub before rebinding. Merely calling rebind with
+                                // a new path does not change the address in the existing stub.
+                                System.setProperty("java.rmi.server.hostname", newIp);
+                                sceneManager.getPlayer().setIp(newIp);
+                                UnicastRemoteObject.unexportObject((Remote) sceneManager.getPlayer(), true);
+                                UnicastRemoteObject.exportObject((Remote) sceneManager.getPlayer(), 0);
+                                Naming.rebind("//" + newIp + "/Player", sceneManager.getPlayer());
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
                             }
-                        } catch (RemoteException e) {
-                            //e.printStackTrace();
-                        } catch (MalformedURLException e) {
-                            //e.printStackTrace();
                         }
                         sceneManager.setScene(new MainMenuScene(sceneManager));
                     }
