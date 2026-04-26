@@ -1294,13 +1294,13 @@ public class Player extends UnicastRemoteObject implements IPlayer {
                 if (this.ip.matches(ips.get(i))) {
                     this.pos = i;
                     this.players.add((IPlayer) this);
-                } else if (this.ping(ips.get(i))) {
+                } else {
+                    // Attempt RMI lookup regardless of ping — ICMP may be blocked by firewall
                     IPlayer player = (IPlayer) Naming.lookup("rmi://" + ips.get(i) + "/Player");
                     if (player != null)
                         System.out.println("Successfully added " + player.getIp());
                     this.players.add(player);
-                } else
-                    players.add(null);
+                }
             } catch (NotBoundException e) {
                 players.add(null); // keep list aligned with IP list
                 System.out.println("RMI not bound for " + ips.get(i));
