@@ -19,7 +19,7 @@ public class DesktopLauncher {
             config.setResizable(false);
             new Lwjgl3Application(new Bang(), config);
         }catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             Gdx.app.exit();
         }
 	}

@@ -45,7 +45,7 @@ public class Bang extends ApplicationAdapter {
         InLobbyScene inLobbyScene = null;
 
         try {
-            if (me.shouldExit()) {
+            if (me != null && me.shouldExit()) {
                 s.dispose();
                 return;
             }
@@ -62,7 +62,7 @@ public class Bang extends ApplicationAdapter {
 
         try {
             sceneManager.acquireInGame();
-            if (sceneManager.isInGame()) {
+            if (me != null && sceneManager.isInGame()) {
                 // Starts the timeout to check if the current turnHolder is still alive.
                 me.checkTimeout(System.currentTimeMillis());
 
@@ -133,7 +133,7 @@ public class Bang extends ApplicationAdapter {
                 if (me.getGameStatus().matches("winner")) {
                     gs.showEndingDialog(true);
                 }
-            } else if (me.getGameStatus().matches("")) {
+            } else if (me != null && me.getGameStatus().matches("")) {
                 if (me.isMyTurn()) {
                     if (me.getTurn() == 1) {
                         // During the first turn cards are drawn and the game is set up. The GUI can't
